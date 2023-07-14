@@ -3,20 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
+#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/07/13 16:45:20 by jugingas         ###   ########.fr        #
+#    Updated: 2023/07/13 22:48:48 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=		src/main.c
+SRC		=		src/main.c				\
+				src/utils.c				\
+				src/builtins.c
 
 NAME		=	minishell
-OBJS        =    $(SRC:.c=.o)
-LIBS        =    -lreadline
-CC            =    cc
-FLAGS        =    -g3 -Werror -Wextra -Wall
+OBJS		=    $(SRC:.c=.o)
+LIBS		=    -lreadline
+CC			=    cc
+FLAGS		=    -g3 -Werror -Wextra -Wall
 
 #------------------------------------------------------------------
 
