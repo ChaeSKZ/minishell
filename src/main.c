@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/13 23:15:15 by user42           ###   ########.fr       */
+/*   Updated: 2023/07/14 13:43:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int	main(void)
 				shell.f_ptr[i](get_args(line));
 			}
 		}
-		else
+		if (i == 7)
 		{
 			pid = fork();
 			if (pid == 0)
 			{
-				char *cmd[] = {"ls", NULL};
+				//char *cmd[] = {line, NULL};
 				char *envp[] = {NULL};
-				execve(get_cmd(line), cmd, envp);
+				execve(get_cmd(line), &line, envp);
 				perror("execve");
 			}
 			else if (pid > 0)
