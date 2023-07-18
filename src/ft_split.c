@@ -6,13 +6,13 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:51:47 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:51:01 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:00:00 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char	**power_free(char **tab, int line)
+static char	**spower_free(char **tab, int line)
 {
 	while (line > 0)
 	{
@@ -51,7 +51,7 @@ static char	**split_it(char const *s, char c, char **tab, int size)
 			i++;
 		tab[t] = malloc(sizeof(char) * (line(s, c, i) + 1));
 		if (tab[t] == NULL)
-			return (power_free(tab, t));
+			return (spower_free(tab, t));
 		while (s[i] != c && s[i])
 			tab[t][l++] = s[i++];
 		tab[t][l] = '\0';

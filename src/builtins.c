@@ -6,11 +6,19 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:40:54 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:17:32 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	ft_exit(t_shell *shell, char *arg)
+{
+	(void)arg;
+	power_free(shell->builtins);
+	free(shell->line);
+	exit(0);
+}
 
 int	ft_strlen(char *str)
 {
@@ -42,56 +50,87 @@ char	*check_path(char *path)
 	while (path[++i])
 		new_path[i + 2] = path[i];
 	new_path[i + 2] = '\0';
+	free(path);
 	return (new_path);
 }
 
-void	ft_cd(char *path)
+void	ft_cd(t_shell * shell, char *path)
 {
+	(void)shell;
 	if (!path)
-	{
-		printf("Found no arg, default path is \"~/\"\n");
 		chdir("~/");
-	}
 	else
 	{
-		printf("Path found;\n");
 		path = check_path(path);
 		chdir(path);
+		free(path);
 	}
 }
 
-void	ft_echo(char *arg)
+void	ft_echo(t_shell *shell, char *arg)
 {
+	(void)arg;
+	(void)shell;
+	return ;
+}
+
+void	ft_pwd(t_shell *shell, char *arg)
+{
+	char	cwd[MAX_PATH_SIZE];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		printf("%s\n", cwd);
+	else
+	{
+		perror("cwd");
+		ft_exit(shell, arg);
+	}
 	(void)arg;
 	return ;
 }
 
-void	ft_pwd(char *arg)
+void	ft_export(t_shell *shell, char *arg)
 {
 	(void)arg;
+	(void)shell;
 	return ;
 }
 
-void	ft_export(char *arg)
+void	ft_unset(t_shell *shell, char *arg)
 {
-	(void)arg;
+	int	i;
+	int	j;
+
+	i = 0;
+	while (shell->env[i])
+	{
+		if (ft_envstrcmp(shell->env[i], arg) == 0)
+		{
+			j = i;
+			while (shell->env[j])
+			{
+				shell->env[j] = shell->env[j + 1];
+				printf("Copying...\n");
+				j++;
+			}
+			printf("Done.\n");
+			return ;
+		}
+		i++;
+	}
 	return ;
 }
 
-void	ft_unset(char *arg)
+void	ft_env(t_shell *shell, char *arg)
 {
-	(void)arg;
-	return ;
-}
+	int	i;
 
-void	ft_env(char *arg)
-{
+	i = 0;
 	(void)arg;
+	while (shell->env[i])
+	{
+		printf("%s\n", shell->env[i]);
+		i++;
+	}
 	return ;
-}
-
-void	ft_exit(char *arg)
-{
-	(void)arg;
-	exit(0);
 }

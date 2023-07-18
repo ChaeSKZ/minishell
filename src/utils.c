@@ -6,11 +6,24 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:38:51 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:50:40 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 12:54:18 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	power_free(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
 
 int	mnsh_strcmp(char *s1, char *s2)
 {

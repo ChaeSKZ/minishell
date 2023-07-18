@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:57:13 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:52:52 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <readline/history.h>
 #include "../include/minishell.h"
 
-void	init_shell(t_shell *shell)
+void	init_shell(t_shell *shell, char **env)
 {
 	shell->builtins = malloc(sizeof(char *) * 8);
 	if (!shell->builtins)
@@ -25,6 +25,7 @@ void	init_shell(t_shell *shell)
 		perror("malloc");
 		exit(1);
 	}
+	shell->env = env;
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
 	shell->builtins[2] = ft_strdup("pwd");
@@ -42,37 +43,57 @@ void	init_shell(t_shell *shell)
 	shell->f_ptr[6] = ft_exit;
 }
 
-int	main(void)
+/*void	loop(t_shell *shell)
 {
-	char	*line;
-	int		pid;
-	int		i;
-	t_shell	shell;
-	char	*envp[1];
+	int	i;
 
-	init_shell(&shell);
-	envp[0] = NULL;
+	while (1)
+	{
+		shell->line = ft_split(readline("$>"), ' ');
+		i = -1;
+		while (shell->builtins[++i])
+		{
+			if (mnsh_strcmp(shell.builtins[i], shell.line[0]) == 0)
+			{
+				shell.f_ptr[i](&shell, get_args(shell.line));
+				break ;
+			}
+		}
+	}
+	return ;
+}*/
+
+int	main(int ac, char **av, char **env)
+{
+	t_shell	shell;
+	int		i;
+
+	init_shell(&shell, env);
+	shell.envp[0] = NULL;
+	(void)ac;
+	(void)av;
+	//loop(&shell);
 	while (1)
 	{
 		i = -1;
-		line = readline("$>");
+		shell.line = readline("$>");
 		while (shell.builtins[++i])
 		{
-			if (mnsh_strcmp(shell.builtins[i], line) == 0)
+			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
-				shell.f_ptr[i](get_args(line));
+				shell.f_ptr[i](&shell, get_args(shell.line));
 				break ;
 			}
 		}
 		if (i == 7)
 		{
-			pid = fork();
-			if (pid == 0)
+			shell.pid = fork();
+			if (shell.pid == 0)
 			{
-				execve(get_cmd(line), ft_split(line, ' '), envp);
+				execve(get_cmd(shell.line), ft_split(shell.line, ' '), shell.envp);
 				perror("execve");
 			}
-			else if (pid > 0)
+			else if (shell.pid > 0)
 				wait(NULL);
 			else
 				perror("fork");
