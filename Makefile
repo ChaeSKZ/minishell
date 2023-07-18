@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/07/13 22:48:48 by user42           ###   ########.fr        #
+#    Updated: 2023/07/18 11:48:02 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=		src/main.c				\
 				src/utils.c				\
-				src/builtins.c
+				src/builtins.c			\
+				src/ft_split.c
 
 NAME		=	minishell
 OBJS		=    $(SRC:.c=.o)

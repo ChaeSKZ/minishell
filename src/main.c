@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:43:25 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:49:21 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(void)
 	char	*envp[1];
 
 	init_shell(&shell);
-	envp = {NULL};
+	envp[0] = NULL;
 	while (1)
 	{
 		i = -1;
@@ -69,7 +69,7 @@ int	main(void)
 			pid = fork();
 			if (pid == 0)
 			{
-				execve(get_cmd(line), &line, envp);
+				execve(get_cmd(line), ft_split(line, ' '), envp);
 				perror("execve");
 			}
 			else if (pid > 0)

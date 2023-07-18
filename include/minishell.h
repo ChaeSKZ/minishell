@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:41:51 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:48:25 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_shell
 
 //-------- Utils --------
 
+char	**ft_split(char const *s, char c);
 int		mnsh_strcmp(char *s1, char *s2);
 char	*get_args(char *line);
 char	*get_cmd(char *line);

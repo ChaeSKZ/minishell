@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:38:51 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:38:53 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:50:40 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_args(char *line)
 		i++;
 	if (line[i])
 		arg = line + i + 1;
-	else if (!line[i] || line[i] == '\n')
+	else
 		arg = NULL;
 	return (arg);
 }
