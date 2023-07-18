@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/14 13:43:20 by user42           ###   ########.fr       */
+/*   Updated: 2023/07/18 11:43:25 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_shell(t_shell *shell)
 		perror("malloc");
 		exit(1);
 	}
-	shell->builtins[0] = strdup("echo"); // Remplacer par ft_strdup
+	shell->builtins[0] = strdup("echo");
 	shell->builtins[1] = strdup("cd");
 	shell->builtins[2] = strdup("pwd");
 	shell->builtins[3] = strdup("export");
@@ -45,11 +45,13 @@ void	init_shell(t_shell *shell)
 int	main(void)
 {
 	char	*line;
-	int	pid;
-	int	i;
-	t_shell shell;
-	
+	int		pid;
+	int		i;
+	t_shell	shell;
+	char	*envp[1];
+
 	init_shell(&shell);
+	envp = {NULL};
 	while (1)
 	{
 		i = -1;
@@ -67,8 +69,6 @@ int	main(void)
 			pid = fork();
 			if (pid == 0)
 			{
-				//char *cmd[] = {line, NULL};
-				char *envp[] = {NULL};
 				execve(get_cmd(line), &line, envp);
 				perror("execve");
 			}
