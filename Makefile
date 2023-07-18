@@ -6,14 +6,15 @@
 #    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/07/18 11:48:02 by jugingas         ###   ########.fr        #
+#    Updated: 2023/07/18 11:54:02 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=		src/main.c				\
 				src/utils.c				\
 				src/builtins.c			\
-				src/ft_split.c
+				src/ft_split.c			\
+				src/ft_strdup.c
 
 NAME		=	minishell
 OBJS		=    $(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 11:49:21 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:57:13 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ void	init_shell(t_shell *shell)
 		perror("malloc");
 		exit(1);
 	}
-	shell->builtins[0] = strdup("echo");
-	shell->builtins[1] = strdup("cd");
-	shell->builtins[2] = strdup("pwd");
-	shell->builtins[3] = strdup("export");
-	shell->builtins[4] = strdup("unset");
-	shell->builtins[5] = strdup("env");
-	shell->builtins[6] = strdup("exit");
+	shell->builtins[0] = ft_strdup("echo");
+	shell->builtins[1] = ft_strdup("cd");
+	shell->builtins[2] = ft_strdup("pwd");
+	shell->builtins[3] = ft_strdup("export");
+	shell->builtins[4] = ft_strdup("unset");
+	shell->builtins[5] = ft_strdup("env");
+	shell->builtins[6] = ft_strdup("exit");
 	shell->builtins[7] = NULL;
 	shell->f_ptr[0] = ft_echo;
 	shell->f_ptr[1] = ft_cd;
@@ -60,8 +60,8 @@ int	main(void)
 		{
 			if (mnsh_strcmp(shell.builtins[i], line) == 0)
 			{
-				printf("Found.\n");
 				shell.f_ptr[i](get_args(line));
+				break ;
 			}
 		}
 		if (i == 7)
