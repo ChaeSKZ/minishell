@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 14:17:32 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/07/19 09:49:31 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,6 @@ void	ft_pwd(t_shell *shell, char *arg)
 	return ;
 }
 
-void	ft_export(t_shell *shell, char *arg)
-{
-	(void)arg;
-	(void)shell;
-	return ;
-}
-
 void	ft_unset(t_shell *shell, char *arg)
 {
 	int	i;
@@ -110,10 +103,8 @@ void	ft_unset(t_shell *shell, char *arg)
 			while (shell->env[j])
 			{
 				shell->env[j] = shell->env[j + 1];
-				printf("Copying...\n");
 				j++;
 			}
-			printf("Done.\n");
 			return ;
 		}
 		i++;
