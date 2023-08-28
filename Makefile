@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/07/19 09:58:00 by user42           ###   ########.fr        #
+#    Updated: 2023/08/28 16:59:53 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ SRC		=		src/main.c				\
 				src/utils.c				\
 				src/utils2.c			\
 				src/builtins.c			\
+				src/builtins2.c			\
 				src/ft_split.c			\
 				src/export.c			\
 				src/ft_strdup.c

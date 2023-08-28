@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/19 10:09:24 by user42           ###   ########.fr       */
+/*   Updated: 2023/08/28 15:13:09 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_shell
 	char	*line;
 	char	**env;
 	char	*envp[1];
+	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
 	void	(*f_ptr[7])(struct s_shell *, char *);
 }		t_shell;
@@ -42,6 +43,7 @@ int		ft_envstrcmp(char *s1, char *s2);
 char	*get_args(char *line);
 char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
+char	*get_home_path(char **env);
 
 //------- Builtins ------
 

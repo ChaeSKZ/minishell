@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 13:52:52 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:28:55 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_shell(t_shell *shell, char **env)
 		exit(1);
 	}
 	shell->env = env;
+	getcwd(shell->ex_path, sizeof(shell->ex_path));
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
 	shell->builtins[2] = ft_strdup("pwd");
@@ -43,25 +44,33 @@ void	init_shell(t_shell *shell, char **env)
 	shell->f_ptr[6] = ft_exit;
 }
 
-/*void	loop(t_shell *shell)
+char	*get_cwd(void)
 {
-	int	i;
+	int		i;
+	int		n;
+	char	cwd[MAX_PATH_SIZE];
+	char	*res;
 
-	while (1)
+	i = 0;
+	n = 1;
+	getcwd(cwd, sizeof(cwd));
+	while (cwd[i])
+		i++;
+	while (cwd[i - n] != '/')
+		n++;
+	i -= n;
+	res = malloc(sizeof(char) * (n + 1));
+	if (!res)
+		perror("malloc");
+	n = 0;
+	while (cwd[i + n + 1])
 	{
-		shell->line = ft_split(readline("$>"), ' ');
-		i = -1;
-		while (shell->builtins[++i])
-		{
-			if (mnsh_strcmp(shell.builtins[i], shell.line[0]) == 0)
-			{
-				shell.f_ptr[i](&shell, get_args(shell.line));
-				break ;
-			}
-		}
+		res[n] = cwd[i + n + 1];
+		n++;
 	}
-	return ;
-}*/
+	res[n] = '\0';
+	return (res);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -72,11 +81,14 @@ int	main(int ac, char **av, char **env)
 	shell.envp[0] = NULL;
 	(void)ac;
 	(void)av;
-	//loop(&shell);
 	while (1)
 	{
 		i = -1;
-		shell.line = readline("$>");
+		printf("\033[1;32m");
+		printf("%s", get_cwd());
+		printf("\033[0m");
+		printf("~> ");
+		shell.line = readline("");
 		while (shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
@@ -90,7 +102,8 @@ int	main(int ac, char **av, char **env)
 			shell.pid = fork();
 			if (shell.pid == 0)
 			{
-				execve(get_cmd(shell.line), ft_split(shell.line, ' '), shell.envp);
+				execve(get_cmd(shell.line), ft_split(shell.line, ' '),
+					shell.envp);
 				perror("execve");
 			}
 			else if (shell.pid > 0)
