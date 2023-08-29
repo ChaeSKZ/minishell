@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/28 15:13:09 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:36:08 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <stdbool.h>
 # include <sys/wait.h>
 # include <string.h>
 
@@ -27,6 +28,7 @@ typedef struct s_shell
 	char	**builtins;
 	char	*line;
 	char	**env;
+	bool	meta;
 	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
@@ -36,6 +38,7 @@ typedef struct s_shell
 //-------- Utils --------
 
 char	**ft_split(char const *s, char c);
+char	**token_it(char *str);
 char	*ft_strdup(const char *s);
 void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/28 17:25:04 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:49:57 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_exit(t_shell *shell, char *arg)
 	(void)arg;
 	power_free(shell->builtins);
 	free(shell->line);
+	printf("exit\n");
 	exit(0);
 }
 
@@ -36,7 +37,7 @@ char	*check_path(char *path)
 	char	*new_path;
 
 	if ((path[0] == '.' && path[1] == '/')
-		|| (path[0] == '~' && path[1] == '/') || path[0] == '/')
+		|| path[0] == '/')
 		return (path);
 	i = -1;
 	new_path = malloc(sizeof(char) * ft_strlen(path) + 3);
@@ -78,7 +79,7 @@ void	ft_cd(t_shell *shell, char *path)
 	char	*temp;
 
 	temp = NULL;
-	if (!path)
+	if (!path || (path[0] == '~' && path[1] == '/' && !path[2]))
 		chdir(get_home_path(shell->env));
 	else if (path[0] == '-' && !path[1])
 	{
