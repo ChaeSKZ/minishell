@@ -1,0 +1,4 @@
+- Historique
+- quote non ferme no care
+- ' ' deny les metacarac
+- "" deny les meta sauf $
