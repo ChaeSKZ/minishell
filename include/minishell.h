@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/31 11:09:30 by jquil            ###   ########.fr       */
+/*   Updated: 2023/08/31 17:26:13 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_shell
 
 char	**ft_split(char const *s, char c);
 char	**token_it(char *str);
-char	*ft_strdup(const char *s);
+char	*ft_strdup(char *s);
 void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);
 int		ft_envstrcmp(char *s1, char *s2);

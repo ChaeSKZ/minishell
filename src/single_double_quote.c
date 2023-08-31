@@ -1,39 +1,73 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_&_double_quote.c                            :+:      :+:    :+:   */
+/*   single_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/08/31 11:01:37 by jquil            ###   ########.fr       */
+/*   Updated: 2023/08/31 14:45:56 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+int	ft_single_or_double(char *arg )
+{
+	int	x;
+
+	x = -1;
+	while (++x < ft_strlen(arg))
+	{
+		if (arg[x] == 39)
+		{
+			while (++x < ft_strlen(arg))
+				if (arg[x] == 39)
+					return (1);
+		}
+		else if (arg[x] == 34)
+		{
+			while (++x < ft_strlen(arg))
+				if (arg[x] == 34)
+					return (2);
+		}
+	}
+	return (0);
+}
+
 char	*ft_split_quote(t_shell *shell, char *arg)
 {
 	int	x;
 	int	nb;
+	int	type;
 
 	x = -1;
 	nb = 0;
-	while (++x < ft_strlen(arg))
+	type = ft_single_or_double(arg);
+	if (type == 0)
+		return (NULL);
+	else if (type == 1)
 	{
-		if (arg[x] == 39)
-			++nb;
+		while (++x < ft_strlen(arg))
+		{
+			if (arg[x] == 39)
+				++nb;
+		}
+		if (nb == 2)
+			shell->meta = -1;
 	}
-	if (nb == 2)
-		shell->meta = -1;
-	x = -1;
-	nb = 0;
-	while (++x < ft_strlen(arg))
+	else
 	{
-		else if (arg[x] == 34)
-			++nb;
+		x = -1;
+		nb = 0;
+		while (++x < ft_strlen(arg))
+		{
+			if (arg[x] == 34)
+				++nb;
+		}
+		if (nb == 2)
+			shell->meta = 0;
 	}
-	if (nb == 2)
-		shell->meta = 0;
+	return (arg);
 	// si nb != 2 -> quote = char
 }

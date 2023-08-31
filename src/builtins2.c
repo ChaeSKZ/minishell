@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/29 16:24:08 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:46:53 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,70 @@ void	ft_env(t_shell *shell, char *arg)
 
 void	ft_echo(t_shell *shell, char *arg)
 {
-	(void)arg;
+	int	x;
+	char *arg2;
+
 	(void)shell;
+	x = 2;
+	if (arg[0] == '-' && arg[1] == 'n')
+	{
+		//printf("len = %i\narg =%s", ft_strlen(arg), arg);
+		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
+		while (++x < ft_strlen(arg))
+		{
+			arg2[x - 3] = arg[x];
+		}
+		if (shell->meta == 2)
+			printf("%s", arg2);
+		else
+		{
+			x = -1;
+			while (++x < ft_strlen(arg2))
+			{
+				printf("x = %i\tlen = %i\n", x, ft_strlen(arg2));
+				if (arg2[x] == 92 && arg2[x + 1] == 110)
+				{
+					arg2[x] = 'n';
+					x = x + 1;
+				}
+			}
+			printf("%s", arg2);
+		}
+	}
 	return ;
 }
+/*
+echo -n "test"
+test			-> " a virer mais sinon OK
+
+echo -n "test\n"
+test\n			-> " a virer mais sinon OK nan enft desfois c'est ok desfois y'a dla merde
+
+echo -n test\n
+testn			->
+
+echo -n test | cat -e
+test
+
+echo -n "test" | cat -e
+test
+
+echo -n "test\n" | cat -e
+test\n
+
+echo -n test\n | cat -e
+testn
+*/
+
+/*
+	bool    bs;
+
+	(void)shell;
+    bs = 1;
+    if ((arg[0] == '-') && (arg[1] == 'n'))
+        bs = 0;
+    if (bs == 0)
+        printf("%s", arg);
+    else
+        printf("%s\n", arg);
+*/
