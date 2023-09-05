@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/31 17:26:13 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/05 14:16:55 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,17 @@ typedef struct s_shell
 	char	**builtins;
 	char	*line;
 	char	**env;
-	int		meta;
 	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
 	void	(*f_ptr[7])(struct s_shell *, char *);
 }		t_shell;
+
+typedef struct s_arg
+{
+	char	**arg;
+	int		meta;
+}
 
 //-------- Utils --------
 
