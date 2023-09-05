@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 11:44:16 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/05 15:39:03 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,13 @@ void	ft_echo(t_shell *shell, char *arg)
 			arg2[x - 3] = arg[x];
 		}
 		arg2[x - 3] = '\0';
-		if (shell->meta == 2 || shell->meta == 1)
+		if (shell->meta[0] == 2 || shell->meta[0] == 1)
 			printf("%s", arg2);
 		else
 		{
 			x = -1;
 			while (++x < ft_strlen(arg2))
 			{
-				printf("x = %i\tlen = %i\n", x, ft_strlen(arg2));
 				if ((arg2[x] == 92 && arg2[x + 1] == 110) && ((x + 1) == ft_strlen(arg2) - 1))
 				{
 					arg2[x] = 'n';

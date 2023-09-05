@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/28 16:58:10 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:34:58 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void	ft_export(t_shell *shell, char *arg)
 	char	**args;
 	int		i;
 
-	args = ft_split(arg, ' ');
+	ft_split(shell, arg);
+	args = shell->line_split;
 	i = 0;
 	while (args[i])
 	{

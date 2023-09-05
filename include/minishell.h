@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 14:16:55 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/05 15:33:46 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,18 @@ typedef struct s_shell
 {
 	char	**builtins;
 	char	*line;
+	char	**line_split;
 	char	**env;
+	int		*meta;
 	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
 	void	(*f_ptr[7])(struct s_shell *, char *);
 }		t_shell;
 
-typedef struct s_arg
-{
-	char	**arg;
-	int		meta;
-}
-
 //-------- Utils --------
 
-char	**ft_split(char const *s, char c);
+void	ft_split(t_shell *shell, char *arg);
 char	**token_it(char *str);
 char	*ft_strdup(char *s);
 void	power_free(char **tab);
@@ -53,6 +49,7 @@ char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 char	*get_home_path(char **env);
 int		ft_strlen(char *str);
+char	*ft_split_quote(t_shell *shell, char *arg);
 
 //------- Builtins ------
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/29 16:36:52 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:06:57 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	init_shell(t_shell *shell, char **env)
 	}
 	shell->env = env;
 	getcwd(shell->ex_path, sizeof(shell->ex_path));
-	shell->meta = 1;
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
 	shell->builtins[2] = ft_strdup("pwd");
@@ -104,7 +103,8 @@ int	main(int ac, char **av, char **env)
 			shell.pid = fork();
 			if (shell.pid == 0)
 			{
-				execve(get_cmd(shell.line), ft_split(shell.line, ' '),
+				ft_split(&shell, shell.line);
+				execve(get_cmd(shell.line), &shell.line,
 					shell.env);
 				perror("execve");
 			}

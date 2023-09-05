@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:51:47 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 13:42:18 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/05 15:58:38 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,21 @@ static int	a_tab(char const *s, char c)
 	return (j);
 }
 
-char	**ft_split(char const *s, char c)
+void	ft_split(t_shell *shell, char *arg)
 {
 	char	**tab;
 	int		size;
+	char	c;
 
-	if (s == NULL)
-		return (NULL);
-	size = a_tab(s, c);
+	c = ' ';
+	if (shell->line == NULL)
+		return ;
+	size = a_tab(shell->line, c);
 	tab = malloc(sizeof(char *) * (size + 1));
 	if (tab == NULL)
-		return (NULL);
-	return (split_it(s, c, tab, size));
+		return ;
+	split_it(shell->line, c, tab, size);
+	ft_split_quote(shell, arg);
+	return ;
 }
 // var split -> arg & meta
