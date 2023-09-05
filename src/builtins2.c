@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/31 17:46:53 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/05 11:44:16 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ void	ft_echo(t_shell *shell, char *arg)
 	x = 2;
 	if (arg[0] == '-' && arg[1] == 'n')
 	{
-		//printf("len = %i\narg =%s", ft_strlen(arg), arg);
-		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
+		arg2 = malloc ((ft_strlen(arg) - 3) * sizeof (char));
 		while (++x < ft_strlen(arg))
 		{
 			arg2[x - 3] = arg[x];
 		}
-		if (shell->meta == 2)
+		arg2[x - 3] = '\0';
+		if (shell->meta == 2 || shell->meta == 1)
 			printf("%s", arg2);
 		else
 		{
@@ -84,6 +84,11 @@ void	ft_echo(t_shell *shell, char *arg)
 			while (++x < ft_strlen(arg2))
 			{
 				printf("x = %i\tlen = %i\n", x, ft_strlen(arg2));
+				if ((arg2[x] == 92 && arg2[x + 1] == 110) && ((x + 1) == ft_strlen(arg2) - 1))
+				{
+					arg2[x] = 'n';
+					arg2[x + 1] = '\0';
+				}
 				if (arg2[x] == 92 && arg2[x + 1] == 110)
 				{
 					arg2[x] = 'n';
