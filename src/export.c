@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 15:34:58 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/06 17:01:04 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_export(t_shell *shell, char *arg)
 	char	**args;
 	int		i;
 
-	ft_split(shell, arg);
+	args = ft_split(arg, ' ');
 	args = shell->line_split;
 	i = 0;
 	while (args[i])

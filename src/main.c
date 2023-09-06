@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 15:06:57 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/06 16:58:17 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,8 @@ int	main(int ac, char **av, char **env)
 			shell.pid = fork();
 			if (shell.pid == 0)
 			{
-				ft_split(&shell, shell.line);
-				execve(get_cmd(shell.line), &shell.line,
-					shell.env);
+				execve(get_cmd(shell.line), ft_split(shell.line, ' '),
+				shell.env);
 				perror("execve");
 			}
 			else if (shell.pid > 0)
