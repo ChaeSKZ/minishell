@@ -6,7 +6,7 @@
 #    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/09/06 17:12:57 by jugingas         ###   ########.fr        #
+#    Updated: 2023/09/06 18:21:18 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC		=		src/main.c					\
 				src/export.c				\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
+				src/pipe.c
 
 NAME		=	minishell
 OBJS		=    $(SRC:.c=.o)

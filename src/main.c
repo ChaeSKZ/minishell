@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 18:15:13 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:29:55 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	main(int ac, char **av, char **env)
 		shell.line = readline("$>");
 		add_history(shell.line);
 		shell.tokens = token_it(shell.line);
-		while (shell.builtins[++i])
+		ft_pipe(&shell, shell.tokens);
+		/*while (shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
@@ -113,7 +114,7 @@ int	main(int ac, char **av, char **env)
 				wait(NULL);
 			else
 				perror("fork");
-		}
+		}*/
 	}
 	return (0);
 }
