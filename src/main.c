@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 16:58:17 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/06 18:15:13 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	init_shell(t_shell *shell, char **env)
 {
@@ -26,6 +26,7 @@ void	init_shell(t_shell *shell, char **env)
 		exit(1);
 	}
 	shell->env = env;
+	//check_env(shell->env);
 	getcwd(shell->ex_path, sizeof(shell->ex_path));
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
@@ -89,7 +90,8 @@ int	main(int ac, char **av, char **env)
 		printf("\033[0m");
 		printf("~> ");*/
 		shell.line = readline("$>");
-		//token_it(shell.line);
+		add_history(shell.line);
+		shell.tokens = token_it(shell.line);
 		while (shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
