@@ -6,11 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:51:47 by jugingas          #+#    #+#             */
-/*   Updated: 2023/07/18 13:00:00 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:13:17 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static char	**spower_free(char **tab, int line)
 {

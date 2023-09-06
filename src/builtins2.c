@@ -6,11 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/29 16:24:08 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:13:01 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	ft_pwd(t_shell *shell, char *arg)
 {

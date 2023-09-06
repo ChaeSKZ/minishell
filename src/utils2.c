@@ -6,11 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/29 16:36:39 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/06 18:01:29 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	ft_envstrcmp(char *s1, char *s2)
 {
@@ -76,43 +76,93 @@ int	check_sep(char *str, char **sep)
 	while (sep[i])
 	{
 		if (mnsh_strcmp(sep[i], str) == 0)
-		{
-			printf("found : %s\n", sep[i]);
 			return (1);
-		}
 		i++;
 	}
 	return (0);
 }
 
-int	token_len(char *str, char **sep)
+char	**init_tok(char *str, char **sep, char **tokens)
 {
 	int	i;
+	int	size;
+	int	n;
 
 	i = 0;
-	while (str[i] && (check_sep(str + i, sep) && str[i - 1] == ' '))
-		i++;
-	printf("Token lenght is : %i\n", i);
-	return (i);
+	n = 0;
+	while (str[i])
+	{
+		size = 0;
+		if (n % 2 == 0)
+		{
+			while (str[i + size])
+			{
+				size++;
+				if (str[i + size - 1] == ' ' && check_sep(str + i + size, sep))
+					break ;
+			}
+			i += size;
+		}
+		else
+		{
+			while (str[i + size] != ' ' && str[i + size])
+				size++;
+			i += size;
+		}
+		tokens[n] = malloc(sizeof(char) * (size + 1));
+		n++;
+	}
+	return (tokens);
+}
+
+char	**copy_tok(char *str, char **sep, char **tokens)
+{
+	int	n;
+	int	i;
+	int	j;
+
+	n = 0;
+	i = 0;
+	while (str[i])
+	{
+		j = -1;
+		if (n % 2 == 0)
+		{
+			while (str[i])
+			{
+				tokens[n][++j] = str[i];
+				i++;
+				if (str[i] == ' ' && check_sep(str + i + 1, sep))
+				{
+					i++;
+					break ;
+				}
+			}
+		}
+		else
+		{
+			while (str[i] && str[i] != ' ')
+			{
+				tokens[n][++j] = str[i];
+				i++;
+			}
+			i++;
+		}
+		n++;
+	}
+	tokens[n] = NULL;
+	return (tokens);
 }
 
 char	**token_it2(char *str, int count, char **sep)
 {
 	char	**tokens;
-	int		i;
-	int		n;
 
 	tokens = malloc(sizeof(char *) * (count + 1));
 	if (!tokens)
 		perror("malloc");
-	n = 0;
-	i = 0;
-	while (str[i])
-	{
-		tokens[n] = malloc(sizeof(char) * (token_len(str + i, sep) + 1));
-		if (!tokens[n])
-			perror("malloc");
-	}
+	tokens = init_tok(str, sep, tokens);
+	tokens = copy_tok(str, sep, tokens);
 	return (tokens);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/31 11:09:30 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/06 16:51:29 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_shell
 {
 	char	**builtins;
 	char	*line;
+	char	**tokens;
 	char	**env;
 	int		meta;
 	char	*envp[1];
@@ -47,7 +48,7 @@ char	*get_args(char *line);
 char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 char	*get_home_path(char **env);
-int		ft_strlen(char *str);
+int		ft_strlen(const char *str);
 
 //------- Builtins ------
 

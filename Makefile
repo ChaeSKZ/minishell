@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jquil <jquil@student.42.fr>                +#+  +:+       +#+         #
+#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/08/31 11:08:40 by jquil            ###   ########.fr        #
+#    Updated: 2023/09/06 17:12:57 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME		=	minishell
 OBJS		=    $(SRC:.c=.o)
 LIBS		=    -lreadline
 CC			=    cc
-FLAGS		=    -g3 -Werror -Wextra -Wall
+FLAGS		=    -g3 -Werror -Wextra -Wall -I include
 
 #------------------------------------------------------------------
 

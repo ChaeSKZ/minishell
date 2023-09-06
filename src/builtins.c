@@ -6,11 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/08/29 15:49:57 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:13:05 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	ft_exit(t_shell *shell, char *arg)
 {
@@ -19,16 +19,6 @@ void	ft_exit(t_shell *shell, char *arg)
 	free(shell->line);
 	printf("exit\n");
 	exit(0);
-}
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	i++;
-	return (i);
 }
 
 char	*check_path(char *path)
