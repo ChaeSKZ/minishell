@@ -6,11 +6,11 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:38:51 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 12:18:02 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 15:54:07 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	power_free(char **tab)
 {
@@ -61,7 +61,7 @@ char	*get_cmd(char *line)
 	i = 0;
 	while (line[i] && line[i] != ' ')
 		i++;
-	cmd = malloc(sizeof(char) * i + 5);
+	cmd = malloc(sizeof(char) * (i + 6));
 	cmd[0] = '/';
 	cmd[1] = 'b';
 	cmd[2] = 'i';

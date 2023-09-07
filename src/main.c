@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:28:44 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:35:30 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int	main(int ac, char **av, char **env)
 		if (shell.line == NULL)
 			ft_exit(&shell, get_args(shell.line));
 		add_history(shell.line);
-		shell.tokens = token_it(shell.line);
+		shell.tokens = token_it(&shell, shell.line);
+		//ft_pipe(&shell, shell.tokens);
 		//ft_split_quote(&shell, get_args(shell.line));
 		while (shell.builtins[++i])
 		{
@@ -120,6 +121,8 @@ int	main(int ac, char **av, char **env)
 					perror("fork");
 			}
 		}
+		power_free(shell.tokens);
+		free(shell.meta);
 	}
 	return (0);
 }

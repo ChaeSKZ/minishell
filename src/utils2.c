@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 18:01:29 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:24:50 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	ft_envstrcmp(char *s1, char *s2)
 {
@@ -148,6 +148,7 @@ char	**copy_tok(char *str, char **sep, char **tokens)
 			}
 			i++;
 		}
+		tokens[n][j] = '\0';
 		n++;
 	}
 	tokens[n] = NULL;
@@ -159,14 +160,16 @@ char	**token_it2(char *str, int count, char **sep)
 	char	**tokens;
 
 	tokens = malloc(sizeof(char *) * (count + 1));
+
 	if (!tokens)
 		perror("malloc");
 	tokens = init_tok(str, sep, tokens);
 	tokens = copy_tok(str, sep, tokens);
+	power_free(sep);
 	return (tokens);
 }
 
-char	**token_it(char *str)
+char	**token_it(t_shell *shell, char *str)
 {
 	char	**sep;
 	int		i;
@@ -185,5 +188,9 @@ char	**token_it(char *str)
 			i++;
 		i++;
 	}
+	shell->meta = malloc ((count) * sizeof(int));
+	i = -1;
+	while (++i < count)
+		shell->meta[i] = 0;
 	return (token_it2(str, count, sep));
 }

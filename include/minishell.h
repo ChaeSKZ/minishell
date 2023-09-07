@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 15:50:07 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:34:34 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_shell
 //-------- Utils --------
 
 char	**ft_split(char const *s, char c);
-char	**token_it(char *str);
+char	**token_it(t_shell *shell, char *str);
 char	*ft_strdup(const char *s);
 void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);
