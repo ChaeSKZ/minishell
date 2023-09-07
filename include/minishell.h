@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 12:20:35 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 15:50:07 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@
 # include <string.h>
 
 # define MAX_PATH_SIZE 1024
+
+typedef struct s_pp
+{
+	int	pid;
+	int	*pidtab;
+	int	cmd_nb;
+	int	pipe_nb;
+	int	cmd1_pid;
+	int	cmd2_pid;
+	int	*pipe;
+	int	idx;
+}		t_pp;
+
 
 typedef struct s_shell
 {
