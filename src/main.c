@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 16:58:17 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 11:57:42 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_shell(t_shell *shell, char **env)
 		perror("malloc");
 		exit(1);
 	}
+	init_signals();
 	shell->env = env;
 	getcwd(shell->ex_path, sizeof(shell->ex_path));
 	shell->builtins[0] = ft_strdup("echo");
@@ -89,7 +90,11 @@ int	main(int ac, char **av, char **env)
 		printf("\033[0m");
 		printf("~> ");*/
 		shell.line = readline("$>");
-		//token_it(shell.line);
+		if (shell.line == NULL)
+			ft_exit(&shell, get_args(shell.line));
+		add_history(shell.line);
+		token_it(shell.line);
+		ft_split_quote(&shell, get_args(shell.line));
 		while (shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)

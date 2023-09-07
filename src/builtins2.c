@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/05 15:39:03 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 11:55:07 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,10 @@ void	ft_env(t_shell *shell, char *arg)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	(void)arg;
-	while (shell->env[i])
-	{
+	while (shell->env[++i])
 		printf("%s\n", shell->env[i]);
-		i++;
-	}
 	return ;
 }
 

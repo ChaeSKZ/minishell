@@ -6,7 +6,7 @@
 #    By: jquil <jquil@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/08/31 11:08:40 by jquil            ###   ########.fr        #
+#    Updated: 2023/09/06 18:43:16 by jquil            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,13 @@ SRC		=		src/main.c					\
 				src/export.c				\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
+				src/signals.c				\
 
 NAME		=	minishell
-OBJS		=    $(SRC:.c=.o)
-LIBS		=    -lreadline
-CC			=    cc
-FLAGS		=    -g3 -Werror -Wextra -Wall
+OBJS		=	$(SRC:.c=.o)
+LIBS		=	-lreadline
+CC			=	cc
+FLAGS		=	-g3 -Werror -Wextra -Wall
 
 #------------------------------------------------------------------
 
