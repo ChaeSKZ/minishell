@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/07 11:10:06 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 12:11:58 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	init_signals(void)
 	sigemptyset(&sb.sa_mask);
 	sb.sa_flags = 0;
 	sigaction(SIGINT, &sb, 0);
-	sigaction(SIGQUIT, &sb, 0);
+	signal(SIGQUIT, SIG_IGN);
 }
 //$HOME
