@@ -6,7 +6,7 @@
 #    By: jquil <jquil@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/09/07 12:18:09 by jquil            ###   ########.fr        #
+#    Updated: 2023/09/07 12:19:35 by jquil            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC		=		src/main.c					\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
 				src/signals.c				\
+				src/pipe.c
 
 NAME		=	minishell
 OBJS		=	$(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 12:17:57 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 12:20:35 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_shell
 
 char	**ft_split(char const *s, char c);
 char	**token_it(char *str);
-char	*ft_strdup(char *s);
+char	*ft_strdup(const char *s);
 void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);
 int		ft_envstrcmp(char *s1, char *s2);
@@ -48,9 +48,10 @@ char	*get_args(char *line);
 char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 char	*get_home_path(char **env);
-int		ft_strlen(char *str);
+int		ft_strlen(const char *str);
 char	*ft_split_quote(t_shell *shell, char *arg);
 void	init_signals(void);
+int		ft_pipe(t_shell *shell, char **token);
 
 //------- Builtins ------
 
