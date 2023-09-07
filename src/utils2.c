@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 14:24:52 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 16:24:50 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ char	**copy_tok(char *str, char **sep, char **tokens)
 			}
 			i++;
 		}
+		tokens[n][j] = '\0';
 		n++;
 	}
 	tokens[n] = NULL;
@@ -164,6 +165,7 @@ char	**token_it2(char *str, int count, char **sep)
 		perror("malloc");
 	tokens = init_tok(str, sep, tokens);
 	tokens = copy_tok(str, sep, tokens);
+	power_free(sep);
 	return (tokens);
 }
 
@@ -188,7 +190,7 @@ char	**token_it(t_shell *shell, char *str)
 	}
 	shell->meta = malloc ((count) * sizeof(int));
 	i = -1;
-	while (++i < count - 1)
+	while (++i < count)
 		shell->meta[i] = 0;
 	return (token_it2(str, count, sep));
 }

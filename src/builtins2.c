@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 14:09:45 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 16:28:13 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,31 +69,39 @@ void	ft_echo(t_shell *shell, char *arg)
 	{
 		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
 		while (++x < ft_strlen(arg))
-		{
 			arg2[x - 3] = arg[x];
-		}
 		arg2[x - 3] = '\0';
-		if (shell->meta[0] == 2 || shell->meta[0] == 1)
-			printf("%s", arg2);
-		else
-		{
-			x = -1;
-			while (++x < ft_strlen(arg2))
-			{
-				if ((arg2[x] == 92 && arg2[x + 1] == 110) && ((x + 1) == ft_strlen(arg2) - 1))
-				{
-					arg2[x] = 'n';
-					arg2[x + 1] = '\0';
-				}
-				if (arg2[x] == 92 && arg2[x + 1] == 110)
-				{
-					arg2[x] = 'n';
-					x = x + 1;
-				}
-			}
-			printf("%s", arg2);
-		}
 	}
+	else
+	{
+		arg2 = malloc ((ft_strlen(arg)) * sizeof (char));
+		//while (++x < ft_strlen(arg))
+			//arg2[x] = arg[x];
+		arg2 = arg;
+		//arg2[x] = '\0';
+	}
+	printf("oui\n");
+	if (shell->meta[0] == 2 || shell->meta[0] == 1)
+		printf("%s", arg2);
+	else
+	{
+		x = -1;
+		while (++x < ft_strlen(arg2))
+		{
+			if ((arg2[x] == 92 && arg2[x + 1] == 110) && ((x + 1) == ft_strlen(arg2) - 1))
+			{
+				arg2[x] = 'n';
+				arg2[x + 1] = '\0';
+			}
+			if (arg2[x] == 92 && arg2[x + 1] == 110)
+			{
+				arg2[x] = 'n';
+				x = x + 1;
+			}
+		}
+		printf("%s", arg2);
+	}
+	free(arg2);
 	return ;
 }
 /*

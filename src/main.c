@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 14:26:49 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 16:01:59 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(int ac, char **av, char **env)
 		add_history(shell.line);
 		shell.tokens = token_it(&shell, shell.line);
 		//ft_pipe(&shell, shell.tokens);
-		ft_split_quote(&shell, get_args(shell.line));
+		//ft_split_quote(&shell, get_args(shell.line));
 		while (shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
@@ -118,6 +118,8 @@ int	main(int ac, char **av, char **env)
 			else
 				perror("fork");
 		}
+		power_free(shell.tokens);
+		free(shell.meta);
 	}
 	return (0);
 }
