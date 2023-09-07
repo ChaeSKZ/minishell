@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 18:42:10 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 12:17:57 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_shell
 {
 	char	**builtins;
 	char	*line;
-	char	**line_split;
+	char	**tokens;
 	char	**env;
 	int		*meta;
 	char	*envp[1];
