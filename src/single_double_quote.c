@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/06 18:15:03 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:07:22 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*ft_split_quote(t_shell *shell, char *arg)
 		{
 			if (arg[x] == 39)
 			{
-				while (x < ft_strlen(arg))
+				while (x <= ft_strlen(arg))
 				{
 					arg[x] = arg[x + 1];
 					++x;
@@ -80,11 +80,12 @@ char	*ft_split_quote(t_shell *shell, char *arg)
 		if (nb == 2)
 			shell->meta[0] = 2;
 		x = -1;
+		//printf("oui\n");
 		while (++x < ft_strlen(arg))
 		{
 			if (arg[x] == 34)
 			{
-				while (x < ft_strlen(arg))
+				while (x <= ft_strlen(arg))
 				{
 					arg[x] = arg[x + 1];
 					++x;

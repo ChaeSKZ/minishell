@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 11:55:07 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 14:09:45 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_echo(t_shell *shell, char *arg)
 	x = 2;
 	if (arg[0] == '-' && arg[1] == 'n')
 	{
-		arg2 = malloc ((ft_strlen(arg) - 3) * sizeof (char));
+		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
 		while (++x < ft_strlen(arg))
 		{
 			arg2[x - 3] = arg[x];
