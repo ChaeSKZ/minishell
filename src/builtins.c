@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 15:55:28 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 16:51:22 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	ft_exit(t_shell *shell, char *arg)
 {
 	(void)arg;
-	power_free(shell->builtins);
-	free(shell->line);
-	power_free(shell->tokens);
-	free(shell->meta);
+	if (shell->builtins)
+		power_free(shell->builtins);
+	if (shell->line)
+		free(shell->line);
 	printf("exit\n");
 	exit(0);
 }

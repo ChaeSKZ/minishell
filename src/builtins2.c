@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:28:13 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/12 13:51:51 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_echo(t_shell *shell, char *arg)
 
 	(void)shell;
 	x = 2;
+	arg = ft_split_quote(shell, arg);
 	if (arg[0] == '-' && arg[1] == 'n')
 	{
 		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
@@ -74,13 +75,12 @@ void	ft_echo(t_shell *shell, char *arg)
 	}
 	else
 	{
-		arg2 = malloc ((ft_strlen(arg)) * sizeof (char));
-		//while (++x < ft_strlen(arg))
-			//arg2[x] = arg[x];
-		arg2 = arg;
-		//arg2[x] = '\0';
+		x = -1;
+		arg2 = malloc ((ft_strlen(arg) + 1) * sizeof (char));
+		while (++x < ft_strlen(arg))
+			arg2[x] = arg[x];
+		arg2[x] = '\0';
 	}
-	printf("oui\n");
 	if (shell->meta[0] == 2 || shell->meta[0] == 1)
 		printf("%s", arg2);
 	else
@@ -106,16 +106,16 @@ void	ft_echo(t_shell *shell, char *arg)
 }
 /*
 echo -n "test"
-test			-> " a virer mais sinon OK
+test			-> ok
 
 echo -n "test\n"
-test\n			-> " a virer mais sinon OK nan enft desfois c'est ok desfois y'a dla merde
+test\n			-> ok
 
 echo -n test\n
-testn			->
+testn			-> ok
 
 echo -n test | cat -e
-test
+test			-> print cat -e
 
 echo -n "test" | cat -e
 test
@@ -127,15 +127,3 @@ echo -n test\n | cat -e
 testn
 */
 
-/*
-	bool    bs;
-
-	(void)shell;
-    bs = 1;
-    if ((arg[0] == '-') && (arg[1] == 'n'))
-        bs = 0;
-    if (bs == 0)
-        printf("%s", arg);
-    else
-        printf("%s\n", arg);
-*/

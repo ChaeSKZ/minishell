@@ -6,13 +6,13 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/07 14:07:22 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/12 16:32:59 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_single_or_double(char *arg )
+int	ft_single_or_double(char *arg)
 {
 	int	x;
 
@@ -37,62 +37,34 @@ int	ft_single_or_double(char *arg )
 
 char	*ft_split_quote(t_shell *shell, char *arg)
 {
-	int	x;
-	int	nb;
-	int	type;
+	int		x;
+	int		y;
+	char	*argtmp;
 
-	x = -1;
-	nb = 0;
-	type = ft_single_or_double(arg);
-	if (type == 0)
-		return (NULL);
-	else if (type == 1)
-	{
-		while (++x < ft_strlen(arg))
-		{
-			if (arg[x] == 39)
-				++nb;
-		}
-		if (nb == 2)
-			shell->meta[0] = 1;
-		x = -1;
-		while (++x < ft_strlen(arg))
-		{
-			if (arg[x] == 39)
-			{
-				while (x <= ft_strlen(arg))
-				{
-					arg[x] = arg[x + 1];
-					++x;
-				}
-			}
-		}
-	}
+	x = 0;
+	y = 0;
+	shell->meta[0] = ft_single_or_double(arg);
+	argtmp = malloc ((ft_strlen(arg)) * sizeof(char));
+	if (shell->meta == 0)
+		return (free(argtmp), arg);
 	else
 	{
-		x = -1;
-		nb = 0;
-		while (++x < ft_strlen(arg))
+		while (x < ft_strlen(arg))
 		{
-			if (arg[x] == 34)
-				++nb;
-		}
-		if (nb == 2)
-			shell->meta[0] = 2;
-		x = -1;
-		//printf("oui\n");
-		while (++x < ft_strlen(arg))
-		{
-			if (arg[x] == 34)
-			{
-				while (x <= ft_strlen(arg))
-				{
-					arg[x] = arg[x + 1];
-					++x;
-				}
-			}
+			if ((shell->meta[0] == 1 && arg[x] != 39)
+				|| (shell->meta[0] == 2 && arg[x] != 34))
+				argtmp[y++] = arg[x++];
+			else
+				++x;
 		}
 	}
+	argtmp[x - 2] = '\0';
+	x = -1;
+	while (argtmp[++x])
+		arg[x] = argtmp[x];
+	arg[x] = '\0';
+	free(argtmp);
+	if (ft_single_or_double(arg) != 0)
+		arg = ft_split_quote(shell, arg);
 	return (arg);
-	// si nb != 2 -> quote = char
 }

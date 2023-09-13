@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:01:59 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/12 16:08:30 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		i = -1;
-		/*printf("\033[1;32m");			// Pimped prompt
-		printf("%s", get_cwd());
-		printf("\033[0m");
-		printf("~> ");*/
+		// printf("\033[1;32m");			// Pimped prompt
+		// printf("%s", get_cwd());
+		// printf("\033[0m");
+		// printf("~> ");
 		shell.line = readline("$>");
 		if (shell.line == NULL)
 			ft_exit(&shell, get_args(shell.line));
@@ -110,7 +110,7 @@ int	main(int ac, char **av, char **env)
 			if (shell.pid == 0)
 			{
 				execve(get_cmd(shell.line), ft_split(shell.line, ' '),
-				shell.env);
+					shell.env);
 				perror("execve");
 			}
 			else if (shell.pid > 0)

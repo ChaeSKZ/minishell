@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/07 12:11:58 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/12 16:07:47 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	ft_signals(int sig)
 void	init_signals(void)
 {
 	struct sigaction	sb;
+
 	sb.sa_handler = (void *)ft_signals;
 	sigemptyset(&sb.sa_mask);
 	sb.sa_flags = 0;
