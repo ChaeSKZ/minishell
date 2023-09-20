@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/20 17:06:20 by jugingas         ###   ########.fr       */
+/*   Created: 2023/09/19 15:00:58 by jugingas          #+#    #+#             */
+/*   Updated: 2023/09/19 15:01:10 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
-int	ft_signals(int sig)
+int	ft_strncmp(char *s1, char *s2, int n)
 {
-	if (sig == 2)
-	{
-		printf("\n$>");
-		return (2);
-	}
-	else
-		printf("%i\n", sig);
-	return (0);
-}
+	int	i;
 
-void	init_signals(void)
-{
-	struct sigaction	sb;
-	
-	sb.sa_handler = (void *)ft_signals;
-	sigemptyset(&sb.sa_mask);
-	sb.sa_flags = 0;
-	sigaction(SIGINT, &sb, 0);
-	signal(SIGQUIT, SIG_IGN);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
+		i++;
+	return (s1[i] - s2[i]);
 }

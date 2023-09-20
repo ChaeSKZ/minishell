@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:24:50 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/07 16:42:14 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char	**copy_tok(char *str, char **sep, char **tokens)
 			}
 			i++;
 		}
-		tokens[n][j] = '\0';
+		tokens[n][++j] = '\0';
 		n++;
 	}
 	tokens[n] = NULL;

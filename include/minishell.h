@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:34:34 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/19 18:05:23 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <string.h>
@@ -54,6 +56,7 @@ typedef struct s_shell
 char	**ft_split(char const *s, char c);
 char	**token_it(t_shell *shell, char *str);
 char	*ft_strdup(const char *s);
+int		ft_strncmp(char *s1, char *s2, int n);
 void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);
 int		ft_envstrcmp(char *s1, char *s2);
@@ -64,7 +67,23 @@ char	*get_home_path(char **env);
 int		ft_strlen(const char *str);
 char	*ft_split_quote(t_shell *shell, char *arg);
 void	init_signals(void);
+
+
+//------ Redirects -----
+
+char	*get_heredoc(char *delimiter);
+int		simple_right(char *filename);
+int		double_right(char *filename);
+int		simple_left(char *filename);
+int		double_left(char *cmd, char *delimiter, char **env);
+
+//-------- Pipes -------
+
 int		ft_pipe(t_shell *shell, char **token);
+int		cmd_count(char **token);
+void	create_pipes(t_pp *pp);
+void	close_pipes(t_pp *pp);
+void	dup2_spe(int z, int f);
 
 //------- Builtins ------
 

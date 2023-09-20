@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 15:55:28 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/20 16:44:09 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 void	ft_exit(t_shell *shell, char *arg)
 {
 	(void)arg;
-	power_free(shell->builtins);
-	free(shell->line);
-	power_free(shell->tokens);
-	free(shell->meta);
+	if (shell->builtins)
+		power_free(shell->builtins);
+	if (shell->tokens)
+		power_free(shell->tokens);
+	if (shell->line)
+		free(shell->line);
+	if (shell->meta)
+		free(shell->meta);
 	printf("exit\n");
 	exit(0);
 }
@@ -43,7 +47,6 @@ char	*check_path(char *path)
 	while (path[++i])
 		new_path[i + 2] = path[i];
 	new_path[i + 2] = '\0';
-	//free(path); Readline leaks
 	return (new_path);
 }
 
@@ -71,8 +74,11 @@ void	ft_cd(t_shell *shell, char *path)
 	char	*temp;
 
 	temp = NULL;
-	if (!path || (path[0] == '~' && path[1] == '/' && !path[2]))
+	if (!path || (((path[0] == '~' && path[1] == '/')
+	|| (path[0] == '-' && path[1] == '-')) && !path[2]))
 		chdir(get_home_path(shell->env));
+	else if (path[0] == '/' && !path[1])
+		chdir("/");
 	else if (path[0] == '-' && !path[1])
 	{
 		temp = path_copy(temp, shell->ex_path);

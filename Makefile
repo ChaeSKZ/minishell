@@ -6,13 +6,14 @@
 #    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/09/07 12:23:51 by jugingas         ###   ########.fr        #
+#    Updated: 2023/09/19 18:02:53 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=		src/main.c					\
 				src/utils.c					\
 				src/utils2.c				\
+				src/utils3.c				\
 				src/builtins.c				\
 				src/builtins2.c				\
 				src/ft_split.c				\
@@ -20,7 +21,10 @@ SRC		=		src/main.c					\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
 				src/signals.c				\
-				src/pipe.c
+				src/pipe.c					\
+				src/pipe2.c					\
+				src/redirections.c			\
+				src/get_heredoc.c			\
 
 NAME		=	minishell
 OBJS		=	$(SRC:.c=.o)

@@ -6,61 +6,33 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:24:27 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:03:27 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cmd_count(char **token)
+void	child(t_pp *pp, char *cmd, char **env, char **next)
 {
 	int	i;
-
-	i = 0;
-	while (token[i] && (i == 0 || token[i - 1]))
-		i += 2;
-	return (i / 2);
-}
-
-void	create_pipes(t_pp *pp)
-{
-	int	i;
-
-	i = 0;
-	while (i < pp->cmd_nb - 1)
-	{
-		pipe(pp->pipe + 2 * i);
-		i++;
-	}
-}
-
-void	close_pipes(t_pp *pp)
-{
-	int	i;
-
-	i = 0;
-	while (i < pp->pipe_nb)
-	{
-		close(pp->pipe[i]);
-		i++;
-	}
-}
-
-void	dup2_spe(int z, int f)
-{
-	dup2(z, 0);
-	dup2(f, 1);
-}
-
-void	child(t_pp *pp, char *cmd, char **env)
-{
-	int	i;
+	int	fd;
 
 	pp->pid = fork();
+	fd = 0;
 	if (pp->pid == 0)
 	{
-		if (pp->idx < pp->cmd_nb - 1)
+		if (pp->idx == 0 && next[0][0] == '<')
+		{
+			fd = simple_left(next[1]);
+			dup2(fd, 0);
+			dup2(pp->pipe[1], 1);
+		}
+		else if (pp->idx < pp->cmd_nb - 1)
 			dup2_spe(pp->pipe[2 * pp->idx - 2], pp->pipe[2 * pp->idx + 1]);
+		else if (next[0] && next[0][0] == '>' && !next[0][1])
+			dup2_spe(pp->pipe[2 * pp->idx - 2], simple_right(next[1]));
+		else if (next[0] && next[0][0] == '>' && next[0][1] == '>')
+			dup2_spe(pp->pipe[2 * pp->idx - 2], double_right(next[1]));
 		else
 			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
 		close_pipes(pp);
@@ -87,13 +59,15 @@ void	init_pidtab(t_pp *pp)
 			pp->pidtab[i] = 0;
 }
 
-void	wait_childs(int *pidtab, int size)
+void	wait_childs(t_pp *pp)
 {
 	int	i;
 
 	i = -1;
-	while (++i < size)
-		waitpid(pidtab[i], NULL, 0);
+	while (++i < pp->pipe_nb)
+		waitpid(pp->pidtab[i], NULL, 0);
+	free(pp->pipe);
+	free(pp->pidtab);
 }
 
 int	ft_pipe(t_shell *shell, char **token)
@@ -102,7 +76,7 @@ int	ft_pipe(t_shell *shell, char **token)
 	int		i;
 
 	pp.cmd_nb = cmd_count(token);
-	if (pp.cmd_nb == 1)
+	if (pp.cmd_nb == 1 && !token[1])
 		return (0);
 	pp.pipe_nb = 2 * (pp.cmd_nb - 1);
 	pp.pipe = malloc(sizeof(int) * pp.pipe_nb);
@@ -114,12 +88,12 @@ int	ft_pipe(t_shell *shell, char **token)
 	i = 0;
 	while (++(pp.idx) < pp.cmd_nb)
 	{
-		child(&pp, token[i], shell->env);
+		child(&pp, token[i], shell->env, token + i + 1);
+		if (token[i + 1] && token[i + 1][0] == '<')
+			i += 2;
 		i += 2;
 	}
 	close_pipes(&pp);
-	wait_childs(pp.pidtab, pp.cmd_nb);
-	free(pp.pipe);
-	free(pp.pidtab);
+	wait_childs(&pp);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:35:30 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/20 17:06:42 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,8 @@ int	main(int ac, char **av, char **env)
 			ft_exit(&shell, get_args(shell.line));
 		add_history(shell.line);
 		shell.tokens = token_it(&shell, shell.line);
-		//ft_pipe(&shell, shell.tokens);
 		//ft_split_quote(&shell, get_args(shell.line));
-		while (shell.builtins[++i])
+		while (ft_strlen(shell.line) && shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
@@ -104,7 +103,7 @@ int	main(int ac, char **av, char **env)
 				break ;
 			}
 		}
-		if (i == 7)
+		if (ft_strlen(shell.line) && i == 7)
 		{
 			if (!ft_pipe(&shell, shell.tokens))
 			{
@@ -112,8 +111,9 @@ int	main(int ac, char **av, char **env)
 				if (shell.pid == 0)
 				{
 					execve(get_cmd(shell.line), ft_split(shell.line, ' '),
-					shell.env);
+						shell.env);
 					perror("execve");
+					exit(0);
 				}
 				else if (shell.pid > 0)
 					wait(NULL);
