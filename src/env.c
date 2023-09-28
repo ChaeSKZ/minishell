@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:56:13 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/28 16:24:02 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	*itoa(int nb)
 void	init_env(t_shell *shell, char **env)
 {
 	int	i;
-
+	
 	i = 0;
 	if (env[0])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:56:46 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/28 18:33:18 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	main(int ac, char **av, char **env)
 	shell.envp[0] = NULL;
 	(void)ac;
 	(void)av;
+	//display_usage(ac, av):
 	while (1)
 	{
 		i = -1;
@@ -106,7 +107,7 @@ int	main(int ac, char **av, char **env)
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					execve(get_cmd(shell.line), ft_split(shell.line, ' '),
+					execve(get_cmd(shell.tokens[0]), ft_split(shell.tokens[0], ' '),
 						shell.env);
 					perror("execve");
 					exit(0);
