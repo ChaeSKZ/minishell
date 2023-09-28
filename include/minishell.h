@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 14:12:32 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/22 15:19:39 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 char	*get_home_path(char **env);
 int		ft_strlen(const char *str);
-char	*ft_split_quote(t_shell *shell, char *arg);
+char	**ft_split_quote(char *arg);
 void	init_signals(void);
 int		ft_pipe(t_shell *shell, char **token);
 

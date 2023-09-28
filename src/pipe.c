@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   newpipe.c                                          :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 11:47:17 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:31:24 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	close_wait(int *pipe_fd, int cmd_pid1, int cmd_pid2)
 	waitpid(cmd_pid2, NULL, 0);
 }
 
-int		ft_pipe(t_shell *shell, char **token)
+int	ft_pipe(t_shell *shell, char **token)
 {
 	int		pipe_fd[2];
 	pid_t	cmd_pid1;

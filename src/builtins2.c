@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/12 13:51:51 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/27 14:32:26 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,141 @@ void	ft_env(t_shell *shell, char *arg)
 	return ;
 }
 
+int	ft_strcmp(char *str, char *env)
+{
+	int	x;
+
+	x = 0;
+	while (env[++x] != '=')
+		if (env[x] != str[x])
+			return (0);
+	return (1);
+}
+
+char	*ft_str_eg_cpy(char *env)
+{
+	int		x;
+	int		y;
+	char	*str;
+
+	x = -1;
+	y = -1;
+	while (env[++x] != '=')
+		;
+	str = malloc ((ft_strlen(str) - x) * sizeof(char));
+	x++;
+	while (env[x] != '\0')
+	{
+		str[y] = env[x];
+		y++;
+		x++;
+	}
+	str[y] = '\0';
+	return (str);
+}
+
+char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
+{
+	int	x;
+
+	x = -1;
+	while (shell->env[++x])
+		if (ft_strcmp(str, shell->env[x]) == 1)
+			return (free(str), str = ft_str_eg_cpy(shell->env[x]));
+	return (NULL);
+}
+
+void	ft_echo(t_shell *shell, char *arg)
+{
+	int		x;
+	int		y;
+	int		n;
+	char	**tab;
+
+	(void)shell;
+	tab = ft_split_quote(arg);
+	if (tab == NULL)
+		return ;
+	x = 0;
+	n = 0;
+	y = -1;
+	if (tab[x][0] == '-' && tab[x][1] == 'n')
+	{
+			x++;
+			n = 1;
+	}
+	while (tab[x])
+	{
+		if (tab[x][0] == '$')
+			tab[x] = ft_ryoiki_tenkai(shell, tab[x]);
+		printf("%s", tab[x]);
+		x++;
+	}
+	if (n != 1)
+		printf("\n");
+	return ;
+}
+
+/*
 void	ft_echo(t_shell *shell, char *arg)
 {
 	int	x;
+	int	y;
+	char	**tab;
 	char *arg2;
 
 	(void)shell;
-	x = 2;
-	arg = ft_split_quote(shell, arg);
+	tab = ft_split_quote(shell, arg);
+	if (tab == NULL)
+		return ;
 	if (arg[0] == '-' && arg[1] == 'n')
 	{
+		x = 1;
+		y = -1;
 		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
+		while (arg[x] == 'n')
+			x++;
 		while (++x < ft_strlen(arg))
-			arg2[x - 3] = arg[x];
-		arg2[x - 3] = '\0';
+			arg2[++y] = arg[x];
+		arg2[++y] = '\0';
+	}
+	else
+	{
+		x = -1;
+		arg2 = malloc ((ft_strlen(arg) + 1) * sizeof (char));
+		while (++x < ft_strlen(arg))
+			arg2[x] = arg[x];
+		arg2[x] = '\0';
+	}
+	if (arg[0] == '-' && arg[1] == 'n')
+		printf("%s", arg2);
+	else
+		printf("%s\n", arg2);
+	free(arg2);
+	return ;
+}
+*/
+
+/*void	ft_echo(t_shell *shell, char *arg)
+{
+	int	x;
+	int	y;
+	char *arg2;
+
+	(void)shell;
+	arg = ft_split_quote(shell, arg);
+	if (arg == NULL)
+		return ;
+	if (arg[0] == '-' && arg[1] == 'n')
+	{
+		x = 1;
+		y = -1;
+		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
+		while (arg[x] == 'n')
+			x++;
+		while (++x < ft_strlen(arg))
+			arg2[++y] = arg[x];
+		arg2[++y] = '\0';
 	}
 	else
 	{
@@ -103,27 +224,4 @@ void	ft_echo(t_shell *shell, char *arg)
 	}
 	free(arg2);
 	return ;
-}
-/*
-echo -n "test"
-test			-> ok
-
-echo -n "test\n"
-test\n			-> ok
-
-echo -n test\n
-testn			-> ok
-
-echo -n test | cat -e
-test			-> print cat -e
-
-echo -n "test" | cat -e
-test
-
-echo -n "test\n" | cat -e
-test\n
-
-echo -n test\n | cat -e
-testn
-*/
-
+}*/

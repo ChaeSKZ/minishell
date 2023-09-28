@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:24:50 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/27 14:33:30 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ char	**token_it2(char *str, int count, char **sep)
 	char	**tokens;
 
 	tokens = malloc(sizeof(char *) * (count + 1));
-
 	if (!tokens)
 		perror("malloc");
 	tokens = init_tok(str, sep, tokens);
