@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:56:46 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/28 14:16:10 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	main(int ac, char **av, char **env)
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
+				//shell.tab = ft_split_quote(shell.line);
 				shell.f_ptr[i](&shell, get_args(shell.line));
 				break ;
 			}

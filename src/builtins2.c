@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:55:46 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/28 17:47:20 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,6 @@ void	ft_env(t_shell *shell, char *arg)
 	return ;
 }
 
-int	ft_strcmp(char *str, char *env)
-{
-	int	x;
-
-	x = 0;
-	while (env[++x] != '=')
-		if (env[x] != str[x])
-			return (0);
-	return (1);
-}
-
 char	*ft_str_eg_cpy(char *env)
 {
 	int		x;
@@ -97,8 +86,10 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
 
 	x = -1;
 	while (shell->env[++x])
-		if (ft_strcmp(str, shell->env[x]) == 1)
+	{
+		if (ft_envstrcmp(str + 1, shell->env[x]) == 0)
 			return (free(str), str = ft_str_eg_cpy(shell->env[x]));
+	}
 	return (NULL);
 }
 
@@ -107,25 +98,23 @@ void	ft_echo(t_shell *shell, char *arg)
 	int		x;
 	int		y;
 	int		n;
-	char	**tab;
 
-	(void)shell;
-	tab = ft_split_quote(arg);
-	if (tab == NULL)
+	shell->tab = ft_split_quote(arg);
+	if (shell->tab == NULL)
 		return ;
 	x = 0;
 	n = 0;
 	y = -1;
-	if (tab[x][0] == '-' && tab[x][1] == 'n')
+	if (shell->tab[x][0] == '-' && shell->tab[x][1] == 'n')
 	{
 			x++;
 			n = 1;
 	}
-	while (tab[x])
+	while (shell->tab[x])
 	{
-		if (tab[x][0] == '$')
-			tab[x] = ft_ryoiki_tenkai(shell, tab[x]);
-		printf("%s", tab[x]);
+		if (shell->tab[x][0] == '$')
+			shell->tab[x] = ft_ryoiki_tenkai(shell, shell->tab[x]);
+		printf("tab[x] = %s\n", shell->tab[x]);
 		x++;
 	}
 	if (n != 1)
