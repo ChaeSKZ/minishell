@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/20 17:06:42 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/28 10:24:53 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_shell(t_shell *shell, char **env)
 		exit(1);
 	}
 	init_signals();
-	shell->env = env;
+	init_env(shell, env);
 	getcwd(shell->ex_path, sizeof(shell->ex_path));
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
@@ -85,16 +85,12 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		i = -1;
-		/*printf("\033[1;32m");			// Pimped prompt
-		printf("%s", get_cwd());
-		printf("\033[0m");
-		printf("~> ");*/
-		shell.line = readline("$> ");
+		shell.line = readline(GREEN "→ " CYAN "minishell" RESET
+				" [" GREEN "OK" RESET "] " BLUE "$> " RESET);
 		if (shell.line == NULL)
 			ft_exit(&shell, get_args(shell.line));
 		add_history(shell.line);
-		shell.tokens = token_it(&shell, shell.line);
-		//ft_split_quote(&shell, get_args(shell.line));
+		shell.tokens = epur_tab(token_it(&shell, shell.line));
 		while (ft_strlen(shell.line) && shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)

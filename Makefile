@@ -6,7 +6,7 @@
 #    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/09/19 18:02:53 by jugingas         ###   ########.fr        #
+#    Updated: 2023/09/28 10:20:12 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC		=		src/main.c					\
 				src/builtins2.c				\
 				src/ft_split.c				\
 				src/export.c				\
+				src/env.c					\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
 				src/signals.c				\

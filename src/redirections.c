@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:29:10 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/20 17:05:53 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:53:59 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	simple_right(char *filename)
 {
 	int	fd;
 
-	printf("redirecting to \"%s\"...\n", filename);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd == -1)
 		return (perror("open"), -1);
@@ -39,7 +38,10 @@ int	simple_left(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (perror("open"), 0);
+	{
+		perror("open");
+		exit(0);
+	}
 	return (fd);
 }
 

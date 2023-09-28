@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:51:47 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 16:59:46 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/27 11:28:44 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	**ft_split(char const *s, char c)
 	char	**tab;
 	int		size;
 
-
 	if (s == NULL)
 		return (NULL);
 	size = a_tab(s, c);
@@ -97,4 +96,3 @@ char	**ft_split(char const *s, char c)
 	split_it(s, c, tab, size);
 	return (tab);
 }
-// var split -> arg & meta

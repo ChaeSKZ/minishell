@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/06 18:40:59 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:28:09 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	ft_export(t_shell *shell, char *arg)
 	int		i;
 
 	args = ft_split(arg, ' ');
-	//args = shell->line_split;
 	i = 0;
 	while (args[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/19 18:03:27 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:31:00 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,19 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 
 	pp->pid = fork();
 	fd = 0;
+	(void)next;
 	if (pp->pid == 0)
 	{
-		if (pp->idx == 0 && next[0][0] == '<')
-		{
-			fd = simple_left(next[1]);
-			dup2(fd, 0);
-			dup2(pp->pipe[1], 1);
-		}
+		if (pp->idx == 0)
+			dup2_spe(STDIN_FILENO, pp->pipe[1]);
 		else if (pp->idx < pp->cmd_nb - 1)
 			dup2_spe(pp->pipe[2 * pp->idx - 2], pp->pipe[2 * pp->idx + 1]);
-		else if (next[0] && next[0][0] == '>' && !next[0][1])
-			dup2_spe(pp->pipe[2 * pp->idx - 2], simple_right(next[1]));
-		else if (next[0] && next[0][0] == '>' && next[0][1] == '>')
-			dup2_spe(pp->pipe[2 * pp->idx - 2], double_right(next[1]));
 		else
 			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
 		close_pipes(pp);
 		execve(get_cmd(cmd), ft_split(cmd, ' '), env);
+		perror("execve");
+		exit(0);
 	}
 	else
 	{
@@ -64,7 +59,9 @@ void	wait_childs(t_pp *pp)
 	int	i;
 
 	i = -1;
-	while (++i < pp->pipe_nb)
+	if (!pp->pipe_nb)
+		wait(NULL);
+	while (++i < pp->pipe_nb - 1)
 		waitpid(pp->pidtab[i], NULL, 0);
 	free(pp->pipe);
 	free(pp->pidtab);

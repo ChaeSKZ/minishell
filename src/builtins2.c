@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/07 16:28:13 by jquil            ###   ########.fr       */
+/*   Updated: 2023/09/27 11:29:46 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	ft_env(t_shell *shell, char *arg)
 
 void	ft_echo(t_shell *shell, char *arg)
 {
-	int	x;
-	char *arg2;
+	int		x;
+	char	*arg2;
 
 	(void)shell;
 	x = 2;
@@ -75,10 +75,7 @@ void	ft_echo(t_shell *shell, char *arg)
 	else
 	{
 		arg2 = malloc ((ft_strlen(arg)) * sizeof (char));
-		//while (++x < ft_strlen(arg))
-			//arg2[x] = arg[x];
 		arg2 = arg;
-		//arg2[x] = '\0';
 	}
 	printf("oui\n");
 	if (shell->meta[0] == 2 || shell->meta[0] == 1)

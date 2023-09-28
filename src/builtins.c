@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/20 16:44:09 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:30:18 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_cd(t_shell *shell, char *path)
 
 	temp = NULL;
 	if (!path || (((path[0] == '~' && path[1] == '/')
-	|| (path[0] == '-' && path[1] == '-')) && !path[2]))
+				|| (path[0] == '-' && path[1] == '-')) && !path[2]))
 		chdir(get_home_path(shell->env));
 	else if (path[0] == '/' && !path[1])
 		chdir("/");
