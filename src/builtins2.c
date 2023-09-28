@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/27 11:29:46 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:55:46 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,81 +58,77 @@ void	ft_env(t_shell *shell, char *arg)
 	return ;
 }
 
+int	ft_strcmp(char *str, char *env)
+{
+	int	x;
+
+	x = 0;
+	while (env[++x] != '=')
+		if (env[x] != str[x])
+			return (0);
+	return (1);
+}
+
+char	*ft_str_eg_cpy(char *env)
+{
+	int		x;
+	int		y;
+	char	*str;
+
+	x = -1;
+	y = -1;
+	while (env[++x] != '=')
+		;
+	str = malloc ((ft_strlen(str) - x) * sizeof(char));
+	x++;
+	while (env[x] != '\0')
+	{
+		str[y] = env[x];
+		y++;
+		x++;
+	}
+	str[y] = '\0';
+	return (str);
+}
+
+char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
+{
+	int	x;
+
+	x = -1;
+	while (shell->env[++x])
+		if (ft_strcmp(str, shell->env[x]) == 1)
+			return (free(str), str = ft_str_eg_cpy(shell->env[x]));
+	return (NULL);
+}
+
 void	ft_echo(t_shell *shell, char *arg)
 {
 	int		x;
-	char	*arg2;
+	int		y;
+	int		n;
+	char	**tab;
 
 	(void)shell;
-	x = 2;
-	if (arg[0] == '-' && arg[1] == 'n')
+	tab = ft_split_quote(arg);
+	if (tab == NULL)
+		return ;
+	x = 0;
+	n = 0;
+	y = -1;
+	if (tab[x][0] == '-' && tab[x][1] == 'n')
 	{
-		arg2 = malloc ((ft_strlen(arg) - 2) * sizeof (char));
-		while (++x < ft_strlen(arg))
-			arg2[x - 3] = arg[x];
-		arg2[x - 3] = '\0';
+			x++;
+			n = 1;
 	}
-	else
+	while (tab[x])
 	{
-		arg2 = malloc ((ft_strlen(arg)) * sizeof (char));
-		arg2 = arg;
+		if (tab[x][0] == '$')
+			tab[x] = ft_ryoiki_tenkai(shell, tab[x]);
+		printf("%s", tab[x]);
+		x++;
 	}
-	printf("oui\n");
-	if (shell->meta[0] == 2 || shell->meta[0] == 1)
-		printf("%s", arg2);
-	else
-	{
-		x = -1;
-		while (++x < ft_strlen(arg2))
-		{
-			if ((arg2[x] == 92 && arg2[x + 1] == 110) && ((x + 1) == ft_strlen(arg2) - 1))
-			{
-				arg2[x] = 'n';
-				arg2[x + 1] = '\0';
-			}
-			if (arg2[x] == 92 && arg2[x + 1] == 110)
-			{
-				arg2[x] = 'n';
-				x = x + 1;
-			}
-		}
-		printf("%s", arg2);
-	}
-	free(arg2);
+	if (n != 1)
+		printf("\n");
 	return ;
 }
-/*
-echo -n "test"
-test			-> " a virer mais sinon OK
-
-echo -n "test\n"
-test\n			-> " a virer mais sinon OK nan enft desfois c'est ok desfois y'a dla merde
-
-echo -n test\n
-testn			->
-
-echo -n test | cat -e
-test
-
-echo -n "test" | cat -e
-test
-
-echo -n "test\n" | cat -e
-test\n
-
-echo -n test\n | cat -e
-testn
-*/
-
-/*
-	bool    bs;
-
-	(void)shell;
-    bs = 1;
-    if ((arg[0] == '-') && (arg[1] == 'n'))
-        bs = 0;
-    if (bs == 0)
-        printf("%s", arg);
-    else
-        printf("%s\n", arg);
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 10:41:51 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:43 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_args(char *line);
 char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 int		ft_strlen(const char *str);
-char	*ft_split_quote(t_shell *shell, char *arg);
+char	**ft_split_quote(char *arg);
 void	init_signals(void);
 
 

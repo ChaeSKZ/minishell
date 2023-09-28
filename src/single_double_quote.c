@@ -3,94 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/09/27 11:31:36 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:57:44 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_single_or_double(char *arg )
-{
-	int	x;
-
-	x = -1;
-	while (++x < ft_strlen(arg))
-	{
-		if (arg[x] == 39)
-		{
-			while (++x < ft_strlen(arg))
-				if (arg[x] == 39)
-					return (1);
-		}
-		else if (arg[x] == 34)
-		{
-			while (++x < ft_strlen(arg))
-				if (arg[x] == 34)
-					return (2);
-		}
-	}
-	return (0);
-}
-
-char	*ft_split_quote(t_shell *shell, char *arg)
+int	count_word(char *arg)
 {
 	int	x;
 	int	nb;
-	int	type;
 
 	x = -1;
-	nb = 0;
-	type = ft_single_or_double(arg);
-	if (type == 0)
-		return (NULL);
-	else if (type == 1)
+	nb = -1;
+	while (arg[++x])
 	{
-		while (++x < ft_strlen(arg))
+		if (arg[x] == 34)
 		{
-			if (arg[x] == 39)
-				++nb;
+			while (arg[x] != 34)
+				x++;
+			nb++;
 		}
-		if (nb == 2)
-			shell->meta[0] = 1;
-		x = -1;
-		while (++x < ft_strlen(arg))
+		else if (arg[x] == 39)
 		{
-			if (arg[x] == 39)
-			{
-				while (x <= ft_strlen(arg))
-				{
-					arg[x] = arg[x + 1];
-					++x;
-				}
-			}
+			while (arg[x] != 39)
+				x++;
+			nb++;
 		}
+		else if (arg[x] == 32)
+			nb++;
 	}
-	else
+	return (nb);
+}
+
+char	**ft_split_quote(char *arg)
+{
+	char	**tab;
+	int		x;
+	int		y;
+	int		z;
+	int		flag;
+
+	x = 0;
+	y = 0;
+	z = 0;
+	flag = 0;
+	tab = malloc(count_word(arg) * sizeof (char *));
+	while (arg[z] && x < count_word(arg))
 	{
-		x = -1;
-		nb = 0;
-		while (++x < ft_strlen(arg))
+		while (arg[z] == 39 || arg[z] == 34 || arg[z] == 32)
+			z++;
+		flag = z;
+		while (arg[z] != 39 && arg[z] != 34 && arg[z] != 32)
+			z++;
+		tab[x] = malloc (((z - flag) + 1) * sizeof(char));
+		while (flag < z)
 		{
-			if (arg[x] == 34)
-				++nb;
+			tab[x][y] = arg[flag];
+			y++;
+			flag++;
 		}
-		if (nb == 2)
-			shell->meta[0] = 2;
-		x = -1;
-		while (++x < ft_strlen(arg))
-		{
-			if (arg[x] == 34)
-			{
-				while (x <= ft_strlen(arg))
-				{
-					arg[x] = arg[x + 1];
-					++x;
-				}
-			}
-		}
+		while (arg[z] == 39 || arg[z] == 34 || arg[z] == 32)
+			z++;
+		tab[x][y] = '\0';
+		y = 0;
+		x++;
 	}
-	return (arg);
+	return (tab);
 }
