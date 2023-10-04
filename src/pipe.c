@@ -6,11 +6,21 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 11:03:17 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:24:27 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	tab_len(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
 
 char	**ignore_redirections(char **tab)
 {
@@ -20,36 +30,66 @@ char	**ignore_redirections(char **tab)
 
 	i = 0;
 	n = 0;
-	new = malloc(sizeof(char*) * sizeof(tab));
+	new = malloc(sizeof(char*) * tab_len(tab) + 1);
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (tab[i])
 	{
-		if ((!ft_strncmp(tab[i], ">", ft_strlen(tab[i]))
-			|| !ft_strncmp(tab[i], ">>", ft_strlen(tab[i]))
-			|| !ft_strncmp(tab[i], "<", ft_strlen(tab[i]))
-			|| !ft_strncmp(tab[i], "<<", ft_strlen(tab[i])))
-			&& tab[i + 1])
+		if ((!ft_strncmp(tab[i], ">", 1)
+			|| !ft_strncmp(tab[i], ">>", 2)
+			|| !ft_strncmp(tab[i], "<", 1)
+			|| !ft_strncmp(tab[i], "<<", 2))
+			&& tab[i + 1] && tab[i])
 			i += 2;
-		new[n] = tab[i];
-		i++;
-		n++;
+		else
+		{
+			new[n] = tab[i];
+			n++;
+			new[n] = NULL;
+			i++;
+		}
 	}
-	new[n] = NULL;
 	return (new);
+}
+
+void	check_redirect(char *cmd)
+{
+	char	**cmdtab;
+	int		i;
+	int		fd;
+
+	cmdtab = ft_split(cmd, ' ');
+	i = -1;
+	fd = 0;
+	while (cmdtab[++i])
+	{
+		if (!ft_strncmp(cmdtab[i], ">", 1) && cmdtab[i + 1])
+		{
+			fd = simple_right(cmdtab[i + 1]);
+			dup2(fd, STDOUT_FILENO);
+		}
+		if (!ft_strncmp(cmdtab[i], ">>", 1) && cmdtab[i + 1])
+		{
+			fd = double_right(cmdtab[i + 1]);
+			dup2(fd, STDOUT_FILENO);
+		}
+		if (!ft_strncmp(cmdtab[i], "<", 1) && cmdtab[i + 1])
+		{
+			fd = simple_left(cmdtab[i + 1]);
+			dup2(fd, STDIN_FILENO);
+		}
+	}
 }
 
 void	child(t_pp *pp, char *cmd, char **env, char **next)
 {
 	int	i;
-	int	fd;
 	char	**no_redirec;
 	char	*cmd_name;
 
-	pp->pid = fork();
-	fd = 0;
 	no_redirec = ignore_redirections(ft_split(cmd, ' '));
 	cmd_name = get_cmd(cmd);
+	pp->pid = fork();
 	(void)next;
 	if (pp->pid == 0)
 	{
@@ -60,6 +100,7 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 		else
 			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
 		close_pipes(pp);
+		check_redirect(cmd);
 		execve(cmd_name, no_redirec, env);
 		perror("execve");
 		exit(0);
@@ -71,8 +112,7 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 			;
 		pp->pidtab[i] = pp->pid;
 	}
-	free(cmd_name);
-	free(no_redirec);
+ 	free(no_redirec);
 }
 
 void	init_pidtab(t_pp *pp)

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 10:25:04 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:20:49 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	init_signals(void);
 
 //------ Redirects -----
 
+void	check_redirect(char *cmd);
 char	**ignore_redirections(char **tab);
 char	*get_heredoc(char *delimiter);
 int		simple_right(char *filename);
