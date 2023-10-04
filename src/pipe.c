@@ -3,22 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:56:52 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/04 11:03:17 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	**ignore_redirections(char **tab)
+{
+	int		i;
+	char	**new;
+	int		n;
+
+	i = 0;
+	n = 0;
+	new = malloc(sizeof(char*) * sizeof(tab));
+	if (!new)
+		return (perror("malloc"), NULL);
+	while (tab[i])
+	{
+		if ((!ft_strncmp(tab[i], ">", ft_strlen(tab[i]))
+			|| !ft_strncmp(tab[i], ">>", ft_strlen(tab[i]))
+			|| !ft_strncmp(tab[i], "<", ft_strlen(tab[i]))
+			|| !ft_strncmp(tab[i], "<<", ft_strlen(tab[i])))
+			&& tab[i + 1])
+			i += 2;
+		new[n] = tab[i];
+		i++;
+		n++;
+	}
+	new[n] = NULL;
+	return (new);
+}
+
 void	child(t_pp *pp, char *cmd, char **env, char **next)
 {
 	int	i;
 	int	fd;
+	char	**no_redirec;
+	char	*cmd_name;
 
 	pp->pid = fork();
 	fd = 0;
+	no_redirec = ignore_redirections(ft_split(cmd, ' '));
+	cmd_name = get_cmd(cmd);
 	(void)next;
 	if (pp->pid == 0)
 	{
@@ -29,7 +60,7 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 		else
 			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
 		close_pipes(pp);
-		execve(get_cmd(cmd), ft_split(cmd, ' '), env);
+		execve(cmd_name, no_redirec, env);
 		perror("execve");
 		exit(0);
 	}
@@ -37,8 +68,11 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 	{
 		i = -1;
 		while (++i < pp->cmd_nb - 1 && pp->pidtab[i] != 0)
+			;
 		pp->pidtab[i] = pp->pid;
 	}
+	free(cmd_name);
+	free(no_redirec);
 }
 
 void	init_pidtab(t_pp *pp)
@@ -63,6 +97,7 @@ void	wait_childs(t_pp *pp)
 		wait(NULL);
 	while (++i < pp->pipe_nb - 1)
 		waitpid(pp->pidtab[i], NULL, 0);
+	wait(NULL);
 	free(pp->pipe);
 	free(pp->pidtab);
 }
@@ -86,9 +121,7 @@ int	ft_pipe(t_shell *shell, char **token)
 	while (++(pp.idx) < pp.cmd_nb)
 	{
 		child(&pp, token[i], shell->env, token + i + 1);
-		if (token[i + 1] && token[i + 1][0] == '<')
-			i += 2;
-		i += 2;
+		i++;
 	}
 	close_pipes(&pp);
 	wait_childs(&pp);

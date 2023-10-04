@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 18:33:18 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:39:51 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,18 @@ char	*get_cwd(void)
 	return (res);
 }
 
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("tab[%i] : %s\n", i, tab[i]);
+		i++;
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
@@ -91,7 +103,7 @@ int	main(int ac, char **av, char **env)
 		if (shell.line == NULL)
 			ft_exit(&shell, get_args(shell.line));
 		add_history(shell.line);
-		shell.tokens = epur_tab(token_it(&shell, shell.line));
+		shell.tokens = epur_tab(ft_split(shell.line, '|'));
 		while (ft_strlen(shell.line) && shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
@@ -107,7 +119,7 @@ int	main(int ac, char **av, char **env)
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					execve(get_cmd(shell.tokens[0]), ft_split(shell.tokens[0], ' '),
+					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
 					perror("execve");
 					exit(0);
@@ -119,7 +131,7 @@ int	main(int ac, char **av, char **env)
 			}
 		}
 		power_free(shell.tokens);
-		free(shell.meta);
+		//free(shell.meta);
 	}
 	return (0);
 }

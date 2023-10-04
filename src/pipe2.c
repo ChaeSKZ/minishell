@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:01:09 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/19 18:01:30 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:11:13 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,11 @@
 int	cmd_count(char **token)
 {
 	int	i;
-	int	count;
 
 	i = 0;
-	count = 1;
-	while (token[i] && token[i + 1])
-	{
-		if (token[i + 1][0] == '|' || (!token[i + 1] && token[i - 1][0] == '|'))
-			count++;
-		i += 2;
-	}
-	return (count);
+	while (token[i])
+		i++;
+	return (i);
 }
 
 void	create_pipes(t_pp *pp)

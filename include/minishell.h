@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 18:34:05 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:25:04 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_shell
 
 //-------- Utils --------
 
+void	print_tab(char **tab);
 char	**ft_split(char const *s, char c);
 char	**token_it(t_shell *shell, char *str);
 char	*ft_strdup(const char *s);
@@ -82,6 +83,7 @@ void	init_signals(void);
 
 //------ Redirects -----
 
+char	**ignore_redirections(char **tab);
 char	*get_heredoc(char *delimiter);
 int		simple_right(char *filename);
 int		double_right(char *filename);
