@@ -6,11 +6,12 @@
 #    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/09/28 17:07:20 by jugingas         ###   ########.fr        #
+#    Updated: 2023/10/05 12:21:20 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=		src/main.c					\
+				src/main_functions.c		\
 				src/utils.c					\
 				src/utils2.c				\
 				src/utils3.c				\

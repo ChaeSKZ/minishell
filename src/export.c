@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/27 11:28:09 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:54:50 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	update_env(char *arg, t_shell *shell)
 	return ;
 }
 
-void	ft_export(t_shell *shell, char *arg)
+int	ft_export(t_shell *shell, char *arg)
 {
 	char	**args;
 	int		i;
@@ -95,5 +95,5 @@ void	ft_export(t_shell *shell, char *arg)
 		i++;
 	}
 	free(args);
-	return ;
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 13:24:27 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:53:35 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,42 @@ char	**ignore_redirections(char **tab)
 		else
 		{
 			new[n] = tab[i];
-			n++;
-			new[n] = NULL;
+			new[++n] = NULL;
 			i++;
 		}
 	}
 	return (new);
 }
 
-void	check_redirect(char *cmd)
+int	redirect(char **cmdtab, int i)
+{
+	int		fd;
+
+	fd = 0;
+	if (!ft_strncmp(cmdtab[i], ">", 2) && cmdtab[i + 1])
+	{
+		fd = simple_right(cmdtab[i + 1]);
+		dup2(fd, STDOUT_FILENO);
+	}
+	if (!ft_strncmp(cmdtab[i], ">>", 2) && cmdtab[i + 1])
+	{
+		fd = double_right(cmdtab[i + 1]);
+		dup2(fd, STDOUT_FILENO);
+	}
+	if (!ft_strncmp(cmdtab[i], "<", 2) && cmdtab[i + 1])
+	{
+		fd = simple_left(cmdtab[i + 1]);
+		dup2(fd, STDIN_FILENO);
+	}
+	if (!ft_strncmp(cmdtab[i], "<<", 2) && cmdtab[i + 1])
+	{
+		fd = double_left(cmdtab[i + 1]);
+		dup2(fd, STDIN_FILENO);
+	}
+	return (fd);
+}
+
+int	check_redirect(char *cmd)
 {
 	char	**cmdtab;
 	int		i;
@@ -63,22 +90,11 @@ void	check_redirect(char *cmd)
 	fd = 0;
 	while (cmdtab[++i])
 	{
-		if (!ft_strncmp(cmdtab[i], ">", 1) && cmdtab[i + 1])
-		{
-			fd = simple_right(cmdtab[i + 1]);
-			dup2(fd, STDOUT_FILENO);
-		}
-		if (!ft_strncmp(cmdtab[i], ">>", 1) && cmdtab[i + 1])
-		{
-			fd = double_right(cmdtab[i + 1]);
-			dup2(fd, STDOUT_FILENO);
-		}
-		if (!ft_strncmp(cmdtab[i], "<", 1) && cmdtab[i + 1])
-		{
-			fd = simple_left(cmdtab[i + 1]);
-			dup2(fd, STDIN_FILENO);
-		}
+		fd = redirect(cmdtab, i);
+		if (fd)
+			return (fd);
 	}
+	return (0);
 }
 
 void	child(t_pp *pp, char *cmd, char **env, char **next)
@@ -102,8 +118,8 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 		close_pipes(pp);
 		check_redirect(cmd);
 		execve(cmd_name, no_redirec, env);
-		perror("execve");
-		exit(0);
+		printf("%s: command not found\n", cmd);
+		exit(127);
 	}
 	else
 	{
@@ -128,16 +144,18 @@ void	init_pidtab(t_pp *pp)
 			pp->pidtab[i] = 0;
 }
 
-void	wait_childs(t_pp *pp)
+void	wait_childs(t_pp *pp, t_shell *shell)
 {
 	int	i;
+	int	status;
 
 	i = -1;
-	if (!pp->pipe_nb)
-		wait(NULL);
-	while (++i < pp->pipe_nb - 1)
-		waitpid(pp->pidtab[i], NULL, 0);
-	wait(NULL);
+	while (++i < pp->cmd_nb)
+	{
+		waitpid(pp->pidtab[i], &status, 0);
+		if (WIFEXITED(status))
+			shell->errno = WEXITSTATUS(status);
+	}
 	free(pp->pipe);
 	free(pp->pidtab);
 }
@@ -164,6 +182,6 @@ int	ft_pipe(t_shell *shell, char **token)
 		i++;
 	}
 	close_pipes(&pp);
-	wait_childs(&pp);
+	wait_childs(&pp, shell);
 	return (1);
 }

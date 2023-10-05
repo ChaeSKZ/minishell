@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 11:55:46 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/05 13:12:35 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(t_shell *shell, char *arg)
+int	ft_pwd(t_shell *shell, char *arg)
 {
 	char	cwd[MAX_PATH_SIZE];
 
@@ -22,10 +22,10 @@ void	ft_pwd(t_shell *shell, char *arg)
 		printf("%s\n", cwd);
 	else
 		perror("cwd");
-	return ;
+	return (0);
 }
 
-void	ft_unset(t_shell *shell, char *arg)
+int	ft_unset(t_shell *shell, char *arg)
 {
 	int	i;
 	int	j;
@@ -41,21 +41,40 @@ void	ft_unset(t_shell *shell, char *arg)
 				shell->env[j] = shell->env[j + 1];
 				j++;
 			}
-			return ;
+			return (0);
 		}
 		i++;
 	}
+	return (0);
 }
 
-void	ft_env(t_shell *shell, char *arg)
+int	ft_env(t_shell *shell, char *arg)
 {
 	int	i;
+	int	pid;
+	int	status;
 
 	i = -1;
-	(void)arg;
-	while (shell->env[++i])
-		printf("%s\n", shell->env[i]);
-	return ;
+	pid = 0;
+	status = 0;
+	if (arg)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			execve(get_cmd(arg), ft_split(arg, ' '), shell->env);
+			perror("env");
+			exit(127);
+		}
+		else
+			waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+	}
+	else
+		while (shell->env[++i])
+			printf("%s\n", shell->env[i]);
+	return (0);
 }
 
 int	ft_strcmp(char *str, char *env)
@@ -102,7 +121,7 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
 	return (NULL);
 }
 
-void	ft_echo(t_shell *shell, char *arg)
+int	ft_echo(t_shell *shell, char *arg)
 {
 	int		x;
 	int		y;
@@ -112,7 +131,7 @@ void	ft_echo(t_shell *shell, char *arg)
 	(void)shell;
 	tab = ft_split_quote(arg);
 	if (tab == NULL)
-		return ;
+		return (0);
 	x = 0;
 	n = 0;
 	y = -1;
@@ -130,5 +149,5 @@ void	ft_echo(t_shell *shell, char *arg)
 	}
 	if (n != 1)
 		printf("\n");
-	return ;
+	return (0);
 }

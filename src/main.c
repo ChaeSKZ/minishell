@@ -6,16 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 13:21:14 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:41:51 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	init_shell(t_shell *shell, char **env)
 {
@@ -28,6 +23,7 @@ void	init_shell(t_shell *shell, char **env)
 	init_signals();
 	init_env(shell, env);
 	getcwd(shell->ex_path, sizeof(shell->ex_path));
+	shell->errno = 0;
 	shell->builtins[0] = ft_strdup("echo");
 	shell->builtins[1] = ft_strdup("cd");
 	shell->builtins[2] = ft_strdup("pwd");
@@ -89,26 +85,23 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
 	int		i;
+	int		status = 0;
 
 	init_shell(&shell, env);
 	shell.envp[0] = NULL;
-	(void)ac;
-	(void)av;
-	//display_usage(ac, av):
-	while (1)
+	while (ac && av[0])
 	{
 		i = -1;
-		shell.line = readline(GREEN "→ " CYAN "minishell" RESET
-				" [" GREEN "OK" RESET "] " BLUE "$> " RESET);
+		prompt(&shell);
 		if (shell.line == NULL)
-			ft_exit(&shell, get_args(shell.line));
+			ft_exit(&shell, NULL);
 		add_history(shell.line);
 		shell.tokens = epur_tab(ft_split(shell.line, '|'));
 		while (ft_strlen(shell.line) && shell.builtins[++i])
 		{
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
-				shell.f_ptr[i](&shell, get_args(shell.line));
+				shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
 				break ;
 			}
 		}
@@ -119,18 +112,26 @@ int	main(int ac, char **av, char **env)
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					check_redirect(shell.tokens[0]);
+					int fd;
+						fd = check_redirect(shell.tokens[0]);
 					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
-					perror("execve");
-					exit(0);
+					printf("%s: command not found\n", get_cmd(shell.tokens[0]));
+					exit(127);
 				}
 				else if (shell.pid > 0)
-					wait(NULL);
+					waitpid(shell.pid, &status, 0);
 				else
 					perror("fork");
+				if (WIFEXITED(status))
+				{
+					shell.errno = WEXITSTATUS(status);
+				}
+				// if (fd)
+				// 	close(fd);
 			}
 		}
+		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
 		//free(shell.meta);
 	}

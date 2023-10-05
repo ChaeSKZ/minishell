@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:47:56 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/19 15:00:33 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:45:24 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*copy_tab(char **tab, char *line)
 		}
 	}
 	line[i] = '\0';
+	power_free(tab);
 	return (line);
 }
 

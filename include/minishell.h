@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 13:20:49 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:36:34 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 # define RESET "\033[0m"
-# define RED "\e[0;31m"
+# define RED "\e[1;31m"
 # define GREEN "\e[1;32m"
 # define YELLOW "\e[0;33m"
 # define BLUE "\e[1;34m"
@@ -40,8 +42,6 @@ typedef struct s_pp
 	int	*pidtab;
 	int	cmd_nb;
 	int	pipe_nb;
-	// int	cmd1_pid;
-	// int	cmd2_pid;
 	int	*pipe;
 	int	idx;
 }		t_pp;
@@ -57,8 +57,13 @@ typedef struct s_shell
 	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
-	void	(*f_ptr[7])(struct s_shell *, char *);
+	int		errno;
+	int		(*f_ptr[7])(struct s_shell *, char *);
 }		t_shell;
+
+//---- Main Functions ---
+
+void	prompt(t_shell *shell);
 
 //-------- Utils --------
 
@@ -67,7 +72,7 @@ char	**ft_split(char const *s, char c);
 char	**token_it(t_shell *shell, char *str);
 char	*ft_strdup(const char *s);
 char	*ft_epurstr(char *str);
-char	*str_add(char *str, char *add);
+char	*str_add(char *str, char *add, int fr);
 char	**epur_tab(char **tab);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	power_free(char **tab);
@@ -79,17 +84,18 @@ char	*get_cmd_name(char *line);
 int		ft_strlen(const char *str);
 char	**ft_split_quote(char *arg);
 void	init_signals(void);
+int		tab_len(char **tab);
 
 
 //------ Redirects -----
 
-void	check_redirect(char *cmd);
+int		check_redirect(char *cmd);
 char	**ignore_redirections(char **tab);
 char	*get_heredoc(char *delimiter);
 int		simple_right(char *filename);
 int		double_right(char *filename);
 int		simple_left(char *filename);
-int		double_left(char *cmd, char *delimiter, char **env);
+int		double_left(char *delimiter);
 
 //-------- Pipes -------
 
@@ -101,13 +107,13 @@ void	dup2_spe(int z, int f);
 
 //------- Builtins ------
 
-void	ft_echo(t_shell *shell, char *arg);
-void	ft_cd(t_shell *shell, char *cmd_line);
-void	ft_pwd(t_shell *shell, char *arg);
-void	ft_export(t_shell *shell, char *arg);
-void	ft_unset(t_shell *shell, char *arg);
-void	ft_env(t_shell *shell, char *arg);
-void	ft_exit(t_shell *shell, char *arg);
+int	ft_echo(t_shell *shell, char *arg);
+int	ft_cd(t_shell *shell, char *cmd_line);
+int	ft_pwd(t_shell *shell, char *arg);
+int	ft_export(t_shell *shell, char *arg);
+int	ft_unset(t_shell *shell, char *arg);
+int	ft_env(t_shell *shell, char *arg);
+int	ft_exit(t_shell *shell, char *arg);
 
 //-------- env ----------
 

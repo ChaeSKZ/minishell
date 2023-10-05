@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   main_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 13:51:55 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 16:00:03 by jugingas         ###   ########.fr       */
+/*   Created: 2023/10/05 12:18:08 by jugingas          #+#    #+#             */
+/*   Updated: 2023/10/05 12:21:42 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(const char *str)
+void	prompt(t_shell *shell)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	int		i;
-	char	*new_ptr;
-
-	i = 0;
-	new_ptr = malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!new_ptr)
-		return (NULL);
-	while (i < ft_strlen(s))
-	{
-		new_ptr[i] = s[i];
-		i++;
-	}
-	new_ptr[i] = '\0';
-	return (new_ptr);
+	if (!shell->errno)
+		shell->line = readline(GREEN "→ " CYAN "minishell" RESET
+				" [" GREEN "OK" RESET "] " BLUE "$> " RESET);
+	else
+		shell->line = readline(GREEN "→ " CYAN "minishell" RESET
+				" [" RED "KO" RESET "] " BLUE "$> " RESET);
 }

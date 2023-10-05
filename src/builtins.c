@@ -6,25 +6,27 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/04 10:31:17 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:41:26 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_exit(t_shell *shell, char *arg)
+int	ft_exit(t_shell *shell, char *arg)
 {
 	(void)arg;
 	if (shell->builtins)
 		power_free(shell->builtins);
-	// if (shell->tokens)
-	// 	power_free(shell->tokens);
-	// if (shell->line)
-	// 	free(shell->line);
+	if (shell->tokens)
+		power_free(shell->tokens);
+	if (shell->line)
+		free(shell->line);
+	if (shell->env)
+		power_free(shell->env);
 	// if (shell->meta)
 	// 	free(shell->meta);
 	printf("exit\n");
-	exit(0);
+	return (exit(0), 0);
 }
 
 char	*check_path(char *path)
@@ -69,7 +71,7 @@ char	*path_copy(char *dest, char *path)
 	return (dest);
 }
 
-void	ft_cd(t_shell *shell, char *path)
+int	ft_cd(t_shell *shell, char *path)
 {
 	char	*temp;
 
@@ -91,7 +93,8 @@ void	ft_cd(t_shell *shell, char *path)
 		path = check_path(path);
 		getcwd(shell->ex_path, sizeof(shell->ex_path));
 		if (chdir(path) == -1)
-			perror("chdir");
+			return (perror("chdir"), 1);
 		free(path);
 	}
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 16:24:02 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:51:13 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*str_add(char *str, char *add)
+char	*str_add(char *str, char *add, int fr)
 {
 	int		i;
 	int		s;
@@ -36,6 +36,8 @@ char	*str_add(char *str, char *add)
 		i++;
 	}
 	new[i] = '\0';
+	if (fr)
+		free(add);
 	return (new);
 }
 
@@ -49,7 +51,7 @@ void	create_env(t_shell *shell)
 		return ((void)perror("malloc"));
 	getcwd(cwd, sizeof(cwd));
 	env[0] = ft_strdup("PWD=");
-	env[0] = str_add(env[0], cwd);
+	env[0] = str_add(env[0], cwd, 0);
 	env[1] = ft_strdup("SHLVL=1");
 	env[2] = ft_strdup("_=/usr/bin/env");
 	env[3] = NULL;
@@ -108,17 +110,44 @@ char	*itoa(int nb)
 	return (str);
 }
 
-void	init_env(t_shell *shell, char **env)
+char	**copy_env(char **env)
 {
 	int	i;
-	
+	int	n;
+	char	**new;
+
+	i = -1;
+	new = malloc(sizeof(char*) * (tab_len(env) + 1));
+	if (!new)
+		return (perror("malloc"), NULL);
+	while (env[++i] != NULL)
+	{
+		n = -1;
+		new[i] = malloc(sizeof(char) * (ft_strlen(env[i]) + 1));
+		if (!new[i])
+			return (perror("malloc"), NULL);
+		while (env[i][++n])
+			new[i][n] = env[i][n];
+		new[i][n] = '\0';
+	}
+	new[i] = NULL;
+	return (new);
+}
+
+void	init_env(t_shell *shell, char **env)
+{
+	int		i;
+	char	*str;
+
 	i = 0;
 	if (env[0])
 	{
-		shell->env = env;
+		shell->env = copy_env(env);
 		while (ft_envstrcmp(env[i], "SHLVL=Gros Crane Chauve"))
 			i++;
-		update_env(str_add("SHLVL=", itoa(atoi(get_value(env[i])) + 1)), shell);
+		str = get_value(env[i]);
+		update_env(str_add("SHLVL=", itoa(atoi(str) + 1), 1), shell);
+		free(str);
 	}
 	else
 		create_env(shell);
