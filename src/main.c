@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:59:35 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 14:02:25 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	call_builtins(t_shell *shell, int is_in)
 		if (mnsh_strcmp(shell->builtins[i], shell->line) == 0)
 		{
 			shell->errno = shell->f_ptr[i](shell, get_args(shell->line));
-			return(i);
+			return (i);
 		}
 	}
 	return (i);
@@ -103,10 +103,11 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
 	int		i;
-	int		status = 0;
+	int		status;
 
 	init_shell(&shell, env);
 	shell.envp[0] = NULL;
+	status = 0;
 	while (ac && av[0])
 	{
 		i = -1;
