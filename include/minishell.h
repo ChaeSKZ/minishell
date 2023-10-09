@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 16:23:35 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:10:46 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char	*get_cmd_name(char *line);
 int		ft_strlen(const char *str);
 char	**ft_split_quote(char *arg);
 void	init_signals(void);
+int		count_word(char *arg);
 
 
 //------ Redirects -----

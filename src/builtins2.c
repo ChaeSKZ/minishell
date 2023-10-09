@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 17:47:20 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:10:17 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,14 @@ void	ft_echo(t_shell *shell, char *arg)
 	y = -1;
 	if (shell->tab[x][0] == '-' && shell->tab[x][1] == 'n')
 	{
-			x++;
 			n = 1;
+			x++;
 	}
-	while (shell->tab[x])
+	while (x < count_word(arg) - n)
 	{
 		if (shell->tab[x][0] == '$')
 			shell->tab[x] = ft_ryoiki_tenkai(shell, shell->tab[x]);
-		printf("tab[x] = %s\n", shell->tab[x]);
+		printf("%s ", shell->tab[x]);
 		x++;
 	}
 	if (n != 1)

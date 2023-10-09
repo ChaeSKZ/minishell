@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/09/28 14:16:10 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/05 15:42:41 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ int	main(int ac, char **av, char **env)
 			}
 		}
 		power_free(shell.tokens);
-		free(shell.meta);
 	}
 	return (0);
 }
