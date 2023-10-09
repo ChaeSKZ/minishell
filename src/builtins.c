@@ -6,11 +6,24 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:57:42 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 16:23:26 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
+
+int	ft_pwd(t_shell *shell, char *arg)
+{
+	char	cwd[MAX_PATH_SIZE];
+
+	(void)arg;
+	(void)shell;
+	if (getcwd(cwd, sizeof(cwd)))
+		printf("%s\n", cwd);
+	else
+		perror("cwd");
+	return (0);
+}
 
 int	ft_exit(t_shell *shell, char *arg)
 {
@@ -23,8 +36,6 @@ int	ft_exit(t_shell *shell, char *arg)
 		free(shell->line);
 	if (shell->env)
 		power_free(shell->env);
-	if (shell->tab)
-		power_free(shell->tab);
 	printf("exit\n");
 	return (exit(0), 0);
 }

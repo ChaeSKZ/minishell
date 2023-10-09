@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 12:54:50 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:17:50 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	update_env(char *arg, t_shell *shell)
 	i = 0;
 	while (ft_envstrcmp(arg, shell->env[i]))
 		i++;
+	free(shell->env[i]);
 	shell->env[i] = arg;
 	return ;
 }
@@ -94,6 +95,6 @@ int	ft_export(t_shell *shell, char *arg)
 		}
 		i++;
 	}
-	free(args);
+	power_free(args);
 	return (0);
 }

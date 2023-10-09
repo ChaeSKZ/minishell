@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 14:15:55 by jquil            ###   ########.fr       */
+/*   Created: 2023/10/09 15:07:19 by jquil             #+#    #+#             */
+/*   Updated: 2023/10/09 16:23:39 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_signals(int sig)
+void	ft_init_struct(t_shell *sh)
 {
-	if (sig == 2)
-	{
-		printf("\n$>");
-		return (2);
-	}
-	else
-		printf("%i\n", sig);
-	return (0);
-}
-
-void	init_signals(void)
-{
-	struct sigaction	sb;
-
-	sb.sa_handler = (void *)ft_signals;
-	sigemptyset(&sb.sa_mask);
-	sb.sa_flags = 0;
-	sigaction(SIGINT, &sb, 0);
-	signal(SIGQUIT, SIG_IGN);
+	sh->builtins = NULL;
+	sh->line = NULL;
+	sh->tokens = NULL;
+	sh->env = NULL;
+	sh->tab = NULL;
+	sh->meta = NULL;
+	sh->pid = 0;
+	sh->errno = 0;
 }

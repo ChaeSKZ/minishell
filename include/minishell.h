@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:57:12 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 15:10:30 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ char	**ft_split_quote(char *arg);
 void	init_signals(void);
 int		tab_len(char **tab);
 int		count_word(char *arg);
+char	**init_sep(void);
+char	*get_home_path(char **env);
+int		ft_envstrcmp(char *s1, char *s2);
+int		ft_find_start(char *str, int x);
+int		count_word(char *arg);
 
 //------ Redirects -----
 
@@ -104,17 +109,20 @@ int		cmd_count(char **token);
 void	create_pipes(t_pp *pp);
 void	close_pipes(t_pp *pp);
 void	dup2_spe(int z, int f);
+int		redirect(char **cmdtab, int i);
+char	**ignore_redirections(char **tab);
+int		tab_len(char **tab);
 
 //------- Builtins ------
 
-int	call_builtins(t_shell *shell, int is_in);
-int	ft_echo(t_shell *shell, char *arg);
-int	ft_cd(t_shell *shell, char *cmd_line);
-int	ft_pwd(t_shell *shell, char *arg);
-int	ft_export(t_shell *shell, char *arg);
-int	ft_unset(t_shell *shell, char *arg);
-int	ft_env(t_shell *shell, char *arg);
-int	ft_exit(t_shell *shell, char *arg);
+int		call_builtins(t_shell *shell, int is_in);
+int		ft_echo(t_shell *shell, char *arg);
+int		ft_cd(t_shell *shell, char *cmd_line);
+int		ft_pwd(t_shell *shell, char *arg);
+int		ft_export(t_shell *shell, char *arg);
+int		ft_unset(t_shell *shell, char *arg);
+int		ft_env(t_shell *shell, char *arg);
+int		ft_exit(t_shell *shell, char *arg);
 
 //-------- env ----------
 
@@ -122,5 +130,6 @@ void	init_env(t_shell *shell, char **env);
 void	create_env(t_shell *shell);
 char	*get_home_path(char **env);
 void	update_env(char *arg, t_shell *shell);
+void	ft_init_struct(t_shell *sh);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:59:35 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 16:23:04 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	call_builtins(t_shell *shell, int is_in)
 		if (mnsh_strcmp(shell->builtins[i], shell->line) == 0)
 		{
 			shell->errno = shell->f_ptr[i](shell, get_args(shell->line));
-			return(i);
+			return (i);
 		}
 	}
 	return (i);
@@ -103,8 +103,10 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
 	int		i;
-	int		status = 0;
+	int		status;
 
+	ft_init_struct(&shell);
+	status = 0;
 	init_shell(&shell, env);
 	shell.envp[0] = NULL;
 	while (ac && av[0])
@@ -123,7 +125,8 @@ int	main(int ac, char **av, char **env)
 				if (shell.pid == 0)
 				{
 					check_redirect(shell.tokens[0]);
-					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
+					execve(get_cmd(shell.tokens[0]),
+						ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
 					printf("%s: command not found\n", get_cmd(shell.tokens[0]));
 					exit(127);
