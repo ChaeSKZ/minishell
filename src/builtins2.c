@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 10:55:11 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 12:18:06 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,13 @@ int	ft_env(t_shell *shell, char *arg)
 		pid = fork();
 		if (pid == 0)
 		{
-			execve(get_cmd(arg), ft_split(arg, ' '), shell->env);
-			perror("env");
-			exit(127);
+			if (call_builtins(shell, 1) == 7)
+			{
+				execve(get_cmd(arg), ft_split(arg, ' '), shell->env);
+				perror("env");
+				exit(127);
+			}
+			exit (0);
 		}
 		else
 			waitpid(pid, &status, 0);
@@ -120,7 +124,7 @@ int	ft_echo(t_shell *shell, char *arg)
 
 	shell->tab = ft_split_quote(arg);
 	if (shell->tab == NULL)
-		return ;
+		return (0);
 	x = 0;
 	n = 0;
 	y = -1;

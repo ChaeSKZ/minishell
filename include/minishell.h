@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 10:55:24 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 12:19:39 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	dup2_spe(int z, int f);
 
 //------- Builtins ------
 
+int	call_builtins(t_shell *shell, int is_in);
 int	ft_echo(t_shell *shell, char *arg);
 int	ft_cd(t_shell *shell, char *cmd_line);
 int	ft_pwd(t_shell *shell, char *arg);

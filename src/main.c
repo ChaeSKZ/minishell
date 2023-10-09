@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 10:56:45 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 13:54:45 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,24 @@ void	print_tab(char **tab)
 	}
 }
 
+int	call_builtins(t_shell *shell, int is_in)
+{
+	int	i;
+
+	i = -1;
+	while (ft_strlen(shell->line) && shell->builtins[++i])
+	{
+		if (is_in && mnsh_strcmp(shell->builtins[i], "env") == 0)
+			i++;
+		if (mnsh_strcmp(shell->builtins[i], shell->line) == 0)
+		{
+			shell->errno = shell->f_ptr[i](shell, get_args(shell->line));
+			return(i);
+		}
+	}
+	return (i);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
@@ -97,25 +115,25 @@ int	main(int ac, char **av, char **env)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
 		shell.tokens = epur_tab(ft_split(shell.line, '|'));
-		while (ft_strlen(shell.line) && shell.builtins[++i])
-		{
-			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
-			{
-				shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
-				//shell.tab = ft_split_quote(shell.line);
-				shell.f_ptr[i](&shell, get_args(shell.line));
-				break ;
-			}
-		}
-		if (ft_strlen(shell.line) && i == 7)
+		// while (ft_strlen(shell.line) && shell.builtins[++i])
+		// {
+		// 	if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
+		// 	{
+		// 		shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
+		// 		break ;
+		// 	}
+		// }
+		if (ft_strlen(shell.line) && call_builtins(&shell, 0) == 7)
 		{
 			if (!ft_pipe(&shell, shell.tokens))
 			{
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					int fd;
-						fd = check_redirect(shell.tokens[0]);
+					/*char	**tab;
+					tab = ft_split_quote(shell.tokens[0]);
+					printf("test : %s\n", tab[0]);*/
+					check_redirect(shell.tokens[0]);
 					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
 					printf("%s: command not found\n", get_cmd(shell.tokens[0]));
@@ -129,16 +147,11 @@ int	main(int ac, char **av, char **env)
 				{
 					shell.errno = WEXITSTATUS(status);
 				}
-				// if (fd)
-				// 	close(fd);
 			}
 		}
 		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
-<<<<<<< HEAD
 		//free(shell.meta);
-=======
->>>>>>> Juju_la_terreur
 	}
 	return (0);
 }
