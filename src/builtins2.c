@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 10:55:11 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 11:05:15 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	ft_echo(t_shell *shell, char *arg)
 
 	shell->tab = ft_split_quote(arg);
 	if (shell->tab == NULL)
-		return ;
+		return (0);
 	x = 0;
 	n = 0;
 	y = -1;

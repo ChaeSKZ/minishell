@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 16:51:13 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:12:58 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ char	*itoa(int nb)
 
 char	**copy_env(char **env)
 {
-	int	i;
-	int	n;
+	int		i;
+	int		n;
 	char	**new;
 
 	i = -1;
-	new = malloc(sizeof(char*) * (tab_len(env) + 1));
+	new = malloc(sizeof(char *) * (tab_len(env) + 1));
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (env[++i] != NULL)

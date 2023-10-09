@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 10:56:45 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 12:10:22 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	main(int ac, char **av, char **env)
 			{
 				shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
 				//shell.tab = ft_split_quote(shell.line);
-				shell.f_ptr[i](&shell, get_args(shell.line));
 				break ;
 			}
 		}
@@ -114,7 +113,7 @@ int	main(int ac, char **av, char **env)
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					int fd;
+					int	fd;
 						fd = check_redirect(shell.tokens[0]);
 					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
@@ -135,10 +134,6 @@ int	main(int ac, char **av, char **env)
 		}
 		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
-<<<<<<< HEAD
-		//free(shell.meta);
-=======
->>>>>>> Juju_la_terreur
 	}
 	return (0);
 }

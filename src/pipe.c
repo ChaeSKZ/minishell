@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 14:53:35 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:12:19 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ char	**ignore_redirections(char **tab)
 
 	i = 0;
 	n = 0;
-	new = malloc(sizeof(char*) * tab_len(tab) + 1);
+	new = malloc(sizeof(char *) * tab_len(tab) + 1);
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (tab[i])
 	{
 		if ((!ft_strncmp(tab[i], ">", 1)
-			|| !ft_strncmp(tab[i], ">>", 2)
-			|| !ft_strncmp(tab[i], "<", 1)
-			|| !ft_strncmp(tab[i], "<<", 2))
+				|| !ft_strncmp(tab[i], ">>", 2)
+				|| !ft_strncmp(tab[i], "<", 1)
+				|| !ft_strncmp(tab[i], "<<", 2))
 			&& tab[i + 1] && tab[i])
 			i += 2;
 		else
@@ -99,7 +99,7 @@ int	check_redirect(char *cmd)
 
 void	child(t_pp *pp, char *cmd, char **env, char **next)
 {
-	int	i;
+	int		i;
 	char	**no_redirec;
 	char	*cmd_name;
 
@@ -128,7 +128,7 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 			;
 		pp->pidtab[i] = pp->pid;
 	}
- 	free(no_redirec);
+	free(no_redirec);
 }
 
 void	init_pidtab(t_pp *pp)
