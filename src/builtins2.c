@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 13:12:35 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:55:11 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,6 @@ int	ft_env(t_shell *shell, char *arg)
 	return (0);
 }
 
-int	ft_strcmp(char *str, char *env)
-{
-	int	x;
-
-	x = 0;
-	while (env[++x] != '=')
-		if (env[x] != str[x])
-			return (0);
-	return (1);
-}
-
 char	*ft_str_eg_cpy(char *env)
 {
 	int		x;
@@ -116,8 +105,10 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
 
 	x = -1;
 	while (shell->env[++x])
-		if (ft_strcmp(str, shell->env[x]) == 1)
+	{
+		if (ft_envstrcmp(str + 1, shell->env[x]) == 0)
 			return (free(str), str = ft_str_eg_cpy(shell->env[x]));
+	}
 	return (NULL);
 }
 
@@ -126,25 +117,23 @@ int	ft_echo(t_shell *shell, char *arg)
 	int		x;
 	int		y;
 	int		n;
-	char	**tab;
 
-	(void)shell;
-	tab = ft_split_quote(arg);
-	if (tab == NULL)
-		return (0);
+	shell->tab = ft_split_quote(arg);
+	if (shell->tab == NULL)
+		return ;
 	x = 0;
 	n = 0;
 	y = -1;
-	if (tab[x][0] == '-' && tab[x][1] == 'n')
+	if (shell->tab[x][0] == '-' && shell->tab[x][1] == 'n')
 	{
-			x++;
 			n = 1;
+			x++;
 	}
-	while (tab[x])
+	while (x < count_word(arg) - n)
 	{
-		if (tab[x][0] == '$')
-			tab[x] = ft_ryoiki_tenkai(shell, tab[x]);
-		printf("%s", tab[x]);
+		if (shell->tab[x][0] == '$')
+			shell->tab[x] = ft_ryoiki_tenkai(shell, shell->tab[x]);
+		printf("%s ", shell->tab[x]);
 		x++;
 	}
 	if (n != 1)

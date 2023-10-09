@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 16:36:34 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:55:24 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 	char	*line;
 	char	**tokens;
 	char	**env;
+	char	**tab;
 	int		*meta;
 	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
@@ -85,6 +86,7 @@ int		ft_strlen(const char *str);
 char	**ft_split_quote(char *arg);
 void	init_signals(void);
 int		tab_len(char **tab);
+int		count_word(char *arg);
 
 
 //------ Redirects -----

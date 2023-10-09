@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/05 16:41:51 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:56:45 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	main(int ac, char **av, char **env)
 			if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
 			{
 				shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
+				//shell.tab = ft_split_quote(shell.line);
+				shell.f_ptr[i](&shell, get_args(shell.line));
 				break ;
 			}
 		}
@@ -133,7 +135,10 @@ int	main(int ac, char **av, char **env)
 		}
 		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
+<<<<<<< HEAD
 		//free(shell.meta);
+=======
+>>>>>>> Juju_la_terreur
 	}
 	return (0);
 }
