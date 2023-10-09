@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 12:19:39 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:57:12 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define RESET "\033[0m"
 # define RED "\e[1;31m"
@@ -45,7 +45,6 @@ typedef struct s_pp
 	int	*pipe;
 	int	idx;
 }		t_pp;
-
 
 typedef struct s_shell
 {
@@ -87,7 +86,6 @@ char	**ft_split_quote(char *arg);
 void	init_signals(void);
 int		tab_len(char **tab);
 int		count_word(char *arg);
-
 
 //------ Redirects -----
 

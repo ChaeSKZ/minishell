@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:54:45 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:59:35 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,6 @@ int	main(int ac, char **av, char **env)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
 		shell.tokens = epur_tab(ft_split(shell.line, '|'));
-		// while (ft_strlen(shell.line) && shell.builtins[++i])
-		// {
-		// 	if (mnsh_strcmp(shell.builtins[i], shell.line) == 0)
-		// 	{
-		// 		shell.errno = shell.f_ptr[i](&shell, get_args(shell.line));
-		// 		break ;
-		// 	}
-		// }
 		if (ft_strlen(shell.line) && call_builtins(&shell, 0) == 7)
 		{
 			if (!ft_pipe(&shell, shell.tokens))
@@ -130,9 +122,6 @@ int	main(int ac, char **av, char **env)
 				shell.pid = fork();
 				if (shell.pid == 0)
 				{
-					/*char	**tab;
-					tab = ft_split_quote(shell.tokens[0]);
-					printf("test : %s\n", tab[0]);*/
 					check_redirect(shell.tokens[0]);
 					execve(get_cmd(shell.tokens[0]), ignore_redirections(ft_split(shell.tokens[0], ' ')),
 						shell.env);
@@ -151,7 +140,6 @@ int	main(int ac, char **av, char **env)
 		}
 		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
-		//free(shell.meta);
 	}
 	return (0);
 }
