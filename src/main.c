@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 19:00:31 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/11 11:16:04 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	main(int ac, char **av, char **env)
 	status = 0;
 	init_shell(&shell, env);
 	shell.envp[0] = NULL;
+	status = 0;
 	while (ac && av[0])
 	{
 		prompt(&shell);
