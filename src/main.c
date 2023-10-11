@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:16:04 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/11 11:18:49 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,22 @@ void	print_tab(char **tab)
 	}
 }
 
-int	call_builtins(t_shell *shell, int is_in)
+int	call_builtins(t_shell *shell, int is_env, int do_exit, int idx)
 {
 	int	i;
 
 	i = -1;
-	while (ft_strlen(shell->line) && shell->builtins[++i])
+	while (ft_strlen(shell->tokens[idx]) && shell->builtins[++i])
 	{
-		if (is_in && mnsh_strcmp(shell->builtins[i], "env") == 0)
+		if (is_env && mnsh_strcmp(shell->builtins[i], "env") == 0)
 			i++;
-		if (mnsh_strcmp(shell->builtins[i], shell->line) == 0)
+		if (mnsh_strcmp(shell->builtins[i], shell->tokens[idx]) == 0)
 		{
-			shell->errno = shell->f_ptr[i](shell, get_args(shell->line));
-			return (i);
+			check_redirect(shell->tokens[idx]);
+			shell->errno = shell->f_ptr[i](shell, get_args(shell->tokens[idx]));
+			if (do_exit)
+				exit (0);
+			return (0);
 		}
 	}
 	return (i);
@@ -107,6 +110,7 @@ int	main(int ac, char **av, char **env)
 	ft_init_struct(&shell);
 	status = 0;
 	init_shell(&shell, env);
+	shell.tokens = NULL;
 	shell.envp[0] = NULL;
 	status = 0;
 	while (ac && av[0])
@@ -116,29 +120,7 @@ int	main(int ac, char **av, char **env)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
 		shell.tokens = epur_tab(ft_split(shell.line, '|'));
-		if (ft_strlen(shell.line) && call_builtins(&shell, 0) == 7)
-		{
-			if (!ft_pipe(&shell, shell.tokens))
-			{
-				shell.pid = fork();
-				if (shell.pid == 0)
-				{
-					check_redirect(shell.tokens[0]);
-					execve(get_cmd(shell.tokens[0]),
-						ignore_redirections(ft_split(shell.tokens[0], ' ')),
-						shell.env);
-					printf("%s: command not found\n", get_cmd(shell.tokens[0]));
-					exit(127);
-				}
-				else if (shell.pid > 0)
-					waitpid(shell.pid, &status, 0);
-				else
-					perror("fork");
-				if (WIFEXITED(status))
-					shell.errno = WEXITSTATUS(status);
-			}
-		}
-		printf("Exited with error code : %i\n", shell.errno);
+		main_core(&shell);
 		power_free(shell.tokens);
 		shell.tokens = NULL;
 	}

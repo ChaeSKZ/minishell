@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 18:12:40 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/11 11:18:05 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_shell
 //---- Main Functions ---
 
 void	prompt(t_shell *shell);
+void	main_core(t_shell *shell);
 
 //-------- Utils --------
 
@@ -106,7 +107,7 @@ int		double_left(char *delimiter);
 
 //-------- Pipes -------
 
-int		ft_pipe(t_shell *shell, char **token);
+int		ft_pipe(t_shell *shell);
 int		cmd_count(char **token);
 void	create_pipes(t_pp *pp);
 void	close_pipes(t_pp *pp);
