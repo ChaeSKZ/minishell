@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 12:12:19 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:10:09 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,15 @@ int	check_redirect(char *cmd)
 	{
 		fd = redirect(cmdtab, i);
 		if (fd)
+		{
+			power_free(cmdtab);
 			return (fd);
+		}
 	}
 	return (0);
 }
 
-void	child(t_pp *pp, char *cmd, char **env, char **next)
+void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 {
 	int		i;
 	char	**no_redirec;
@@ -106,7 +109,6 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 	no_redirec = ignore_redirections(ft_split(cmd, ' '));
 	cmd_name = get_cmd(cmd);
 	pp->pid = fork();
-	(void)next;
 	if (pp->pid == 0)
 	{
 		if (pp->idx == 0)
@@ -116,10 +118,13 @@ void	child(t_pp *pp, char *cmd, char **env, char **next)
 		else
 			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
 		close_pipes(pp);
-		check_redirect(cmd);
-		execve(cmd_name, no_redirec, env);
-		printf("%s: command not found\n", cmd);
-		exit(127);
+		if (call_builtins(shell, 0, 1, idx) == 7)
+		{
+			check_redirect(cmd);
+			execve(cmd_name, no_redirec, shell->env);
+			printf("%s: command not found\n", cmd);
+			exit(127);
+		}
 	}
 	else
 	{
@@ -160,13 +165,13 @@ void	wait_childs(t_pp *pp, t_shell *shell)
 	free(pp->pidtab);
 }
 
-int	ft_pipe(t_shell *shell, char **token)
+int	ft_pipe(t_shell *shell)
 {
 	t_pp	pp;
 	int		i;
 
-	pp.cmd_nb = cmd_count(token);
-	if (pp.cmd_nb == 1 && !token[1])
+	pp.cmd_nb = cmd_count(shell->tokens);
+	if (pp.cmd_nb == 1 && !shell->tokens[1])
 		return (0);
 	pp.pipe_nb = 2 * (pp.cmd_nb - 1);
 	pp.pipe = malloc(sizeof(int) * pp.pipe_nb);
@@ -178,7 +183,7 @@ int	ft_pipe(t_shell *shell, char **token)
 	i = 0;
 	while (++(pp.idx) < pp.cmd_nb)
 	{
-		child(&pp, token[i], shell->env, token + i + 1);
+		child(&pp, shell, shell->tokens[i], i);
 		i++;
 	}
 	close_pipes(&pp);

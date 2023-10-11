@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:57:42 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:45:01 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	ft_exit(t_shell *shell, char *arg)
 		free(shell->line);
 	if (shell->env)
 		power_free(shell->env);
-	if (shell->tab)
-		power_free(shell->tab);
+	// if (shell->tab)
+	// 	power_free(shell->tab);
 	printf("exit\n");
 	return (exit(0), 0);
 }

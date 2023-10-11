@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:57:53 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:09:27 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,24 @@ int	ft_unset(t_shell *shell, char *arg)
 
 int	ft_env(t_shell *shell, char *arg)
 {
-	int	i;
-	int	pid;
-	int	status;
+	int		i;
+	int		pid;
+	int		status;
+	char	**args;
 
 	i = -1;
 	pid = 0;
 	status = 0;
-	if (arg)
+	args = ft_split(arg, ' ');
+	if (arg && args[0][0] != '|' && args[0][0] != '>'
+		&& args[0][0] != '<')
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			if (call_builtins(shell, 1) == 7)
+			if (call_builtins(shell, 1, 0, 0) == 7)
 			{
-				execve(get_cmd(arg), ft_split(arg, ' '), shell->env);
+				execve(get_cmd(arg), ft_split(args[0], ' '), shell->env);
 				perror("env");
 				exit(127);
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 13:57:12 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:08:58 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_shell
 //---- Main Functions ---
 
 void	prompt(t_shell *shell);
+void	main_core(t_shell *shell);
 
 //-------- Utils --------
 
@@ -99,7 +100,7 @@ int		double_left(char *delimiter);
 
 //-------- Pipes -------
 
-int		ft_pipe(t_shell *shell, char **token);
+int		ft_pipe(t_shell *shell);
 int		cmd_count(char **token);
 void	create_pipes(t_pp *pp);
 void	close_pipes(t_pp *pp);
@@ -107,7 +108,7 @@ void	dup2_spe(int z, int f);
 
 //------- Builtins ------
 
-int	call_builtins(t_shell *shell, int is_in);
+int	call_builtins(t_shell *shell, int is_env, int do_exit, int idx);
 int	ft_echo(t_shell *shell, char *arg);
 int	ft_cd(t_shell *shell, char *cmd_line);
 int	ft_pwd(t_shell *shell, char *arg);
