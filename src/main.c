@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 16:23:04 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 19:00:31 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	call_builtins(t_shell *shell, int is_in)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
-	int		i;
 	int		status;
 
 	ft_init_struct(&shell);
@@ -111,7 +110,6 @@ int	main(int ac, char **av, char **env)
 	shell.envp[0] = NULL;
 	while (ac && av[0])
 	{
-		i = -1;
 		prompt(&shell);
 		if (shell.line == NULL)
 			ft_exit(&shell, NULL);
@@ -136,13 +134,12 @@ int	main(int ac, char **av, char **env)
 				else
 					perror("fork");
 				if (WIFEXITED(status))
-				{
 					shell.errno = WEXITSTATUS(status);
-				}
 			}
 		}
 		printf("Exited with error code : %i\n", shell.errno);
 		power_free(shell.tokens);
+		shell.tokens = NULL;
 	}
 	return (0);
 }

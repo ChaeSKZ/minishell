@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 15:10:30 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:12:40 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ char	*get_home_path(char **env);
 int		ft_envstrcmp(char *s1, char *s2);
 int		ft_find_start(char *str, int x);
 int		count_word(char *arg);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_checkcmd(char *s1, char *s2);
 
 //------ Redirects -----
 
@@ -131,5 +133,6 @@ void	create_env(t_shell *shell);
 char	*get_home_path(char **env);
 void	update_env(char *arg, t_shell *shell);
 void	ft_init_struct(t_shell *sh);
+void	ft_simple_export(t_shell *shell);
 
 #endif

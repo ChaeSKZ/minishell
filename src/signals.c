@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 14:15:55 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 17:05:49 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	ft_signals(int sig)
 {
 	if (sig == 2)
 	{
-		printf("\n$>");
+		printf("\n");
+		printf("%s", GREEN "→ " CYAN "minishell" RESET
+			" [" GREEN "OK" RESET "] " BLUE "$> " RESET);
 		return (2);
 	}
 	else

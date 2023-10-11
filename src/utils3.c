@@ -1,90 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils3.c                                           :+:      :+:    :+:   */
+/*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 15:00:58 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 11:56:19 by jugingas         ###   ########.fr       */
+/*   Created: 2023/10/09 14:03:36 by jquil             #+#    #+#             */
+/*   Updated: 2023/10/09 14:16:11 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strncmp(char *s1, char *s2, int n)
+int	ft_envstrcmp(char *s1, char *s2)
 {
 	int	i;
 
 	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
+	while (s1[i] && s2[i] && s1[i] == s2[i] && s1[i] != '=' && s2[i] != '=')
 		i++;
+	if (s1[i] == '=' || s2[i] == '=')
+		return (0);
 	return (s1[i] - s2[i]);
 }
 
-int	check_end(char *str)
+char	*get_home_path(char **env)
 {
-	int	i;
+	int		i;
+	int		n;
+	char	*path;
 
 	i = 0;
-	while ((str[i] == ' ' || str[i] == '\t') && str[i])
-	{
+	while (ft_envstrcmp(env[i], "HOME"))
 		i++;
-		if (!str[i])
-			return (0);
-	}
-	return (1);
-}
-
-char	*cpy(char *str, char *new)
-{
-	int	i;
-	int	n;
-
-	i = 0;
 	n = 0;
-	while ((str[i] == ' ' || str[i] == '\t') && str[i])
-		i++;
-	while (str[i] && check_end(str + i))
+	while (env[i][n + 5])
+		n++;
+	path = malloc(sizeof(char) * (n + 1));
+	if (!path)
 	{
-		new[n] = str[i];
-		i++;
+		perror("malloc");
+		return (0);
+	}
+	n = 0;
+	while (env[i][n + 5])
+	{
+		path[n] = env[i][n + 5];
 		n++;
 	}
-	new[n] = '\0';
-	free(str);
-	return (new);
+	path[n] = '\0';
+	return (path);
 }
 
-char	*ft_epurstr(char *str)
+char	**init_sep(void)
 {
-	char	*new;
-	int		i;
-	int		len;
+	char	**sep;
 
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-		i++;
-	len = ft_strlen(str) - i;
-	while (str[i])
-		i++;
-	while (str[i] == ' ' || str[i] == '\t')
-	{
-		i--;
-		len--;
-	}
-	new = malloc(sizeof(char) * (len + 1));
-	if (!new)
-		return (perror("malloc"), NULL);
-	return (cpy(str, new));
-}
-
-char	**epur_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		tab[i] = ft_epurstr(tab[i]);
-	return (tab);
+	sep = malloc(sizeof(char *) * 6);
+	if (!sep)
+		perror("malloc");
+	sep[0] = ft_strdup("|");
+	sep[1] = ft_strdup(">");
+	sep[2] = ft_strdup(">>");
+	sep[3] = ft_strdup("<");
+	sep[4] = ft_strdup("<<");
+	sep[5] = NULL;
+	return (sep);
 }

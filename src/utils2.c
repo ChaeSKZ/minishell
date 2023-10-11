@@ -1,139 +1,90 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/18 14:07:17 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 14:16:01 by jquil            ###   ########.fr       */
+/*   Created: 2023/09/19 15:00:58 by jugingas          #+#    #+#             */
+/*   Updated: 2023/10/09 11:56:19 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_sep(char *str, char **sep)
+int	ft_strncmp(char *s1, char *s2, int n)
 {
 	int	i;
 
 	i = 0;
-	while (sep[i])
-	{
-		if (mnsh_strcmp(sep[i], str) == 0)
-			return (1);
+	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
 		i++;
-	}
-	return (0);
+	return (s1[i] - s2[i]);
 }
 
-char	**init_tok(char *str, char **sep, char **tokens)
+int	check_end(char *str)
 {
 	int	i;
-	int	size;
+
+	i = 0;
+	while ((str[i] == ' ' || str[i] == '\t') && str[i])
+	{
+		i++;
+		if (!str[i])
+			return (0);
+	}
+	return (1);
+}
+
+char	*cpy(char *str, char *new)
+{
+	int	i;
 	int	n;
 
 	i = 0;
 	n = 0;
-	while (str[i])
+	while ((str[i] == ' ' || str[i] == '\t') && str[i])
+		i++;
+	while (str[i] && check_end(str + i))
 	{
-		size = 0;
-		if (n % 2 == 0)
-		{
-			while (str[i + size])
-			{
-				size++;
-				if (str[i + size - 1] == ' ' && check_sep(str + i + size, sep))
-					break ;
-			}
-			i += size;
-		}
-		else
-		{
-			while (str[i + size] != ' ' && str[i + size])
-				size++;
-			i += size;
-		}
-		tokens[n] = malloc(sizeof(char) * (size + 1));
+		new[n] = str[i];
+		i++;
 		n++;
 	}
-	return (tokens);
+	new[n] = '\0';
+	free(str);
+	return (new);
 }
 
-char	**copy_tok(char *str, char **sep, char **tokens)
+char	*ft_epurstr(char *str)
 {
-	int	n;
-	int	i;
-	int	j;
-
-	n = 0;
-	i = 0;
-	while (str[i])
-	{
-		j = -1;
-		if (n % 2 == 0)
-		{
-			while (str[i])
-			{
-				tokens[n][++j] = str[i];
-				i++;
-				if (str[i] == ' ' && check_sep(str + i + 1, sep))
-				{
-					i++;
-					break ;
-				}
-			}
-		}
-		else
-		{
-			while (str[i] && str[i] != ' ')
-			{
-				tokens[n][++j] = str[i];
-				i++;
-			}
-			i++;
-		}
-		tokens[n][++j] = '\0';
-		n++;
-	}
-	tokens[n] = NULL;
-	return (tokens);
-}
-
-char	**token_it2(char *str, int count, char **sep)
-{
-	char	**tokens;
-
-	tokens = malloc(sizeof(char *) * (count + 1));
-	if (!tokens)
-		perror("malloc");
-	tokens = init_tok(str, sep, tokens);
-	tokens = copy_tok(str, sep, tokens);
-	power_free(sep);
-	return (tokens);
-}
-
-char	**token_it(t_shell *shell, char *str)
-{
-	char	**sep;
+	char	*new;
 	int		i;
-	int		count;
+	int		len;
 
-	sep = init_sep();
 	i = 0;
-	count = 1;
-	while (str[i])
-	{
-		while (str[i] == ' ' && str[i])
-			i++;
-		if (check_sep(str + i, sep))
-			count += 2;
-		while (str[i] != ' ' && str[i + 1])
-			i++;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
+	len = ft_strlen(str) - i;
+	while (str[i])
+		i++;
+	while (str[i] == ' ' || str[i] == '\t')
+	{
+		i--;
+		len--;
 	}
-	shell->meta = malloc ((count) * sizeof(int));
+	new = malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (perror("malloc"), NULL);
+	return (cpy(str, new));
+}
+
+char	**epur_tab(char **tab)
+{
+	int	i;
+
 	i = -1;
-	while (++i < count)
-		shell->meta[i] = 0;
-	return (token_it2(str, count, sep));
+	while (tab[++i])
+		tab[i] = ft_epurstr(tab[i]);
+	return (tab);
 }

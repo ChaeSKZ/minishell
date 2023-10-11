@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 16:17:50 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 18:21:50 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,24 @@ int	ft_export(t_shell *shell, char *arg)
 	char	**args;
 	int		i;
 
-	args = ft_split(arg, ' ');
-	i = 0;
-	while (args[i])
+	args = NULL;
+	if (arg == NULL)
+		return (0);
+	else
 	{
-		if (check_arg(args[i]))
+		args = ft_split(arg, ' ');
+		i = 0;
+		while (args[i])
 		{
-			if (!check_exist(args[i], shell))
-				add_env(args[i], shell);
-			else
-				update_env(args[i], shell);
+			if (check_arg(args[i]))
+			{
+				if (!check_exist(args[i], shell))
+					add_env(args[i], shell);
+				else
+					update_env(args[i], shell);
+			}
+			i++;
 		}
-		i++;
 	}
 	power_free(args);
 	return (0);

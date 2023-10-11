@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 16:26:45 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/09 16:33:55 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,7 @@ int	ft_find_end(char *str, int start)
 	end = start + 1;
 	while (str[end])
 	{
-		if (str[start] == 34)
-		{
-			while (str[end] != str[start])
-				end++;
-			return (end);
-		}
-		if (str[start] == 39)
+		if (str[start] == 34 || str[start] == 39)
 		{
 			while (str[end] != str[start])
 				end++;
