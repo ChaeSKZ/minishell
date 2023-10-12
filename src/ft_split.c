@@ -5,94 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 13:51:47 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 17:50:52 by jugingas         ###   ########.fr       */
+/*   Created: 2020/02/01 23:49:55 by apuchill          #+#    #+#             */
+/*   Updated: 2023/10/12 19:22:56 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**spower_free(char **tab, int line)
+static int	count_words(const char *str, char c)
 {
-	while (line > 0)
-	{
-		line--;
-		free(tab[line]);
-	}
-	free(tab);
-	return (NULL);
-}
-
-static int	line(char const *s, char c, int i)
-{
-	int	size;
-
-	size = 0;
-	while (s[i] != c && s[i])
-	{
-		size++;
-		i++;
-	}
-	return (size);
-}
-
-static char	**split_it(char const *s, char c, char **tab, int size)
-{
-	int	i;
-	int	t;
-	int	l;
+	int i;
+	int trigger;
 
 	i = 0;
-	t = 0;
-	while (s[i] && t < size)
+	trigger = 0;
+	while (*str)
 	{
-		l = 0;
-		while (s[i] == c)
+		if (*str != c && trigger == 0)
+		{
+			trigger = 1;
 			i++;
-		tab[t] = malloc(sizeof(char) * (line(s, c, i) + 1));
-		if (tab[t] == NULL)
-			return (spower_free(tab, t));
-		while (s[i] != c && s[i])
-			tab[t][l++] = s[i++];
-		tab[t][l] = '\0';
-		t++;
+		}
+		else if (*str == c)
+			trigger = 0;
+		str++;
 	}
-	tab[t] = NULL;
-	return (tab);
+	return (i);
 }
 
-static int	a_tab(char const *s, char c)
+static char	*word_dup(const char *str, int start, int finish)
 {
-	int	i;
-	int	j;
+	char	*word;
+	int		i;
 
+	i = 0;
+	word = malloc((finish - start + 1) * sizeof(char));
+	while (start < finish)
+		word[i++] = str[start++];
+	word[i] = '\0';
+	return (word);
+}
+
+char		**ft_split(char const *s, char c)
+{
+	int		i;
+	int		j;
+	int		index;
+	char	**split;
+
+	if (!s || !(split = malloc((count_words(s, c) + 1) * sizeof(char *))))
+		return (0);
 	i = 0;
 	j = 0;
-	while (*s)
+	index = -1;
+	while (i <= ft_strlen(s))
 	{
-		if (*s == c)
-			i = 0;
-		else if (i == 0)
+		if (s[i] != c && index < 0)
+			index = i;
+		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
 		{
-			i++;
-			j++;
+			split[j++] = word_dup(s, index, i);
+			index = -1;
 		}
-		s++;
+		i++;
 	}
-	return (j);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**tab;
-	int		size;
-
-	if (s == NULL)
-		return (NULL);
-	size = a_tab(s, c);
-	tab = malloc(sizeof(char *) * (size + 1));
-	if (tab == NULL)
-		return (NULL);
-	split_it(s, c, tab, size);
-	return (tab);
+	split[j] = 0;
+	return (split);
 }

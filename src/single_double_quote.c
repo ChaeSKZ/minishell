@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/12 16:59:11 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:27:28 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,78 +111,118 @@ char	*ft_add_str(t_shell *shell, char *str, int start, int end)
 	return (dest);
 }
 
-static char	*add_str_stat(char *str)
+int	calc_size(char **tab, int idx, int size)
 {
-	int		nb;
-	int		x;
-	int		y;
-	char	*tmp;
-	static char	*str_new;
+	int	n_size;
 
-	x = -1;
-	y = -1;
-	if (!str_new)
-		str_new = str;
-	else
+	n_size = 0;
+	while (size)
 	{
-		nb = ft_strlen(str) + ft_strlen(str_new);
-		tmp = str_new;
-		printf("%s\n", str_new);
-		while (tmp[++x])
-			str_new[++y] = tmp[x];
-		x = -1;
-		while (str[++x])
-			str_new[++y] = str[x];
-		str_new[++y] = '\0';
+		n_size += ft_strlen(tab[idx - size]) + 1;
+		size--;
 	}
-	return (str_new);
+	n_size += ft_strlen(tab[idx - size]);
+	return (n_size);
+}
+
+char	*copy_line(char **tab, int idx, int size)
+{
+	char	*new;
+
+	new = calloc(sizeof(char) * (calc_size(tab, idx, size) + 1), 0);
+	if (!new)
+		return (perror("malloc"), NULL);
+	while (size)
+	{
+		new = str_add(new, tab[idx - size], 0);
+		new = str_add(new, " ", 0);
+		size--;
+	}
+	new = str_add(new, tab[idx], 0);
+	return (new);
 }
 
 char	**resplit_tab(char **tab)
 {
-	int	nb;
-	int	x;
-	int	i;
-	char **res;
-	int	z;
+	char **new;
+	int		i;
+	int		n;
+	int		size;
 
-	x = -1;
 	i = -1;
-	nb = 1;
-	z = 0;
+	size = 1;
+	n = 0;
 	while (tab[++i])
 	{
-		while (tab[i][++x])
-			if(tab[i][x] == 124)
-				nb++;
-		x = -1;
+		if (ft_strncmp(tab[i], "|", 1) == 0)
+			size++;
 	}
-	res = malloc (nb * sizeof(char *));
-	i = 0;
-	x = -1;
-	nb = -1;
-	print_tab(tab);
-	while (tab[i])
+	new = calloc(sizeof(char *) * (size + 1),  0);
+	if (!new)
+		return (perror("malloc"), NULL);
+	i = -1;
+	size = 0;
+	while (tab[++i])
 	{
-		while (tab[i] && tab[i][0] != 124)
-			i++;
-		printf("i = %i\n", i);
-		while (++x < i)
-			nb += ft_strlen(tab[x]);
-		res[z] = malloc ((nb + 2) * sizeof (char));
-		nb = 0;
-		x = 0;
-		while (nb < i)
+		if (tab[i + 1] == NULL || ft_strncmp(tab[i + 1], "|", 1) == 0)
 		{
-			res[z] = add_str_stat(tab[nb]);
-			nb++;
+			if (n > 0)
+				size--;
+			new[n] = copy_line(tab, i, size);
+			n++;
+			size = -1;
 		}
-		z++;
-		i++;
+		size++;
 	}
-	power_free(tab);
-	return (res);
+	new[n] = NULL;
+	//power_free(tab);
+	return (new);
 }
+
+// {
+// 	int	nb;
+// 	int	x;
+// 	int	i;
+// 	char **res;
+// 	int	z;
+
+// 	x = -1;
+// 	i = -1;
+// 	nb = 1;
+// 	z = 0;
+// 	while (tab[++i])
+// 	{
+// 		while (tab[i][++x])
+// 			if(tab[i][x] == 124)
+// 				nb++;
+// 		x = -1;
+// 	}
+// 	res = malloc (nb * sizeof(char *));
+// 	i = 0;
+// 	x = -1;
+// 	nb = -1;
+// 	print_tab(tab);
+// 	while (tab[i])
+// 	{
+// 		while (tab[i] && tab[i][0] != 124)
+// 			i++;
+// 		printf("i = %i\n", i);
+// 		while (++x < i)
+// 			nb += ft_strlen(tab[x]);
+// 		res[z] = malloc ((nb + 2) * sizeof (char));
+// 		nb = 0;
+// 		x = 0;
+// 		while (nb < i)
+// 		{
+// 			res[z] = add_str_stat(tab[nb]);
+// 			nb++;
+// 		}
+// 		z++;
+// 		i++;
+// 	}
+// 	power_free(tab);
+// 	return (res);
+// }
 
 char	**ft_split_str(t_shell *shell, char *str, char **tab)
 {
@@ -196,7 +236,7 @@ char	**ft_split_str(t_shell *shell, char *str, char **tab)
 		if (ft_need_expand(tab[z]) != -1 && expand_not_quoted(tab[z], ft_need_expand(tab[z]) == 1))
 			tab[z] = ft_ryoiki_tenkai(shell, tab[z], ft_need_expand(tab[z]) + 1);
 	}
-	//tab = resplit_tab(tab);
+	tab = resplit_tab(tab);
 	return (tab);
 }
 

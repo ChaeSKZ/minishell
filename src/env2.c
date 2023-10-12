@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:10:27 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 14:10:44 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 18:43:17 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*str_add(char *str, char *add, int fr)
 	i = 0;
 	s = -1;
 	a = -1;
-	new = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(add) + 1));
+	new = calloc(sizeof(char) * (ft_strlen(str) + ft_strlen(add) + 1), 0);
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (str[++s])
@@ -46,7 +46,7 @@ void	create_env(t_shell *shell)
 	char	**env;
 	char	cwd[MAX_PATH_SIZE];
 
-	env = malloc(sizeof(char *) * 4);
+	env = calloc(sizeof(char *) * 4, 0);
 	if (!env)
 		return ((void)perror("malloc"));
 	getcwd(cwd, sizeof(cwd));

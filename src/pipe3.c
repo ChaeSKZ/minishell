@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:08:05 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/12 17:46:34 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:49:41 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ignore_redirections(char **tab)
 
 	i = 0;
 	n = 0;
-	new = malloc(sizeof(char *) * (tab_len(tab) + 1));
+	new = calloc(sizeof(char *) * (tab_len(tab) + 1), 0);
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (tab[i])
@@ -48,7 +48,7 @@ char	**ignore_redirections(char **tab)
 			i++;
 		}
 	}
-	power_free(tab);
+	//power_free(tab);
 	return (new);
 }
 

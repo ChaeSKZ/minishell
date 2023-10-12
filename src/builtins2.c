@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 17:49:09 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:26:44 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_str_eg_cpy(char *env, char *str)
 	z = 0;
 	while (env[++x] != '=')
 		;
-	tmp = malloc (((ft_strlen(str) - (ft_strlen(env) - (ft_strlen(env + x))) + ft_strlen(env + x))) * sizeof(char));
+	tmp = calloc (((ft_strlen(str) - (ft_strlen(env) - (ft_strlen(env + x))) + ft_strlen(env + x))) * sizeof(char), 0);
 	x++;
 	while (str[++y] != '$')
 	{

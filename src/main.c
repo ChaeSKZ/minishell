@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 17:50:09 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:28:27 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,7 @@ int	main(int ac, char **av, char **env)
 		if (shell.line == NULL)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
-		shell.tab = ft_split_quote(&shell, shell.line);
-		printf("fini\n");
-		if (shell.tab == NULL)
-			return (0);
-		shell.tokens = epur_tab(shell.tab);
+		shell.tokens = ft_split_quote(&shell, shell.line);
 		shell.errno = badline(shell.line);
 		if (shell.errno != 2)
 		{

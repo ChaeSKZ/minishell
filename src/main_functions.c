@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:18:08 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 16:45:42 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:29:30 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,34 +92,34 @@ void	main_core(t_shell *shell)
 
 	status = 0;
 	if (ft_strlen(shell->line))
+	{
+		if (!ft_pipe(shell) && call_builtins(shell, 0, 0, 0) == 7)
 		{
-			if (!ft_pipe(shell) && call_builtins(shell, 0, 0, 0) == 7)
+			shell->pid = fork();
+			signal(SIGQUIT, SIG_DFL);
+			if (shell->pid == 0)
 			{
-				shell->pid = fork();
-				signal(SIGQUIT, SIG_DFL);
-				if (shell->pid == 0)
-				{
-					check_redirect(shell->tokens[0]);
-					execve(get_cmd(shell->tokens[0]),
-						ignore_redirections(ft_split(shell->tokens[0], ' ')),
-						shell->env);
-					printf("%s: command not found\n", get_cmd(shell->tokens[0]));
-					exit(127);
-				}
-				else if (shell->pid > 0)
-				{
-					signal(SIGQUIT, SIG_IGN);
-					if (ft_strncmp(shell->tokens[0], "./minishell", 11) == 0)
-						signal(SIGINT, SIG_IGN);
-					waitpid(shell->pid, &status, 0);
-					init_signals();
-				}
-				else
-					perror("fork");
-				if (WIFEXITED(status))
-					shell->errno = WEXITSTATUS(status);
+				check_redirect(shell->tokens[0]);
+				execve(get_cmd(shell->tokens[0]),
+					ignore_redirections(ft_split(shell->tokens[0], ' ')),
+					shell->env);
+				printf("%s: command not found\n", get_cmd(shell->tokens[0]));
+				exit(127);
 			}
+			else if (shell->pid > 0)
+			{
+				signal(SIGQUIT, SIG_IGN);
+				if (ft_strncmp(shell->tokens[0], "./minishell", 11) == 0)
+					signal(SIGINT, SIG_IGN);
+				waitpid(shell->pid, &status, 0);
+				init_signals();
+			}
+			else
+				perror("fork");
+			if (WIFEXITED(status))
+				shell->errno = WEXITSTATUS(status);
 		}
+	}
 }
 
 void	prompt(t_shell *shell)
