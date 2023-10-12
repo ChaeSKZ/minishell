@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 15:16:36 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 14:47:15 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 
 # define MAX_PATH_SIZE 1024
 
+extern int g_signal;
+
 typedef struct s_pp
 {
 	int	pid;
@@ -63,6 +65,7 @@ typedef struct s_shell
 
 //---- Main Functions ---
 
+int	badline(char *str);
 void	prompt(t_shell *shell);
 void	main_core(t_shell *shell);
 

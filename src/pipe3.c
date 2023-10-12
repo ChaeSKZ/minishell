@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:08:05 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 15:40:21 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 17:46:34 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	**ignore_redirections(char **tab)
 			i++;
 		}
 	}
+	power_free(tab);
 	return (new);
 }
 

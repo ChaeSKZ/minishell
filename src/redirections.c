@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:29:10 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 12:13:37 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 16:12:01 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	double_left(char *delimiter)
 	char	**heredoc;
 	int		fd;
 
-	fd = open("heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	fd = open(".heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	heredoc = ft_split(get_heredoc(delimiter), '\n');
 	if (fd == -1)
 		return (perror("open"), 0);
@@ -61,7 +61,7 @@ int	double_left(char *delimiter)
 		write(fd, "\n", 1);
 	}
 	close(fd);
-	fd = open("heredoc.txt", O_RDONLY);
+	fd = open(".heredoc.txt", O_RDONLY);
 	if (fd == -1)
 		return (perror("open"), 0);
 	free(heredoc);

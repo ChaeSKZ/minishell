@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:18:55 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:47:54 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,8 @@ int	check_redirect(char *cmd)
 	i = -1;
 	fd = 0;
 	while (cmdtab[++i])
-	{
 		fd = redirect(cmdtab, i);
-		if (fd)
-		{
-			power_free(cmdtab);
-			return (fd);
-		}
-	}
-	return (0);
+	return (power_free(cmdtab), fd);
 }
 
 void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
@@ -38,8 +31,10 @@ void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 	int		i;
 	char	**no_redirec;
 	char	*cmd_name;
+	char	**tab;
 
-	no_redirec = ignore_redirections(ft_split(cmd, ' '));
+	tab = ft_split(cmd, ' ');
+	no_redirec = ignore_redirections(tab);
 	cmd_name = get_cmd(cmd);
 	pp->pid = fork();
 	if (pp->pid == 0)
@@ -66,7 +61,8 @@ void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 			;
 		pp->pidtab[i] = pp->pid;
 	}
-	free(no_redirec);
+	//power_free(no_redirec);
+	free(cmd_name);
 }
 
 void	init_pidtab(t_pp *pp)

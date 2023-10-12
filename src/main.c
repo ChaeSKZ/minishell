@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 15:55:40 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 17:50:09 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_signal = 0;
 
 void	init_shell(t_shell *shell, char **env)
 {
@@ -115,6 +117,7 @@ int	main(int ac, char **av, char **env)
 	status = 0;
 	while (ac && av[0])
 	{
+		g_signal = 1;
 		prompt(&shell);
 		if (shell.line == NULL)
 			ft_exit(&shell, NULL);
@@ -124,10 +127,14 @@ int	main(int ac, char **av, char **env)
 		if (shell.tab == NULL)
 			return (0);
 		shell.tokens = epur_tab(shell.tab);
-		print_tab(shell.tokens);
-		main_core(&shell);
-		power_free(shell.tokens);
-		shell.tokens = NULL;
+		shell.errno = badline(shell.line);
+		if (shell.errno != 2)
+		{
+			g_signal = 0;
+			main_core(&shell);
+			power_free(shell.tokens);
+			shell.tokens = NULL;
+		}
 	}
 	return (0);
 }

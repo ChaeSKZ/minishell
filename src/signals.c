@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:22:51 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 17:05:49 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 16:46:17 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 int	ft_signals(int sig)
 {
-	if (sig == 2)
+	if (sig == 2 && g_signal)
 	{
 		printf("\n");
-		printf("%s", GREEN "→ " CYAN "minishell" RESET
-			" [" GREEN "OK" RESET "] " BLUE "$> " RESET);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 		return (2);
 	}
 	else
-		printf("%i\n", sig);
+		printf("\n");
 	return (0);
 }
 
