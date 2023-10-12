@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/11 18:54:13 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 13:57:15 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,26 +94,20 @@ char	*ft_add_str(t_shell *shell, char *str, int start, int end)
 {
 	char	*dest;
 	int		x;
-	int		exp;
 
 	x = 0;
 	dest = malloc ((end - start + 1) * sizeof(char));
-	exp = ft_need_expand(str);
-	if (str[start] != 32 && exp != -1 && expand_not_quoted(str, exp) == 1)
-		dest = ft_ryoiki_tenkai(shell, str, exp + 1);
-	else
+	(void)shell;
+	while (start < end)
 	{
-		while (start < end)
+		if (str[start] != 34 && str[start] != 39)
 		{
-			if (str[start] != 34 && str[start] != 39)
-			{
-				dest[x] = str[start];
-				x++;
-			}
-			start++;
+			dest[x] = str[start];
+			x++;
 		}
-		dest[x] = '\0';
+		start++;
 	}
+	dest[x] = '\0';
 	return (dest);
 }
 
@@ -139,6 +133,12 @@ char	**ft_split_str(t_shell *shell, char *str, char **tab)
 		z++;
 	}
 	tab[z] = NULL;
+	z = -1;
+	while (tab[++z])
+	{
+		if (ft_need_expand(tab[z]) != -1 && expand_not_quoted(tab[z], ft_need_expand(tab[z]) == 1))
+		tab[z] = ft_ryoiki_tenkai(shell, str, ft_need_expand(tab[z]) + 1);
+	}
 	return (tab);
 }
 

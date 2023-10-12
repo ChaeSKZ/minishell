@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 11:36:40 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 14:21:18 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*ft_str_eg_cpy(char *env, char *str)
 	}
 	while (str[mem] && (str[mem] != 32 && str[mem] != 9))
 		mem++;
-	while (str[mem])
+	while (str[mem] && str[mem] != 124)
 	{
 		tmp[z] = str[mem];
 		mem++;
@@ -113,6 +113,38 @@ char	*ft_str_eg_cpy(char *env, char *str)
 	tmp[z] = '\0';
 	free(str);
 	return (tmp);
+}
+
+char	*ft_str_without_exp(char *str, int exp)
+{
+	int	tmp;
+	int	x;
+	int	y;
+	char	*str2;
+
+	x = -1;
+	while (str[++x] && str[x] != 32 && str[x] != 9)
+		;
+	tmp = exp;
+	while (str[exp] && str[exp] >= 65 && str[exp] <= 90)
+		--exp;
+	str2 = malloc ((x + (tmp - exp) + 1) * sizeof(char));
+	exp++;
+	tmp++;
+	x = -1;
+	y = -1;
+	while (++x <= tmp+1)
+	{
+		if (str[x] != '$' && str[x] != 34 && str[x] != 39)
+			str2[++y] = str[x];
+		if (str[x] == '$')
+		{
+			while (str[x] != 32 && str[x] != 9 && str[x] != 34 && str[x] != 39)
+				++x;
+		}
+	}
+	str2[++y] = '\0';
+	return (str2);
 }
 
 char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
@@ -131,6 +163,7 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 		exp++;
 	}
 	tmp[x] = '\0';
+	printf("%s\n", tmp);
 	x = -1;
 	while (shell->env[++x])
 	{
@@ -140,7 +173,7 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 			return (str);
 		}
 	}
-	str = ft_str_eg_cpy("", str);
+	str = ft_str_without_exp(str, exp);
 	return (str);
 }
 

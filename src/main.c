@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 18:59:47 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 12:21:27 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int	main(int ac, char **av, char **env)
 		if (shell.tab == NULL)
 			return (0);
 		shell.tokens = epur_tab(shell.tab);
+		print_tab(shell.tokens);
 		main_core(&shell);
 		power_free(shell.tokens);
 		shell.tokens = NULL;
