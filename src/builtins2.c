@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 14:21:18 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 17:46:03 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,21 +149,25 @@ char	*ft_str_without_exp(char *str, int exp)
 
 char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 {
-	int	x;
-	char *tmp;
+	int		x;
+	int		y;
+	char	*tmp;
+	int		n;
 
-	x = exp + 1;
-	while (str[++x] && str[x] != 32 && str[x] != 39 && str[x] != 9 && str[x] != 124)
-		;
-	tmp = malloc (((x - exp) + 1) * sizeof(char));
+	n = 0;
 	x = -1;
-	while (str[++x] && str[x] != 32 && str[x] != 34 && str[x] != 9 && str[x] != 39)
+	y = -1;
+	if (str[0] == 39 || str[0] == 34 || str[0] == 36)
 	{
-		tmp[x] = str[exp];
-		exp++;
+		tmp = malloc ((ft_strlen(str) - 1) * sizeof (char));
+		++x;
 	}
-	tmp[x] = '\0';
-	printf("%s\n", tmp);
+	while (str[++x] && str[x] != 34 && str[x] != 39)
+	{
+		if (str[x] != 39 && str[x] != 34 && str[x] != 36)
+			tmp[++y] = str[x];
+	}
+	tmp[++y] = '\0';
 	x = -1;
 	while (shell->env[++x])
 	{

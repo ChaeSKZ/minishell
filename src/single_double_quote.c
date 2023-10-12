@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/12 13:57:15 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 16:59:11 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,34 +111,92 @@ char	*ft_add_str(t_shell *shell, char *str, int start, int end)
 	return (dest);
 }
 
-char	**ft_split_str(t_shell *shell, char *str, char **tab)
+static char	*add_str_stat(char *str)
 {
-	int		target;
+	int		nb;
 	int		x;
-	int		start;
-	int		end;
-	int		z;
+	int		y;
+	char	*tmp;
+	static char	*str_new;
 
 	x = -1;
-	z = 0;
-	target = count_word(str);
-	tab = malloc((target + 1) * sizeof (char *));
-	while (str[++x] && z < target)
+	y = -1;
+	if (!str_new)
+		str_new = str;
+	else
 	{
-		start = ft_find_start(str, x);
-		end = ft_find_end(str, start);
-		if (str[end])
-			x = end;
-		tab[z] = ft_add_str(shell, str, start, end);
-		z++;
+		nb = ft_strlen(str) + ft_strlen(str_new);
+		tmp = str_new;
+		printf("%s\n", str_new);
+		while (tmp[++x])
+			str_new[++y] = tmp[x];
+		x = -1;
+		while (str[++x])
+			str_new[++y] = str[x];
+		str_new[++y] = '\0';
 	}
-	tab[z] = NULL;
+	return (str_new);
+}
+
+char	**resplit_tab(char **tab)
+{
+	int	nb;
+	int	x;
+	int	i;
+	char **res;
+	int	z;
+
+	x = -1;
+	i = -1;
+	nb = 1;
+	z = 0;
+	while (tab[++i])
+	{
+		while (tab[i][++x])
+			if(tab[i][x] == 124)
+				nb++;
+		x = -1;
+	}
+	res = malloc (nb * sizeof(char *));
+	i = 0;
+	x = -1;
+	nb = -1;
+	print_tab(tab);
+	while (tab[i])
+	{
+		while (tab[i] && tab[i][0] != 124)
+			i++;
+		printf("i = %i\n", i);
+		while (++x < i)
+			nb += ft_strlen(tab[x]);
+		res[z] = malloc ((nb + 2) * sizeof (char));
+		nb = 0;
+		x = 0;
+		while (nb < i)
+		{
+			res[z] = add_str_stat(tab[nb]);
+			nb++;
+		}
+		z++;
+		i++;
+	}
+	power_free(tab);
+	return (res);
+}
+
+char	**ft_split_str(t_shell *shell, char *str, char **tab)
+{
+	int		z;
+
 	z = -1;
+	(void)shell;
+	tab = ft_split(str, ' ');
 	while (tab[++z])
 	{
 		if (ft_need_expand(tab[z]) != -1 && expand_not_quoted(tab[z], ft_need_expand(tab[z]) == 1))
-		tab[z] = ft_ryoiki_tenkai(shell, str, ft_need_expand(tab[z]) + 1);
+			tab[z] = ft_ryoiki_tenkai(shell, tab[z], ft_need_expand(tab[z]) + 1);
 	}
+	//tab = resplit_tab(tab);
 	return (tab);
 }
 
