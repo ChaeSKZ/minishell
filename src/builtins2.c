@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 14:21:18 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/12 15:48:41 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 		exp++;
 	}
 	tmp[x] = '\0';
-	printf("%s\n", tmp);
 	x = -1;
 	while (shell->env[++x])
 	{
