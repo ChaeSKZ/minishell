@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:18:05 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:16:36 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_args(char *line);
 char	*get_cmd(char *line);
 char	*get_cmd_name(char *line);
 int		ft_strlen(const char *str);
-char	**ft_split_quote(char *arg);
+char	**ft_split_quote(t_shell *shell, char *arg);
 void	init_signals(void);
 int		tab_len(char **tab);
 int		count_word(char *arg);
@@ -94,6 +94,7 @@ int		ft_find_start(char *str, int x);
 int		count_word(char *arg);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_checkcmd(char *s1, char *s2);
+char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp);
 
 //------ Redirects -----
 
@@ -118,7 +119,7 @@ int		tab_len(char **tab);
 
 //------- Builtins ------
 
-int		call_builtins(t_shell *shell, int is_in);
+int		call_builtins(t_shell *shell, int is_env, int do_exit, int idx);
 int		ft_echo(t_shell *shell, char *arg);
 int		ft_cd(t_shell *shell, char *cmd_line);
 int		ft_pwd(t_shell *shell, char *arg);

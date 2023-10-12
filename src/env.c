@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 15:31:39 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/11 18:45:07 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	init_env(t_shell *shell, char **env)
 	if (env[0])
 	{
 		shell->env = copy_env(env);
-		while (ft_envstrcmp(env[i], "SHLVL=Gros Crane Chauve"))
+		while (ft_envstrcmp(env[i], "SHLVL="))
 			i++;
 		str = get_value(env[i]);
 		update_env(str_add("SHLVL=", itoa(atoi(str) + 1), 1), shell);

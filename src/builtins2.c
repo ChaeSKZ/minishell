@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:18:28 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:36:40 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,69 +72,97 @@ int	ft_env(t_shell *shell, char *arg)
 	return (0);
 }
 
-char	*ft_str_eg_cpy(char *env)
+char	*ft_str_eg_cpy(char *env, char *str)
 {
 	int		x;
 	int		y;
-	char	*str;
+	int		z;
+	char	*tmp;
+	int		mem;
 
 	x = -1;
 	y = -1;
+	z = 0;
 	while (env[++x] != '=')
 		;
-	str = malloc ((ft_strlen(str) - x) * sizeof(char));
+	tmp = malloc (((ft_strlen(str) - (ft_strlen(env) - (ft_strlen(env + x))) + ft_strlen(env + x))) * sizeof(char));
 	x++;
+	while (str[++y] != '$')
+	{
+		if (str[y] != 34 && str[y] != 39)
+		{
+			tmp[z] = str[y];
+			z++;
+		}
+	}
+	mem = y;
 	while (env[x] != '\0')
 	{
-		str[y] = env[x];
-		y++;
+		tmp[z] = env[x];
+		z++;
 		x++;
 	}
-	str[y] = '\0';
-	return (str);
+	while (str[mem] && (str[mem] != 32 && str[mem] != 9))
+		mem++;
+	while (str[mem])
+	{
+		tmp[z] = str[mem];
+		mem++;
+		z++;
+	}
+	tmp[z] = '\0';
+	free(str);
+	return (tmp);
 }
 
-char	*ft_ryoiki_tenkai(t_shell *shell, char *str)
+char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 {
 	int	x;
+	char *tmp;
 
+	x = exp + 1;
+	while (str[++x] && str[x] != 32 && str[x] != 39 && str[x] != 9 && str[x] != 124)
+		;
+	tmp = malloc (((x - exp) + 1) * sizeof(char));
+	x = -1;
+	while (str[++x] && str[x] != 32 && str[x] != 34 && str[x] != 9 && str[x] != 39)
+	{
+		tmp[x] = str[exp];
+		exp++;
+	}
+	tmp[x] = '\0';
 	x = -1;
 	while (shell->env[++x])
 	{
-		if (ft_envstrcmp(str + 1, shell->env[x]) == 0)
-			return (free(str), str = ft_str_eg_cpy(shell->env[x]));
+		if (ft_envstrcmp(tmp, shell->env[x]) == 0)
+		{
+			str = ft_str_eg_cpy(shell->env[x], str);
+			return (str);
+		}
 	}
-	return (NULL);
+	str = ft_str_eg_cpy("", str);
+	return (str);
 }
 
 int	ft_echo(t_shell *shell, char *arg)
 {
 	int		x;
-	int		y;
 	int		n;
+	char	**tab;
 
-	shell->tab = ft_split_quote(arg);
-	if (shell->tab == NULL)
-		return (0);
-	x = 0;
+	x = -1;
 	n = 0;
-	y = -1;
-	if (shell->tab[x][0] == '-' && shell->tab[x][1] == 'n')
+	(void)shell;
+	tab = ft_split(arg, ' ');
+	while (tab[++x])
 	{
-		n = 1;
-		x++;
-	}
-	while (x < count_word(arg))
-	{
-		if (shell->tab[x][0] == '$')
-			shell->tab[x] = ft_ryoiki_tenkai(shell, shell->tab[x]);
-		printf("%s", shell->tab[x]);
-		if (shell->tab[x + 1])
-			printf(" ");
-		x++;
+		if (tab[x + 1])
+			printf("%s ", tab[x]);
+		else
+			printf("%s", tab[x]);
 	}
 	if (n != 1)
 		printf("\n");
-	power_free(shell->tab);
+	power_free(tab);
 	return (0);
 }

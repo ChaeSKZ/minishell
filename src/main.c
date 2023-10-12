@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:18:49 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:59:47 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	print_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		printf("tab[%i] : %s\n", i, tab[i]);
+		printf("tab[%i] : %s$\n", i, tab[i]);
 		i++;
 	}
 }
@@ -119,7 +119,10 @@ int	main(int ac, char **av, char **env)
 		if (shell.line == NULL)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
-		shell.tokens = epur_tab(ft_split(shell.line, '|'));
+		shell.tab = ft_split_quote(&shell, shell.line);
+		if (shell.tab == NULL)
+			return (0);
+		shell.tokens = epur_tab(shell.tab);
 		main_core(&shell);
 		power_free(shell.tokens);
 		shell.tokens = NULL;
