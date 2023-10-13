@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:08:05 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 11:34:04 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:47:40 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	tab_len(char **tab)
 	return (i);
 }
 
-char	**ignore_redirections(char **tab)
+char	**ignore_redirections(char **tab, int fr)
 {
 	int		i;
 	char	**new;
@@ -43,11 +43,13 @@ char	**ignore_redirections(char **tab)
 			i += 2;
 		else
 		{
-			new[n] = ft_strcpy(tab[i], new[n]);
+			new[n] = ft_strdup(tab[i]);
 			new[++n] = NULL;
 			i++;
 		}
 	}
+	if (fr)
+		power_free(tab);
 	return (new);
 }
 
@@ -83,6 +85,9 @@ void	end_pipe(t_pp *pp, char **no_redirec, char **tab, char *cmd_name)
 {
 	int	i;
 
+	(void)cmd_name;
+	(void)no_redirec;
+	(void)tab;
 	i = -1;
 	if (pp->pid)
 	{
@@ -91,7 +96,4 @@ void	end_pipe(t_pp *pp, char **no_redirec, char **tab, char *cmd_name)
 			;
 		pp->pidtab[i] = pp->pid;
 	}
-	power_free(no_redirec);
-	power_free(tab);
-	free(cmd_name);
 }

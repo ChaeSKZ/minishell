@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:18:08 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 10:59:23 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:16:52 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,24 @@
 
 void	main_core2(t_shell *shell, int status)
 {
+	char	*cmd_name;
+	char	*cmd;
+	char	**nr;
+
 	shell->pid = fork();
 	signal(SIGQUIT, SIG_DFL);
 	if (shell->pid == 0)
 	{
+		nr = ignore_redirections(ft_split(shell->tokens[0], ' '), 1);
+		cmd = get_cmd(shell->tokens[0], shell->env);
 		check_redirect(shell->tokens[0]);
-		execve(get_cmd(shell->tokens[0]),
-			ignore_redirections(ft_split(shell->tokens[0], ' ')),
-			shell->env);
-		printf("%s: command not found\n", get_cmd(shell->tokens[0]));
-		exit(127);
+		execve(cmd, nr, shell->env);
+		cmd_name = get_cmd(shell->tokens[0], shell->env);
+		printf("%s: command not found\n", cmd_name);
+		free(cmd_name);
+		free(cmd);
+		power_free(nr);
+		ft_exit(shell, "child");
 	}
 	else if (shell->pid > 0)
 	{
@@ -33,8 +41,6 @@ void	main_core2(t_shell *shell, int status)
 		waitpid(shell->pid, &status, 0);
 		init_signals();
 	}
-	else
-		perror("fork");
 	if (WIFEXITED(status))
 		shell->errno = WEXITSTATUS(status);
 }

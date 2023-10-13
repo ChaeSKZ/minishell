@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:40:26 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 11:18:17 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:03:23 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	ft_pwd(t_shell *shell, char *arg)
 {
 	char	cwd[MAX_PATH_SIZE];
 
-	(void)arg;
 	(void)shell;
+	(void)arg;
 	if (getcwd(cwd, sizeof(cwd)))
 		printf("%s\n", cwd);
 	else
@@ -36,8 +36,12 @@ int	ft_exit(t_shell *shell, char *arg)
 		free(shell->line);
 	if (shell->env)
 		power_free(shell->env);
-	printf("exit\n");
-	return (exit(0), 0);
+	if (!arg || !ft_strlen(arg))
+	{
+		printf("exit\n");
+		return (exit(0), 0);
+	}
+	exit(127);
 }
 
 char	*check_path(char *path)

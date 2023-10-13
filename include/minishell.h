@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:34:12 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:13:44 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <dirent.h>
 # include <fcntl.h>
 # include <stdbool.h>
 # include <limits.h>
@@ -87,7 +88,7 @@ void	power_free(char **tab);
 int		mnsh_strcmp(char *s1, char *s2);
 int		ft_envstrcmp(char *s1, char *s2);
 char	*get_args(char *line);
-char	*get_cmd(char *line);
+char	*get_cmd(char *line, char **env);
 char	*get_cmd_name(char *line);
 int		ft_strlen(const char *str);
 char	**ft_split_quote(t_shell *shell, char *arg);
@@ -106,7 +107,7 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp);
 //------ Redirects -----
 
 int		check_redirect(char *cmd);
-char	**ignore_redirections(char **tab);
+char	**ignore_redirections(char **tab, int fr);
 char	*get_heredoc(char *delimiter);
 int		simple_right(char *filename);
 int		double_right(char *filename);
@@ -123,7 +124,6 @@ void	close_pipes(t_pp *pp);
 void	do_the_redirections(t_pp *pp);
 void	dup2_spe(int z, int f);
 int		redirect(char **cmdtab, int i);
-char	**ignore_redirections(char **tab);
 int		tab_len(char **tab);
 
 //------- Builtins ------
@@ -145,6 +145,7 @@ char	*get_home_path(char **env);
 void	update_env(char *arg, t_shell *shell);
 void	ft_init_struct(t_shell *sh);
 void	ft_simple_export(t_shell *shell);
+char	*get_value(char *str);
 
 //------- quotes --------
 

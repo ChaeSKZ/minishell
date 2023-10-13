@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:10:27 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 11:25:14 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:48:25 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ int	ft_unset(t_shell *shell, char *arg)
 			while (shell->env[j])
 			{
 				free(shell->env[j]);
-				shell->env[j] = shell->env[j + 1];
+				if (shell->env[j + 1])
+					shell->env[j] = ft_strdup(shell->env[j + 1]);
 				j++;
 			}
+			shell->env[j - 1] = NULL;
 			return (0);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:03:36 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 11:23:25 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:23:59 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_envstrcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (1);
 	while (s1[i] && s2[i] && s1[i] == s2[i] && s1[i] != '=' && s2[i] != '=')
 		i++;
 	if (s1[i] == '=' || s2[i] == '=')
@@ -68,43 +70,62 @@ char	**init_sep(void)
 	return (sep);
 }
 
-char	*init_cmd(char *cmd, int i)
+char	*init_cmd(char *cmd, char **env)
 {
-	cmd = malloc(sizeof(char) * (i + 6));
-	if (!cmd)
-		return (perror("malloc"), NULL);
-	cmd[0] = '/';
-	cmd[1] = 'b';
-	cmd[2] = 'i';
-	cmd[3] = 'n';
-	cmd[4] = '/';
-	cmd[i + 5] = '\0';
-	return (cmd);
-}
-
-char	*get_cmd(char *line)
-{
-	int		i;
-	char	*cmd;
+	char			**tab;
+	int				i;
+	DIR				*d;
+	struct dirent	*dir;
+	char			*val;
 
 	i = 0;
-	while (line[i] && line[i] != ' ')
+	while (env[i] && ft_envstrcmp(env[i], "PATH="))
 		i++;
-	if ((line[0] == '.' && line[1] == '/')
+	if (!env[i])
+		return (NULL);
+	val = get_value(env[i]);
+	tab = ft_split(val, ':');
+	i = -1;
+	while (tab[++i])
+	{
+		d = opendir(tab[i]);
+		if (d)
+		{
+			dir = readdir(d);
+			while (dir != NULL)
+			{
+				if (ft_strncmp(cmd, dir->d_name, ft_strlen(dir->d_name)) == 0)
+				{
+					free(val);
+					val = ft_strdup(tab[i]);
+					power_free(tab);
+					return (str_add(
+							str_add(val, "/", 1, 0), dir->d_name, 1, 0));
+				}
+				dir = readdir(d);
+			}
+		}
+		closedir(d);
+	}
+	free(val);
+	power_free(tab);
+	return (NULL);
+}
+
+char	*get_cmd(char *line, char **env)
+{
+	char	*cmd;
+	char	**tab;
+
+	if (((line[0] == '.' || line[0] == '~') && line[1] == '/')
 		|| line[0] == '/')
 		return (line);
 	cmd = NULL;
-	cmd = init_cmd(cmd, i);
+	tab = ft_split(line, ' ');
+	cmd = init_cmd(tab[0], env);
 	if (!cmd)
-	{
-		perror("malloc");
-		exit(1);
-	}
-	i = 0;
-	while (line[i] && line[i] != ' ')
-	{
-		cmd[i + 5] = line[i];
-		i++;
-	}
+		cmd = ft_strcpy(tab[0], cmd);
+	if (tab)
+		power_free(tab);
 	return (cmd);
 }

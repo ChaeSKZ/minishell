@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:26:13 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:59:49 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	ft_export(t_shell *shell, char *arg)
 	int		i;
 
 	args = NULL;
-	printf("arg : %s\n", arg);
 	if (arg == NULL)
 		return (0);
 	else

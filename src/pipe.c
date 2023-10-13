@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:33:56 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:21:40 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,33 @@ void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 {
 	char	**no_redirec;
 	char	*cmd_name;
+	char	*name;
 	char	**tab;
 
-	tab = ft_split(cmd, ' ');
-	no_redirec = ignore_redirections(tab);
-	cmd_name = get_cmd(cmd);
+	no_redirec = NULL;
+	cmd_name = NULL;
+	name = NULL;
+	tab = NULL;
 	pp->pid = fork();
 	if (pp->pid == 0)
 	{
 		do_the_redirections(pp);
 		if (call_builtins(shell, 0, 1, idx) == 7)
 		{
+			tab = ft_split(cmd, ' ');
+			no_redirec = ignore_redirections(tab, 0);
+			name = tab[0];
+			cmd_name = get_cmd(name, shell->env);
 			check_redirect(cmd);
 			execve(cmd_name, no_redirec, shell->env);
-			printf("%s: command not found\n", cmd);
-			exit(127);
+			write(2, name, ft_strlen(name));
+			write(2, ": command not found\n", 20);
+			power_free(no_redirec);
+			free(cmd_name);
+			power_free(tab);
+			free(pp->pipe);
+			free(pp->pidtab);
+			ft_exit(shell, "child");
 		}
 	}
 	end_pipe(pp, no_redirec, tab, cmd_name);
