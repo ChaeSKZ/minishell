@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 14:47:15 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:34:12 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <limits.h>
+# include <stdint.h>
 # include <sys/wait.h>
 # include <string.h>
 # include <readline/readline.h>
@@ -36,7 +38,7 @@
 
 # define MAX_PATH_SIZE 1024
 
-extern int g_signal;
+extern int	g_signal;
 
 typedef struct s_pp
 {
@@ -56,7 +58,6 @@ typedef struct s_shell
 	char	**env;
 	char	**tab;
 	int		*meta;
-	char	*envp[1];
 	char	ex_path[MAX_PATH_SIZE];
 	int		pid;
 	int		errno;
@@ -65,18 +66,21 @@ typedef struct s_shell
 
 //---- Main Functions ---
 
-int	badline(char *str);
+int		badline(char *str);
 void	prompt(t_shell *shell);
 void	main_core(t_shell *shell);
 
 //-------- Utils --------
 
+void	*ft_memset(void *s, int c, size_t n);
+void	*ft_calloc(size_t nmemb, size_t size);
 void	print_tab(char **tab);
 char	**ft_split(char const *s, char c);
 char	**token_it(t_shell *shell, char *str);
 char	*ft_strdup(const char *s);
 char	*ft_epurstr(char *str);
-char	*str_add(char *str, char *add, int fr);
+char	*str_add(char *str, char *add, int fr_str, int fr_add);
+char	*ft_strcpy(char *src, char *dest);
 char	**epur_tab(char **tab);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	power_free(char **tab);
@@ -112,9 +116,11 @@ int		double_left(char *delimiter);
 //-------- Pipes -------
 
 int		ft_pipe(t_shell *shell);
+void	end_pipe(t_pp *pp, char **no_redirec, char **tab, char *cmd_name);
 int		cmd_count(char **token);
 void	create_pipes(t_pp *pp);
 void	close_pipes(t_pp *pp);
+void	do_the_redirections(t_pp *pp);
 void	dup2_spe(int z, int f);
 int		redirect(char **cmdtab, int i);
 char	**ignore_redirections(char **tab);
@@ -139,5 +145,16 @@ char	*get_home_path(char **env);
 void	update_env(char *arg, t_shell *shell);
 void	ft_init_struct(t_shell *sh);
 void	ft_simple_export(t_shell *shell);
+
+//------- quotes --------
+
+bool	ft_next_quote(char *arg, int type, int x);
+char	**ft_split_str(t_shell *shell, char *str, char **tab);
+char	**resplit_tab(char **tab);
+int		ft_need_expand(char *str);
+char	*ft_add_str(t_shell *shell, char *str, int start, int end);
+int		calc_size(char **tab, int idx, int size);
+char	*copy_line(char **tab, int idx, int size);
+int		expand_not_quoted(char *str, int dollar);
 
 #endif

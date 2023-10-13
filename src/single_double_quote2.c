@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:15:13 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/11 17:27:27 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/13 11:19:07 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,74 @@ int	ft_find_start(char *str, int x)
 			return (start);
 		}
 		x++;
+	}
+	return (0);
+}
+
+char	**resplit_tab(char **tab)
+{
+	char	**new;
+	int		i;
+	int		n;
+	int		size;
+
+	i = -1;
+	size = 1;
+	n = 0;
+	while (tab[++i])
+	{
+		if (ft_strncmp(tab[i], "|", 1) == 0)
+			size++;
+	}
+	new = ft_calloc((size + 1), sizeof(char *));
+	if (!new)
+		return (perror("malloc"), NULL);
+	i = -1;
+	size = 0;
+	while (tab[++i])
+	{
+		if (tab[i + 1] == NULL || ft_strncmp(tab[i + 1], "|", 1) == 0)
+		{
+			if (n > 0)
+				size--;
+			new[n] = copy_line(tab, i, size);
+			n++;
+			size = -1;
+		}
+		size++;
+	}
+	new[n] = NULL;
+	power_free(tab);
+	return (new);
+}
+
+char	**ft_split_str(t_shell *shell, char *str, char **tab)
+{
+	int		z;
+
+	z = -1;
+	(void)shell;
+	tab = ft_split(str, ' ');
+	while (tab[++z])
+	{
+		if (ft_need_expand(tab[z]) != -1
+			&& expand_not_quoted(tab[z], ft_need_expand(tab[z]) == 1))
+			tab[z] = ft_ryoiki_tenkai(shell, tab[z],
+					ft_need_expand(tab[z]) + 1);
+	}
+	tab = resplit_tab(tab);
+	return (tab);
+}
+
+bool	ft_next_quote(char *arg, int type, int x)
+{
+	int	y;
+
+	y = x;
+	while (arg[++y])
+	{
+		if (arg[y] == type)
+			return (1);
 	}
 	return (0);
 }

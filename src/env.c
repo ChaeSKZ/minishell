@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/11 18:45:07 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/13 10:21:45 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	init_env(t_shell *shell, char **env)
 {
 	int		i;
 	char	*str;
+	char	*shlvl;
+	char	*ito;
 
 	i = 0;
 	if (env[0])
@@ -100,7 +102,11 @@ void	init_env(t_shell *shell, char **env)
 		while (ft_envstrcmp(env[i], "SHLVL="))
 			i++;
 		str = get_value(env[i]);
-		update_env(str_add("SHLVL=", itoa(atoi(str) + 1), 1), shell);
+		shlvl = ft_strdup("SHLVL=");
+		ito = itoa(atoi(str) + 1);
+		update_env(str_add(shlvl, ito, 0, 0), shell);
+		free(shlvl);
+		free(ito);
 		free(str);
 	}
 	else

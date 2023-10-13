@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:38:51 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 15:32:17 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/13 11:20:00 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,43 +48,6 @@ char	*get_args(char *line)
 	else
 		arg = NULL;
 	return (arg);
-}
-
-char	*get_cmd(char *line)
-{
-	int		i;
-	char	*cmd;
-
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	if ((line[0] == '.' && line[1] == '/')
-		|| line[0] == '/')
-		return (line);
-	else
-	{
-		cmd = malloc(sizeof(char) * (i + 6));
-		if (!cmd)
-			return (perror("malloc"), NULL);
-		cmd[0] = '/';
-		cmd[1] = 'b';
-		cmd[2] = 'i';
-		cmd[3] = 'n';
-		cmd[4] = '/';
-		cmd[i + 5] = '\0';
-	}
-	if (!cmd)
-	{
-		perror("malloc");
-		exit(1);
-	}
-	i = 0;
-	while (line[i] && line[i] != ' ')
-	{
-		cmd[i + 5] = line[i];
-		i++;
-	}
-	return (cmd);
 }
 
 char	*get_cmd_name(char *line)

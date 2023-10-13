@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils4.c                                           :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:03:36 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/09 14:16:11 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/13 11:23:25 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,45 @@ char	**init_sep(void)
 	sep[4] = ft_strdup("<<");
 	sep[5] = NULL;
 	return (sep);
+}
+
+char	*init_cmd(char *cmd, int i)
+{
+	cmd = malloc(sizeof(char) * (i + 6));
+	if (!cmd)
+		return (perror("malloc"), NULL);
+	cmd[0] = '/';
+	cmd[1] = 'b';
+	cmd[2] = 'i';
+	cmd[3] = 'n';
+	cmd[4] = '/';
+	cmd[i + 5] = '\0';
+	return (cmd);
+}
+
+char	*get_cmd(char *line)
+{
+	int		i;
+	char	*cmd;
+
+	i = 0;
+	while (line[i] && line[i] != ' ')
+		i++;
+	if ((line[0] == '.' && line[1] == '/')
+		|| line[0] == '/')
+		return (line);
+	cmd = NULL;
+	cmd = init_cmd(cmd, i);
+	if (!cmd)
+	{
+		perror("malloc");
+		exit(1);
+	}
+	i = 0;
+	while (line[i] && line[i] != ' ')
+	{
+		cmd[i + 5] = line[i];
+		i++;
+	}
+	return (cmd);
 }

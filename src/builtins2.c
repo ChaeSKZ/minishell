@@ -6,71 +6,11 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 19:26:44 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:17:56 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_unset(t_shell *shell, char *arg)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (shell->env[i])
-	{
-		if (ft_envstrcmp(shell->env[i], arg) == 0)
-		{
-			j = i;
-			while (shell->env[j])
-			{
-				free(shell->env[j]);
-				shell->env[j] = shell->env[j + 1];
-				j++;
-			}
-			return (0);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	ft_env(t_shell *shell, char *arg)
-{
-	int		i;
-	int		pid;
-	int		status;
-	char	**args;
-
-	i = -1;
-	pid = 0;
-	status = 0;
-	args = ft_split(arg, ' ');
-	if (arg && args[0][0] != '|' && args[0][0] != '>'
-		&& args[0][0] != '<')
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			if (call_builtins(shell, 1, 0, 0) == 7)
-			{
-				execve(get_cmd(arg), ft_split(args[0], ' '), shell->env);
-				perror("env");
-				exit(127);
-			}
-			exit (0);
-		}
-		else
-			waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-	}
-	else
-		while (shell->env[++i])
-			printf("%s\n", shell->env[i]);
-	return (0);
-}
 
 char	*ft_str_eg_cpy(char *env, char *str)
 {
@@ -85,7 +25,9 @@ char	*ft_str_eg_cpy(char *env, char *str)
 	z = 0;
 	while (env[++x] != '=')
 		;
-	tmp = calloc (((ft_strlen(str) - (ft_strlen(env) - (ft_strlen(env + x))) + ft_strlen(env + x))) * sizeof(char), 0);
+	tmp = ft_calloc(((ft_strlen(str) - (ft_strlen(env)
+						- (ft_strlen(env + x)))
+					+ ft_strlen(env + x))), sizeof(char));
 	x++;
 	while (str[++y] != '$')
 	{
@@ -117,9 +59,9 @@ char	*ft_str_eg_cpy(char *env, char *str)
 
 char	*ft_str_without_exp(char *str, int exp)
 {
-	int	tmp;
-	int	x;
-	int	y;
+	int		tmp;
+	int		x;
+	int		y;
 	char	*str2;
 
 	x = -1;
@@ -133,7 +75,7 @@ char	*ft_str_without_exp(char *str, int exp)
 	tmp++;
 	x = -1;
 	y = -1;
-	while (++x <= tmp+1)
+	while (++x <= tmp + 1)
 	{
 		if (str[x] != '$' && str[x] != 34 && str[x] != 39)
 			str2[++y] = str[x];
@@ -188,16 +130,17 @@ int	ft_echo(t_shell *shell, char *arg)
 	char	**tab;
 
 	x = -1;
-	n = 0;
 	(void)shell;
+	if (!arg || ft_strncmp(arg, "", 1) == 0)
+		return (printf("\n"), 0);
 	tab = ft_split(arg, ' ');
-	while (tab[++x])
-	{
-		if (tab[x + 1])
-			printf("%s ", tab[x]);
-		else
-			printf("%s", tab[x]);
-	}
+	if (ft_strncmp(tab[0], "-n", 2) == 0)
+		n = ++x + 1;
+	else
+		n = 0;
+	while (tab[++x + 1])
+		printf("%s ", tab[x]);
+	printf("%s", tab[x]);
 	if (n != 1)
 		printf("\n");
 	power_free(tab);

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 19:31:37 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:33:56 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	check_redirect(char *cmd)
 
 void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 {
-	int		i;
 	char	**no_redirec;
 	char	*cmd_name;
 	char	**tab;
@@ -39,13 +38,7 @@ void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 	pp->pid = fork();
 	if (pp->pid == 0)
 	{
-		if (pp->idx == 0)
-			dup2_spe(STDIN_FILENO, pp->pipe[1]);
-		else if (pp->idx < pp->cmd_nb - 1)
-			dup2_spe(pp->pipe[2 * pp->idx - 2], pp->pipe[2 * pp->idx + 1]);
-		else
-			dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
-		close_pipes(pp);
+		do_the_redirections(pp);
 		if (call_builtins(shell, 0, 1, idx) == 7)
 		{
 			check_redirect(cmd);
@@ -54,15 +47,7 @@ void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 			exit(127);
 		}
 	}
-	else
-	{
-		i = -1;
-		while (++i < pp->cmd_nb - 1 && pp->pidtab[i] != 0)
-			;
-		pp->pidtab[i] = pp->pid;
-	}
-	//power_free(no_redirec);
-	free(cmd_name);
+	end_pipe(pp, no_redirec, tab, cmd_name);
 }
 
 void	init_pidtab(t_pp *pp)

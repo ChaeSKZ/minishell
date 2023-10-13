@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:29:10 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 16:12:01 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 10:54:30 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ int	double_left(char *delimiter)
 {
 	char	**heredoc;
 	int		fd;
+	int		i;
 
 	fd = open(".heredoc.txt", O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	heredoc = ft_split(get_heredoc(delimiter), '\n');
 	if (fd == -1)
 		return (perror("open"), 0);
-	for (int i = 0; heredoc[i]; i++)
+	i = -1;
+	while (heredoc[++i])
 	{
 		write(fd, heredoc[i], ft_strlen(heredoc[i]));
 		write(fd, "\n", 1);

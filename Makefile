@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jquil <jquil@student.42.fr>                +#+  +:+       +#+         #
+#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/10/09 18:53:35 by jquil            ###   ########.fr        #
+#    Updated: 2023/10/13 11:13:58 by jugingas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ SRC		=		src/main.c					\
 				src/utils.c					\
 				src/utils2.c				\
 				src/utils3.c				\
+				src/badline.c				\
+				src/ft_memset.c				\
+				src/ft_calloc.c				\
 				src/builtins.c				\
 				src/builtins2.c				\
 				src/ft_split.c				\
@@ -24,6 +27,7 @@ SRC		=		src/main.c					\
 				src/ft_strdup.c				\
 				src/single_double_quote.c	\
 				src/single_double_quote2.c	\
+				src/single_double_quote3.c	\
 				src/signals.c				\
 				src/pipe.c					\
 				src/pipe2.c					\

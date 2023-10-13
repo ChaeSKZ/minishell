@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:08:05 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/12 18:49:41 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:34:04 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ignore_redirections(char **tab)
 
 	i = 0;
 	n = 0;
-	new = calloc(sizeof(char *) * (tab_len(tab) + 1), 0);
+	new = ft_calloc((tab_len(tab) + 1), sizeof(char *));
 	if (!new)
 		return (perror("malloc"), NULL);
 	while (tab[i])
@@ -43,12 +43,11 @@ char	**ignore_redirections(char **tab)
 			i += 2;
 		else
 		{
-			new[n] = tab[i];
+			new[n] = ft_strcpy(tab[i], new[n]);
 			new[++n] = NULL;
 			i++;
 		}
 	}
-	//power_free(tab);
 	return (new);
 }
 
@@ -78,4 +77,21 @@ int	redirect(char **cmdtab, int i)
 		dup2(fd, STDIN_FILENO);
 	}
 	return (fd);
+}
+
+void	end_pipe(t_pp *pp, char **no_redirec, char **tab, char *cmd_name)
+{
+	int	i;
+
+	i = -1;
+	if (pp->pid)
+	{
+		i = -1;
+		while (++i < pp->cmd_nb - 1 && pp->pidtab[i] != 0)
+			;
+		pp->pidtab[i] = pp->pid;
+	}
+	power_free(no_redirec);
+	power_free(tab);
+	free(cmd_name);
 }

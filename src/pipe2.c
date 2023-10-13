@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:01:09 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 16:25:40 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:27:59 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,15 @@ void	dup2_spe(int z, int f)
 {
 	dup2(z, 0);
 	dup2(f, 1);
+}
+
+void	do_the_redirections(t_pp *pp)
+{
+	if (pp->idx == 0)
+		dup2_spe(STDIN_FILENO, pp->pipe[1]);
+	else if (pp->idx < pp->cmd_nb - 1)
+		dup2_spe(pp->pipe[2 * pp->idx - 2], pp->pipe[2 * pp->idx + 1]);
+	else
+		dup2_spe(pp->pipe[2 * pp->idx - 2], STDOUT_FILENO);
+	close_pipes(pp);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:57:38 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/09 18:21:50 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/13 11:26:13 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,18 @@ void	add_env(char *arg, t_shell *shell)
 	i = 0;
 	while (shell->env[i])
 		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
+	new_env = ft_calloc((i + 2), sizeof(char *));
 	if (!new_env)
 	{
 		perror("malloc");
 		return ;
 	}
-	memcpy(new_env, shell->env, i * sizeof(char *));
-	new_env[i] = arg;
+	i = -1;
+	while (shell->env[++i])
+		new_env[i] = shell->env[i];
+	new_env[i] = ft_strcpy(arg, new_env[i]);
 	new_env[i + 1] = NULL;
+	free(shell->env);
 	shell->env = new_env;
 	return ;
 }
@@ -73,7 +76,8 @@ void	update_env(char *arg, t_shell *shell)
 	while (ft_envstrcmp(arg, shell->env[i]))
 		i++;
 	free(shell->env[i]);
-	shell->env[i] = arg;
+	shell->env[i] = ft_strdup(arg);
+	free(arg);
 	return ;
 }
 
@@ -83,6 +87,7 @@ int	ft_export(t_shell *shell, char *arg)
 	int		i;
 
 	args = NULL;
+	printf("arg : %s\n", arg);
 	if (arg == NULL)
 		return (0);
 	else

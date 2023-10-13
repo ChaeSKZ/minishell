@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/12 19:28:27 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:06:40 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ int	main(int ac, char **av, char **env)
 	ft_init_struct(&shell);
 	status = 0;
 	init_shell(&shell, env);
-	shell.tokens = NULL;
-	shell.envp[0] = NULL;
 	status = 0;
 	while (ac && av[0])
 	{
@@ -122,10 +120,10 @@ int	main(int ac, char **av, char **env)
 		if (shell.line == NULL)
 			ft_exit(&shell, NULL);
 		add_history(shell.line);
-		shell.tokens = ft_split_quote(&shell, shell.line);
 		shell.errno = badline(shell.line);
 		if (shell.errno != 2)
 		{
+			shell.tokens = ft_split_quote(&shell, shell.line);
 			g_signal = 0;
 			main_core(&shell);
 			power_free(shell.tokens);
