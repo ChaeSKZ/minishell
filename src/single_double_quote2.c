@@ -3,46 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:15:13 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 11:19:07 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:47:01 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	count_word(char *arg)
-{
-	int	x;
-	int	nb;
-
-	x = -1;
-	nb = 1;
-	while (arg[++x])
-	{
-		if (arg[x] == 34)
-		{
-			while (arg[++x] != 34)
-				;
-		}
-		if (arg[x] == 39)
-		{
-			while (arg[++x] != 39)
-				;
-		}
-		if (arg[x] == 124)
-			nb++;
-		if (arg[x] != 124 && arg[x] != 9 && arg[x] != 32)
-		{
-			while (arg[x] && (arg[x] != 124 && arg[x] != 9 && arg[x] != 32))
-				x++;
-			if (!arg[x])
-				return (nb);
-		}
-	}
-	return (nb);
-}
 
 int	ft_find_start(char *str, int x)
 {
@@ -66,24 +34,11 @@ int	ft_find_start(char *str, int x)
 	return (0);
 }
 
-char	**resplit_tab(char **tab)
+char	**resplit_tab_2(char **tab, char **new, int i, int size)
 {
-	char	**new;
-	int		i;
-	int		n;
-	int		size;
+	int	n;
 
-	i = -1;
-	size = 1;
 	n = 0;
-	while (tab[++i])
-	{
-		if (ft_strncmp(tab[i], "|", 1) == 0)
-			size++;
-	}
-	new = ft_calloc((size + 1), sizeof(char *));
-	if (!new)
-		return (perror("malloc"), NULL);
 	i = -1;
 	size = 0;
 	while (tab[++i])
@@ -103,6 +58,26 @@ char	**resplit_tab(char **tab)
 	return (new);
 }
 
+char	**resplit_tab(char **tab)
+{
+	char	**new;
+	int		i;
+	int		size;
+
+	i = -1;
+	size = 1;
+	while (tab[++i])
+	{
+		if (ft_strncmp(tab[i], "|", 1) == 0)
+			size++;
+	}
+	new = ft_calloc((size + 1), sizeof(char *));
+	if (!new)
+		return (perror("malloc"), NULL);
+	new = resplit_tab_2(tab, new, i, size);
+	return (new);
+}
+
 char	**ft_split_str(t_shell *shell, char *str, char **tab)
 {
 	int		z;
@@ -112,11 +87,15 @@ char	**ft_split_str(t_shell *shell, char *str, char **tab)
 	tab = ft_split(str, ' ');
 	while (tab[++z])
 	{
-		if (ft_need_expand(tab[z]) != -1
-			&& expand_not_quoted(tab[z], ft_need_expand(tab[z]) == 1))
-			tab[z] = ft_ryoiki_tenkai(shell, tab[z],
+		if (ft_need_expand(tab[z]) != -1 && expand_not_quoted(tab[z]) == 1)
+		{
+			tab[z] = ft_extension_of_the_territory(shell, tab[z],
 					ft_need_expand(tab[z]) + 1);
+		}
+		else
+			tab[z] = remove_quote(tab[z]);
 	}
+	tab[z] = NULL;
 	tab = resplit_tab(tab);
 	return (tab);
 }

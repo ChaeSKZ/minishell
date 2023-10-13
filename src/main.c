@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 16:42:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:06:40 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:03:18 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,13 @@ int	main(int ac, char **av, char **env)
 		if (shell.errno != 2)
 		{
 			shell.tokens = ft_split_quote(&shell, shell.line);
-			g_signal = 0;
-			main_core(&shell);
-			power_free(shell.tokens);
-			shell.tokens = NULL;
+			if (shell.tokens)
+			{
+				g_signal = 0;
+				main_core(&shell);
+				power_free(shell.tokens);
+				shell.tokens = NULL;
+			}
 		}
 	}
 	return (0);

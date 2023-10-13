@@ -3,42 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   single_double_quote.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 11:18:21 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:45:45 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	pipe_not_quoted_2(char *str, int x, int end)
+{
+	int	p1;
+	int	p2;
+
+	if (str[x] == 39)
+	{
+		p1 = x;
+		while (str[++x] != 39)
+			;
+		p2 = x;
+		if (end > p1 && end < p2)
+			return (0);
+	}
+	if (str[x] == 34)
+	{
+		p1 = x;
+		while (str[++x] != 34)
+			;
+		p2 = x;
+		if (end > p1 && end < p2)
+			return (0);
+	}
+	return (1);
+}
+
 int	pipe_not_quoted(char *str, int end)
 {
 	int	x;
-	int	p1;
-	int	p2;
 
 	x = -1;
 	while (str[++x])
 	{
-		if (str[x] == 39)
-		{
-			p1 = x;
-			while (str[++x] != 39)
-				;
-			p2 = x;
-			if (end > p1 && end < p2)
-				return (0);
-		}
-		if (str[x] == 34)
-		{
-			p1 = x;
-			while (str[++x] != 34)
-				;
-			p2 = x;
-			if (end > p1 && end < p2)
-				return (0);
-		}
+		if (pipe_not_quoted_2(str, x, end) == 0)
+			return (0);
 	}
 	return (1);
 }
@@ -50,6 +58,7 @@ int	expand_not_quoted(char *str, int dollar)
 	int	p2;
 
 	x = -1;
+	dollar = ft_need_expand(str);
 	while (str[++x])
 	{
 		if (str[x] == 39)
@@ -58,8 +67,12 @@ int	expand_not_quoted(char *str, int dollar)
 			while (str[++x] != 39)
 				;
 			p2 = x;
+			printf("p1 = %i\tp2 = %i\ndollar = %i\n", p1, p2, dollar);
 			if (dollar > p1 && dollar < p2)
+			{
+				printf("oui\n");
 				return (0);
+			}
 		}
 	}
 	return (1);

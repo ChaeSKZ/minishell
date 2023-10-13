@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:34:12 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:47:09 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ int		ft_find_start(char *str, int x);
 int		count_word(char *arg);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_checkcmd(char *s1, char *s2);
-char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp);
+char	*ft_extension_of_the_territory(t_shell *shell, char *str, int exp);
+char	*ft_str_eg_cpy(char *env, char *str);
+char	*remove_quote(char *str);
 
 //------ Redirects -----
 
@@ -155,6 +157,6 @@ int		ft_need_expand(char *str);
 char	*ft_add_str(t_shell *shell, char *str, int start, int end);
 int		calc_size(char **tab, int idx, int size);
 char	*copy_line(char **tab, int idx, int size);
-int		expand_not_quoted(char *str, int dollar);
+int		expand_not_quoted(char *str);
 
 #endif
