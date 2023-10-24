@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:08:05 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 17:47:40 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:08:49 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ int	tab_len(char **tab)
 	return (i);
 }
 
+int	is_redirect(char *str, char *next)
+{
+	if ((!ft_strncmp(str, ">", 1)
+			|| !ft_strncmp(str, ">>", 2)
+			|| !ft_strncmp(str, "<", 1)
+			|| !ft_strncmp(str, "<<", 2))
+		&& next && str)
+		return (2);
+	return (0);
+}
+
 char	**ignore_redirections(char **tab, int fr)
 {
 	int		i;
@@ -35,13 +46,8 @@ char	**ignore_redirections(char **tab, int fr)
 		return (perror("malloc"), NULL);
 	while (tab[i])
 	{
-		if ((!ft_strncmp(tab[i], ">", 1)
-				|| !ft_strncmp(tab[i], ">>", 2)
-				|| !ft_strncmp(tab[i], "<", 1)
-				|| !ft_strncmp(tab[i], "<<", 2))
-			&& tab[i + 1] && tab[i])
-			i += 2;
-		else
+		i += is_redirect(tab[i], tab[i + 1]);
+		if (tab[i])
 		{
 			new[n] = ft_strdup(tab[i]);
 			new[++n] = NULL;

@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:03:36 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 18:23:59 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:36:08 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,21 @@ char	**init_sep(void)
 	return (sep);
 }
 
-char	*init_cmd(char *cmd, char **env)
+char	*get_full_cmd(struct dirent *dir, char *tabi, char **tab)
 {
-	char			**tab;
-	int				i;
-	DIR				*d;
-	struct dirent	*dir;
-	char			*val;
+	char	*val;
+
+	val = ft_strdup(tabi);
+	power_free(tab);
+	return (str_add(
+			str_add(val, "/", 1, 0), dir->d_name, 1, 0));
+}
+
+char	**get_path_tab(char **env)
+{
+	int		i;
+	char	*val;
+	char	**tab;
 
 	i = 0;
 	while (env[i] && ft_envstrcmp(env[i], "PATH="))
@@ -85,6 +93,18 @@ char	*init_cmd(char *cmd, char **env)
 		return (NULL);
 	val = get_value(env[i]);
 	tab = ft_split(val, ':');
+	free(val);
+	return (tab);
+}
+
+char	*init_cmd(char *cmd, char **env)
+{
+	char			**tab;
+	int				i;
+	DIR				*d;
+	struct dirent	*dir;
+
+	tab = get_path_tab(env);
 	i = -1;
 	while (tab[++i])
 	{
@@ -94,20 +114,14 @@ char	*init_cmd(char *cmd, char **env)
 			dir = readdir(d);
 			while (dir != NULL)
 			{
-				if (ft_strncmp(cmd, dir->d_name, ft_strlen(dir->d_name)) == 0)
-				{
-					free(val);
-					val = ft_strdup(tab[i]);
-					power_free(tab);
-					return (str_add(
-							str_add(val, "/", 1, 0), dir->d_name, 1, 0));
-				}
+				if (ft_strncmp(cmd, dir->d_name,
+						ft_strlen(cmd) + ft_strlen(dir->d_name)) == 0)
+					return (get_full_cmd(dir, tab[i], tab));
 				dir = readdir(d);
 			}
 		}
 		closedir(d);
 	}
-	free(val);
 	power_free(tab);
 	return (NULL);
 }

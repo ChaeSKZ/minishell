@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:21:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 18:21:40 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:29:26 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,29 @@ int	check_redirect(char *cmd)
 
 void	child(t_pp *pp, t_shell *shell, char *cmd, int idx)
 {
-	char	**no_redirec;
-	char	*cmd_name;
-	char	*name;
-	char	**tab;
-
-	no_redirec = NULL;
-	cmd_name = NULL;
-	name = NULL;
-	tab = NULL;
 	pp->pid = fork();
 	if (pp->pid == 0)
 	{
 		do_the_redirections(pp);
 		if (call_builtins(shell, 0, 1, idx) == 7)
 		{
-			tab = ft_split(cmd, ' ');
-			no_redirec = ignore_redirections(tab, 0);
-			name = tab[0];
-			cmd_name = get_cmd(name, shell->env);
+			pp->tab = ft_split(cmd, ' ');
+			pp->no_redirec = ignore_redirections(pp->tab, 0);
+			pp->name = pp->tab[0];
+			pp->cmd_name = get_cmd(pp->name, shell->env);
 			check_redirect(cmd);
-			execve(cmd_name, no_redirec, shell->env);
-			write(2, name, ft_strlen(name));
+			execve(pp->cmd_name, pp->no_redirec, shell->env);
+			write(2, pp->name, ft_strlen(pp->name));
 			write(2, ": command not found\n", 20);
-			power_free(no_redirec);
-			free(cmd_name);
-			power_free(tab);
+			power_free(pp->no_redirec);
+			free(pp->cmd_name);
+			power_free(pp->tab);
 			free(pp->pipe);
 			free(pp->pidtab);
 			ft_exit(shell, "child");
 		}
 	}
-	end_pipe(pp, no_redirec, tab, cmd_name);
+	end_pipe(pp, pp->no_redirec, pp->tab, pp->cmd_name);
 }
 
 void	init_pidtab(t_pp *pp)

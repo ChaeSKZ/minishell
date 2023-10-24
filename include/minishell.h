@@ -6,7 +6,7 @@
 /*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:41:49 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 18:13:44 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/24 12:50:47 by jugingas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@ extern int	g_signal;
 
 typedef struct s_pp
 {
-	int	pid;
-	int	*pidtab;
-	int	cmd_nb;
-	int	pipe_nb;
-	int	*pipe;
-	int	idx;
+	int		pid;
+	int		*pidtab;
+	int		cmd_nb;
+	int		pipe_nb;
+	int		*pipe;
+	int		idx;
+	char	**no_redirec;
+	char	*cmd_name;
+	char	*name;
+	char	**tab;
 }		t_pp;
 
 typedef struct s_shell
