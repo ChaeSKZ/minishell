@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:23:20 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:45 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:06:46 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,8 @@ int	expand_not_quoted(char *str, int dollar)
 			while (str[++x] != 39)
 				;
 			p2 = x;
-			printf("p1 = %i\tp2 = %i\ndollar = %i\n", p1, p2, dollar);
 			if (dollar > p1 && dollar < p2)
-			{
-				printf("oui\n");
 				return (0);
-			}
 		}
 	}
 	return (1);

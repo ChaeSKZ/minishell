@@ -6,13 +6,13 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:59:29 by jquil             #+#    #+#             */
-/*   Updated: 2023/10/13 16:52:57 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/24 14:28:44 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_quote_2(char *str, int nb)
+char	*remove_quote_2(char *str, int nb, int type)
 {
 	int		x;
 	int		y;
@@ -26,7 +26,7 @@ char	*remove_quote_2(char *str, int nb)
 	x = -1;
 	while (str[++x])
 	{
-		if (str[x] != 39 && str[x] != 34 && str[x] != 92)
+		if (str[x] != type && str[x] != 92)
 			new[++y] = str[x];
 	}
 	++y;
@@ -39,15 +39,21 @@ char	*remove_quote(char *str)
 	int		x;
 	int		nb;
 	char	*new;
+	int		type;
 
 	nb = 0;
 	x = -1;
 	while (str[++x])
+	{
 		if (str[x] == 39 || str[x] == 34 || str[x] == 92)
+		{
 			++nb;
+			type = str[x];
+		}
+	}
 	if (nb != 0)
 	{
-		new = remove_quote_2(str, nb);
+		new = remove_quote_2(str, nb, type);
 		free(str);
 		return (new);
 	}

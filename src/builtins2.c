@@ -6,7 +6,7 @@
 /*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 18:47:48 by jquil            ###   ########.fr       */
+/*   Updated: 2023/10/24 14:27:14 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ char	*ft_extension_of_the_territory_2(t_shell *s, char *st,
 		if (ft_strlen(tmp) && ft_envstrcmp(tmp, s->env[x]) == 0)
 		{
 			st = ft_str_eg_cpy(s->env[x], st);
-			printf("%s\n", st);
 			return (st);
 		}
 	}
@@ -87,6 +86,8 @@ char	*ft_extension_of_the_territory(t_shell *shell, char *str, int exp)
 	n = 0;
 	x = -1;
 	y = -1;
+	if (!ft_strncmp(str, "$?", ft_strlen(str)) && ft_need_expand(str) != -1)
+		return (itoa(shell->errno));
 	if (str[0] == 39 || str[0] == 34)
 	{
 		tmp = malloc ((ft_strlen(str) - 1) * sizeof (char));
@@ -116,7 +117,7 @@ int	ft_echo(t_shell *shell, char *arg)
 	x = -1;
 	(void)shell;
 	if (!arg || ft_strncmp(arg, "", 1) == 0)
-		return (0);
+		return (printf("\n"), 0);
 	tab = ft_split(arg, ' ');
 	if (ft_strncmp(tab[0], "-n", 3) == 0 && !tab[1])
 		return (0);

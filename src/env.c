@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:12:36 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 10:21:45 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:16:41 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ char	*get_value(char *str)
 	new[n] = '\0';
 	return (new);
 }
+char	*itoa_2(char *str, int nb, int len)
+{
+	if (nb == 0)
+	{
+		str[0] = '0';
+		str[1] = '\0';
+		return (str);
+	}
+	str += len;
+	*str = '\0';
+	while (nb != 0)
+	{
+		*--str = '0' + (nb % 10);
+		nb /= 10;
+	}
+	return (str);
+}
 
 char	*itoa(int nb)
 {
@@ -54,14 +71,8 @@ char	*itoa(int nb)
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (perror("malloc"), NULL);
-	str += len;
-	*str = '\0';
-	while (nb != 0)
-	{
-		*--str = '0' + (nb % 10);
-		nb /= 10;
-	}
-	return (str);
+
+	return (itoa_2(str, nb, len));
 }
 
 char	**copy_env(char **env)
