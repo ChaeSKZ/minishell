@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+         #
+#    By: jquil <jquil@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/19 11:08:46 by jugingas          #+#    #+#              #
-#    Updated: 2023/10/13 11:13:58 by jugingas         ###   ########.fr        #
+#    Updated: 2023/10/13 14:48:46 by jquil            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ SRC		=		src/main.c					\
 				src/utils.c					\
 				src/utils2.c				\
 				src/utils3.c				\
+				src/utils4.c				\
 				src/badline.c				\
 				src/ft_memset.c				\
 				src/ft_calloc.c				\
@@ -35,6 +36,7 @@ SRC		=		src/main.c					\
 				src/redirections.c			\
 				src/get_heredoc.c			\
 				src/init_struct.c			\
+				src/str_eg_cpy.c			\
 
 NAME		=	minishell
 OBJS		=	$(SRC:.c=.o)

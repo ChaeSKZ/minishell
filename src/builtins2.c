@@ -3,65 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jugingas <jugingas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jquil <jquil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 16:59:22 by jugingas          #+#    #+#             */
-/*   Updated: 2023/10/13 11:17:56 by jugingas         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:27:14 by jquil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_str_eg_cpy(char *env, char *str)
+char	*ft_str_without_exp_2(char *str, char *str2)
 {
-	int		x;
-	int		y;
-	int		z;
-	char	*tmp;
-	int		mem;
+	int	x;
+	int	y;
 
 	x = -1;
 	y = -1;
-	z = 0;
-	while (env[++x] != '=')
-		;
-	tmp = ft_calloc(((ft_strlen(str) - (ft_strlen(env)
-						- (ft_strlen(env + x)))
-					+ ft_strlen(env + x))), sizeof(char));
-	x++;
-	while (str[++y] != '$')
+	if (ft_strncmp(str, "$", 2) == 0)
 	{
-		if (str[y] != 34 && str[y] != 39)
+		str2[0] = '$';
+		str2[1] = '\0';
+		return (str2);
+	}
+	while (str[++x])
+	{
+		if (str[x] && str[x] != '$' && str[x] != 34 && str[x] != 39)
+			str2[++y] = str[x];
+		if (str[x] == '$')
 		{
-			tmp[z] = str[y];
-			z++;
+			while (str[x] && str[x] != 32
+				&& str[x] != 9 && str[x] != 34 && str[x] != 39)
+				++x;
 		}
 	}
-	mem = y;
-	while (env[x] != '\0')
-	{
-		tmp[z] = env[x];
-		z++;
-		x++;
-	}
-	while (str[mem] && (str[mem] != 32 && str[mem] != 9))
-		mem++;
-	while (str[mem] && str[mem] != 124)
-	{
-		tmp[z] = str[mem];
-		mem++;
-		z++;
-	}
-	tmp[z] = '\0';
-	free(str);
-	return (tmp);
+	str2[++y] = '\0';
+	return (str2);
 }
 
 char	*ft_str_without_exp(char *str, int exp)
 {
 	int		tmp;
 	int		x;
-	int		y;
 	char	*str2;
 
 	x = -1;
@@ -71,25 +53,30 @@ char	*ft_str_without_exp(char *str, int exp)
 	while (str[exp] && str[exp] >= 65 && str[exp] <= 90)
 		--exp;
 	str2 = malloc ((x + (tmp - exp) + 1) * sizeof(char));
-	exp++;
 	tmp++;
-	x = -1;
-	y = -1;
-	while (++x <= tmp + 1)
-	{
-		if (str[x] != '$' && str[x] != 34 && str[x] != 39)
-			str2[++y] = str[x];
-		if (str[x] == '$')
-		{
-			while (str[x] != 32 && str[x] != 9 && str[x] != 34 && str[x] != 39)
-				++x;
-		}
-	}
-	str2[++y] = '\0';
+	str2 = ft_str_without_exp_2(str, str2);
 	return (str2);
 }
 
-char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
+char	*ft_extension_of_the_territory_2(t_shell *s, char *st,
+	char *tmp, int exp)
+{
+	int	x;
+
+	x = -1;
+	while (s->env[++x])
+	{
+		if (ft_strlen(tmp) && ft_envstrcmp(tmp, s->env[x]) == 0)
+		{
+			st = ft_str_eg_cpy(s->env[x], st);
+			return (st);
+		}
+	}
+	st = ft_str_without_exp(st, exp);
+	return (st);
+}
+
+char	*ft_extension_of_the_territory(t_shell *shell, char *str, int exp)
 {
 	int		x;
 	int		y;
@@ -99,27 +86,25 @@ char	*ft_ryoiki_tenkai(t_shell *shell, char *str, int exp)
 	n = 0;
 	x = -1;
 	y = -1;
-	if (str[0] == 39 || str[0] == 34 || str[0] == 36)
+	if (!ft_strncmp(str, "$?", ft_strlen(str)) && ft_need_expand(str) != -1)
+		return (itoa(shell->errno));
+	if (str[0] == 39 || str[0] == 34)
 	{
 		tmp = malloc ((ft_strlen(str) - 1) * sizeof (char));
 		++x;
 	}
+	else if (str[0] == 91 && str[1] == 36 && str[ft_strlen(str)] == 93)
+		tmp = malloc ((ft_strlen(str) - 3));
+	else
+		tmp = malloc (ft_strlen(str));
 	while (str[++x] && str[x] != 34 && str[x] != 39)
 	{
-		if (str[x] != 39 && str[x] != 34 && str[x] != 36)
+		if (str[x] != 39 && str[x] != 34 && str[x] != 36 && str[x] != 91 && str[x] != 93 && str[x] != 92)
 			tmp[++y] = str[x];
 	}
 	tmp[++y] = '\0';
-	x = -1;
-	while (shell->env[++x])
-	{
-		if (ft_envstrcmp(tmp, shell->env[x]) == 0)
-		{
-			str = ft_str_eg_cpy(shell->env[x], str);
-			return (str);
-		}
-	}
-	str = ft_str_without_exp(str, exp);
+	str = ft_extension_of_the_territory_2(shell, str, tmp, exp);
+	free(tmp);
 	return (str);
 }
 
@@ -134,7 +119,9 @@ int	ft_echo(t_shell *shell, char *arg)
 	if (!arg || ft_strncmp(arg, "", 1) == 0)
 		return (printf("\n"), 0);
 	tab = ft_split(arg, ' ');
-	if (ft_strncmp(tab[0], "-n", 2) == 0)
+	if (ft_strncmp(tab[0], "-n", 3) == 0 && !tab[1])
+		return (0);
+	if (ft_strncmp(tab[0], "-n", 3) == 0)
 		n = ++x + 1;
 	else
 		n = 0;
